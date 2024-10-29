@@ -55,4 +55,20 @@ require_once "./header.php";
 
 <body>
     <?php include_once './views/navbar.php'; ?>
+
+    <div class="container">
+        <?php
+
+        // Usando switch para simplificar condicionais
+        switch ($page) {
+            case 'home':
+                include_once "./views/home.php";
+                break;
+        }
+        ?>
+    </div>
+
+    <?php require_once "./footer.php" ?>
 </body>
+
+</html>

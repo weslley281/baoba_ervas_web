@@ -14,7 +14,7 @@
     <title><?php echo $page_title; ?></title>
 
     <link rel="stylesheet" href="./libs/bootstrap/bootstrap.css">
-    <link rel="stylesheet" href="./css/styles.css">
+    <link href="./css/styles.css" rel="stylesheet" />
 
     <link href="./libs/fontawesome-free-6.5.2-web/css/fontawesome.css" rel="stylesheet" />
     <link href="./libs/fontawesome-free-6.5.2-web/css/brands.css" rel="stylesheet" />
