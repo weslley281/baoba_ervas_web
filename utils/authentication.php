@@ -27,20 +27,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($user && password_verify($_POST['password'], $user['password'])) {
 
-            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['email'] = $user['email'];
-            $_SESSION['type'] = $user['type'];
+            $_SESSION['user_type'] = $user['user_type'];
             $_SESSION['name'] = $user['name'];
 
-            header("Location:  ../index.php?page=login&action=success");
+            header("Location:  ../index.php?page=profile");
 
             exit;
         } else {
-            echo "PAREI AQUI 01";
+            // echo $_POST['password'] . "<br>";
+            // echo $user['password'] . "<br>";
+            // var_dump($user);
+            // echo "<br>";
+            // var_dump(password_verify($_POST['password'], $user['password']));
+            // echo "<br>";
+            // echo "PAREI AQUI 01";
             header("Location: ../index.php?page=login&action=fail");
         }
     } else {
-        echo "PAREI AQUI 02";
+        //echo "PAREI AQUI 02";
         header("Location: ../index.php?page=login&action=fail");
     }
 }

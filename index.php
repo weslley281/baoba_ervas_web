@@ -7,6 +7,7 @@ require_once "config/CreateTables.php";
 require_once "./utils/renderAlert.php";
 require_once "./utils/truncate.php";
 require_once './utils/openssl.php';
+require_once './utils/generateRandomPassword.php';
 
 require_once './models/User.php';
 
@@ -29,7 +30,7 @@ $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada'
 
 if (!$user->getByEmail("baobaervas.com.br")) {
     $password = password_hash("Admin@123", PASSWORD_DEFAULT);
-    $cpf = encrypt($post['cpf'], ENCRYPTION_KEY);
+    $cpf = encrypt("21.468.275/0002-05", ENCRYPTION_KEY);
 
     $data = [
         "name" => 'Adm Baobá',
@@ -46,7 +47,7 @@ if (!$user->getByEmail("baobaervas.com.br")) {
         "birth_date" => "2000-01-01",
         "password" => $password,
         "user_type" => 'admin',
-        "cpf" => '21.468.275/0002-05',
+        "cpf" => $cpf,
     ];
 
     $user->create($data);
@@ -60,8 +61,6 @@ require_once "./header.php";
 
     <div class="container">
         <?php
-
-        // Usando switch para simplificar condicionais
         switch ($page) {
             case 'home':
                 include_once "./views/home.php";
@@ -69,6 +68,17 @@ require_once "./header.php";
 
             case 'profile':
                 require_once "./views/profile/home.php";
+                break;
+
+            case 'login':
+
+                switch ($action) {
+                    case 'fail':
+                        echo renderAlert('danger', 'Erro!', 'Usuário ou senha inválido.');
+                        break;
+                }
+
+                require_once "./views/login.php";
                 break;
 
             default:
