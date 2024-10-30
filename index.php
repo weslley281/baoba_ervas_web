@@ -14,6 +14,7 @@ $createTable = new CreateTables;
 $user = new User($conn);
 
 $createTable->createUsersTable($conn);
+$createTable->createProductsTable($conn);
 
 $page = $_GET['page'] ?? 'home';
 $action = $_GET['action'] ?? '';
@@ -28,23 +29,24 @@ $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada'
 
 if (!$user->getByEmail("baobaervas.com.br")) {
     $password = password_hash("Admin@123", PASSWORD_DEFAULT);
+    $cpf = encrypt($post['cpf'], ENCRYPTION_KEY);
 
     $data = [
-        "name" => 'Kenshydokan',
+        "name" => 'Adm Baobá',
         "phone" => '65981233996',
-        "email" => "instituto@kenshydokan.org.br",
-        "address" => "R. 24 de Outubro, 185",
+        "email" => "admbaobabrasil@gmail.com",
+        "address" => "R. Feliciano Galdino, 585",
         "complement" => "Edifício",
         "country" => "Brasil",
         "state" => "Mato Grosso",
-        "city" => "Várzea Grande",
-        "neighborhood" => "Centro Norte",
+        "city" => "Cuiabá",
+        "neighborhood" => "Poto",
         "postal_code" => "78110-520",
         "gender" => "masculine",
         "birth_date" => "2000-01-01",
         "password" => $password,
-        "type" => 'admin',
-        "cpf" => '10.707.722/0001-34',
+        "user_type" => 'admin',
+        "cpf" => '21.468.275/0002-05',
     ];
 
     $user->create($data);
@@ -64,6 +66,13 @@ require_once "./header.php";
             case 'home':
                 include_once "./views/home.php";
                 break;
+
+            case 'profile':
+                require_once "./views/profile/home.php";
+                break;
+
+            default:
+                echo "<h1>Página não encontrada</h1>";
         }
         ?>
     </div>

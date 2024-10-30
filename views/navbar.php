@@ -9,7 +9,7 @@
                 <a class="nav-link" href="index.php"><span class="text-white"><i class="fa-solid fa-house"></i> Home</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.php?page=users"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
+                <a class="nav-link" href="index.php?page=profile"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.php?page=financial"><span class="text-white"><i class="fa-solid fa-hand-holding-dollar"></i> Carrinho</span></a>
