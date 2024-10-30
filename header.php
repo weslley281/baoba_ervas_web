@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Weslley Henrique Vieira Ferraz" />
-    <meta name="owner" content="Federação de Karate de Contato do Estado de Mato Grosso" />
+    <meta name="owner" content="Comercio de utilidades Baoba LTDA - ME" />
     <meta name="copyright" content="Weslley Henrique Vieira Ferraz" />
-    <meta name="keywords" content="sistema, web, desktop, mobile, gerenciamento, kenshydokan, kyokushin, federação, karate, carate, karatê, caratê, de contato, full, contact, luta, aula, aulas, Karatê, kata, kumite, mato grosso, cuiaba, varzea grande, weslley ferraz, weslley, ferraz, judo, judô, kodokan, jiu, jiu jitsu, muay thai, muay boran, kickboxing">
+    <meta name="keywords" content="erva, tempero, produto natural, cha, castanha, farinaceo, farinha, doce, fruta seca">
     <meta name="description" content="Somos uma federação, criada com o intuito de divulgar o karate kenshydokan e outras artes marciais.">
     <meta http-equiv="refresh" content="3600">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
