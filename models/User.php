@@ -61,11 +61,11 @@ class User
         }
     }
 
-    public function getById($id)
+    public function getById($user_id)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT * FROM users WHERE id = ?');
-            $stmt->bind_param('i', $id);
+            $stmt = $this->conn->prepare('SELECT * FROM users WHERE user_id = ?');
+            $stmt->bind_param('i', $user_id);
             $stmt->execute();
 
             return $stmt->get_result()->fetch_assoc();
@@ -89,15 +89,15 @@ class User
         }
     }
 
-    public function update(array $data, $id)
+    public function update(array $data, $user_id)
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE users SET name = ?, phone = ?, email = ?, address = ?, complement = ?, country = ?, state = ?, city = ?, neighborhood = ?, postal_code = ?, gender = ?, birth_date = ?, password = ?, cpf = ?, user_type = ? WHERE id = ?'
+                'UPDATE users SET name = ?, phone = ?, email = ?, address = ?, complement = ?, country = ?, state = ?, city = ?, neighborhood = ?, postal_code = ?, gender = ?, birth_date = ?, cpf = ?, user_type = ? WHERE user_id = ?'
             );
 
             $stmt->bind_param(
-                'sssssssssssssssi',
+                'ssssssssssssssi',
                 $data['name'],
                 $data['phone'],
                 $data['email'],
@@ -110,10 +110,9 @@ class User
                 $data['postal_code'],
                 $data['gender'],
                 $data['birth_date'],
-                $data['password'],
                 $data['cpf'],
                 $data['user_type'],
-                $id
+                $user_id
             );
 
             $stmt->execute();
@@ -124,14 +123,14 @@ class User
         }
     }
 
-    public function updateType($user_type, $id)
+    public function updateType($user_type, $user_id)
     {
         try {
             $stmt = $this->conn->prepare(
                 'UPDATE users SET user_type = ? WHERE id = ?'
             );
 
-            $stmt->bind_param('si', $user_type, $id);
+            $stmt->bind_param('si', $user_type, $user_id);
 
             $stmt->execute();
             return true;
@@ -141,11 +140,11 @@ class User
         }
     }
 
-    public function delete($id)
+    public function delete($user_id)
     {
         try {
             $stmt = $this->conn->prepare('DELETE FROM users WHERE id = ?');
-            $stmt->bind_param('i', $id);
+            $stmt->bind_param('i', $user_id);
             return $stmt->execute();
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');

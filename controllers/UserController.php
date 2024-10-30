@@ -9,14 +9,12 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
     $user = new User($conn);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $id = isset($_POST['id']) ? intval($_POST['id']) : null;
+        $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : null;
         $action = isset($_GET['action']) ? strtolower($_GET['action']) : '';
-
-        define('ENCRYPTION_KEY', 'gotosao');
 
         function getUserData($post)
         {
-            $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+            $password = isset($_POST["password"]) ? password_hash($_POST["password"], PASSWORD_DEFAULT) : '';
             $cpf = isset($post['cpf']) ? encrypt($post['cpf'], ENCRYPTION_KEY) : null;
 
             return [
@@ -45,61 +43,62 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     $data = getUserData($_POST);
 
                     if ($user->create($data)) {
-                        header("Location: ../index.php?page=users&action=success");
+                        header("Location: ../index.php?page=profile&action=success");
                     } else {
                         echo $user->create($data);
-                        header("Location: ../index.php?page=users&action=fail");
+                        header("Location: ../index.php?page=profile&action=fail");
                     }
 
                 } else {
                     echo "<center><strong><h1>As duas senhas diferem uma da outra</h1></strong></center>";
                     echo "<script>";
-                    echo "setTimeout(function() { window.location.href = '../index.php?page=users&action=fail'; }, 3000);";
+                    echo "setTimeout(function() { window.location.href = '../index.php?page=profile&action=fail'; }, 3000);";
                     echo "</script>";
                 }
                 break;
 
             case 'update':
-                if ($id === null) {
-                    header("Location: ../index.php?page=users&action=invalid");
+                if ($user_id === null) {
+                    header("Location: ../index.php?page=profile&action=invalid");
                     exit;
                 }
                 $data = getUserData($_POST);
-                if ($user->update($data, $id)) {
-                    header("Location: ../index.php?page=users&action=saved");
+                if ($user->update($data, $user_id)) {
+                    header("Location: ../index.php?page=profile&action=saved");
                 } else {
-                    header("Location: ../index.php?page=users&action=fail");
+                    var_dump($data);
+                    //header("Location: ../index.php?page=profile&action=fail");
                 }
                 break;
 
             case 'updatetype':
-                if ($id === null) {
-                    header("Location: ../index.php?page=users&action=invalid");
+                if ($user_id === null) {
+                    header("Location: ../index.php?page=profile&action=invalid");
                     exit;
                 }
 
-                if ($user->updateType($_POST["user_type"], $id)) {
-                    header("Location: ../index.php?page=users&action=saved");
+                if ($user->updateType($_POST["user_type"], $user_id)) {
+                    header("Location: ../index.php?page=profile&action=saved");
                 } else {
-                    header("Location: ../index.php?page=users&action=fail");
+                    header("Location: ../index.php?page=profile&action=fail");
                 }
                 break;
 
             case 'delete':
-                if ($id === null) {
-                    header("Location: ../index.php?page=users&action=invalid");
+                if ($user_id === null) {
+                    header("Location: ../index.php?page=profile&action=invalid");
                     exit;
                 }
-                if ($user->delete($id)) {
-                    header("Location: ../index.php?page=users&action=deleted");
+                if ($user->delete($user_id)) {
+                    header("Location: ../index.php?page=profile&action=deleted");
                 } else {
-                    header("Location: ../index.php?page=users&action=fail");
+                    header("Location: ../index.php?page=profile&action=fail");
                 }
                 break;
 
             default:
                 echo "<center><strong><h1>Ação incorreta</h1></strong></center>";
-                header("Location: ../index.php?page=users&action=unknown");
+                header("Location: ../index.php?page=profile&action=unknown");
                 echo $_GET['action'];
                 break;
         }
