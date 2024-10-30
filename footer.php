@@ -1,4 +1,4 @@
-<footer class="my-2 container-fluid bg-dark">
+<footer class="my-2 container-fluid bg-success">
 
     <p class="my-2 text-white">© Comércio de Utilidades Baobá LTDA - ME <?php echo date("Y"); ?>. Todos os direitos reservados.</p>
     <p class="m-0"><button onclick="moveTo('policies')" type="button" class="btn btn-outline-light my-2">Políticas e Privacidade</button> | <button onclick="moveTo('terms')" type="button" class="btn btn-outline-light my-2">Termos e Condições</button></p>
