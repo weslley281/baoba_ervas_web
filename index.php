@@ -11,13 +11,16 @@ require_once './utils/generateRandomPassword.php';
 
 require_once './models/User.php';
 require_once './models/Product.php';
+require_once './models/Category.php';
 
 $createTable = new CreateTables;
 $user = new User($conn);
 $product = new Product($conn);
+$category = new Category($conn);
 
 $createTable->createUsersTable($conn);
 $createTable->createProductsTable($conn);
+$createTable->createCategoriesTable($conn);
 
 $page = $_GET['page'] ?? 'home';
 $action = $_GET['action'] ?? '';
