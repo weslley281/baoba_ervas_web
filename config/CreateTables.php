@@ -42,6 +42,7 @@ class CreateTables
             product_id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255),
             slogan VARCHAR(255),
+            category_id INT,
             description TEXT,
             path_image VARCHAR(255),
             price DECIMAL(10, 2) NOT NULL,
@@ -54,9 +55,30 @@ class CreateTables
         ";
 
         if ($conn->query($sql) === true) {
-            //echo "Tabela 'users' criada com sucesso.";
+            //echo "Tabela 'products' criada com sucesso.";
         } else {
-            echo "Erro ao criar tabela 'users': " . $conn->error;
+            echo "Erro ao criar tabela 'products': " . $conn->error;
+        }
+    }
+    
+    public static function createCategoriesTable($conn)
+    {
+        $sql = "
+        CREATE TABLE IF NOT EXISTS categories (
+            product_id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255),
+            slogan VARCHAR(255),
+            description TEXT,
+            path_image VARCHAR(255),
+            editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        ";
+
+        if ($conn->query($sql) === true) {
+            //echo "Tabela 'categories' criada com sucesso.";
+        } else {
+            echo "Erro ao criar tabela 'categories': " . $conn->error;
         }
     }
 }

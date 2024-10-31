@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
-class Product
+class Category
 {
     private $conn;
 
@@ -17,21 +17,16 @@ class Product
     {
         try {
             $stmt = $this->conn->prepare(
-                'INSERT INTO products (name, slogan, category_id, description, path_image, price, discount, stock_quantity, reference)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                'INSERT INTO categories (name, slogan, description, path_image)
+                 VALUES (?, ?, ?, ?)'
             );
 
             $stmt->bind_param(
-                'ssissddds',
+                'ssssddds',
                 $data['name'],
                 $data['slogan'],
-                $data['category_id'],
                 $data['description'],
-                $data['path_image'],
-                $data['price'],
-                $data['discount'],
-                $data['stock_quantity'],
-                $data['reference']
+                $data['path_image']
             );
 
             $stmt->execute();
@@ -47,7 +42,7 @@ class Product
     public function getAll()
     {
         try {
-            $result = $this->conn->query('SELECT * FROM products');
+            $result = $this->conn->query('SELECT * FROM categories');
             return $result->fetch_all(MYSQLI_ASSOC);
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
@@ -58,7 +53,7 @@ class Product
     public function getById($product_id)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT * FROM products WHERE id = ?');
+            $stmt = $this->conn->prepare('SELECT * FROM categories WHERE category_id = ?');
             $stmt->bind_param('i', $product_id);
             $stmt->execute();
 
@@ -72,7 +67,7 @@ class Product
     public function getBySlogan($slogan)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT * FROM products WHERE slogan = ?');
+            $stmt = $this->conn->prepare('SELECT * FROM categories WHERE slogan = ?');
             $stmt->bind_param('s', $slogan);
             $stmt->execute();
 
@@ -87,7 +82,7 @@ class Product
     {
         try {
             $name = '%' . $name . '%';
-            $stmt = $this->conn->prepare('SELECT * FROM products WHERE name LIKE ?');
+            $stmt = $this->conn->prepare('SELECT * FROM categories WHERE name LIKE ?');
 
             $stmt->bind_param('s', $name);
             $stmt->execute();
@@ -104,20 +99,15 @@ class Product
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE products SET name = ?, slogan = ?, category_id = ?, description = ?, path_image = ?, price = ?, discount = ?, stock_quantity = ?, reference = ? WHERE product_id = ?'
+                'UPDATE category SET name = ?, slogan = ?, description = ?, path_image = ? WHERE product_id = ?'
             );
 
             $stmt->bind_param(
-                'ssissdddsi',
+                'ssssi',
                 $data['name'],
                 $data['slogan'],
-                $data['category_id'],
                 $data['description'],
                 $data['path_image'],
-                $data['price'],
-                $data['discount'],
-                $data['stock_quantity'],
-                $data['reference'],
                 $product_id
             );
 
@@ -132,7 +122,7 @@ class Product
     public function delete($product_id)
     {
         try {
-            $stmt = $this->conn->prepare('DELETE FROM products WHERE product_id = ?');
+            $stmt = $this->conn->prepare('DELETE FROM categories WHERE product_id = ?');
             $stmt->bind_param('i', $product_id);
             return $stmt->execute();
         } catch (mysqli_sql_exception $e) {
@@ -144,7 +134,7 @@ class Product
     public function countAll()
     {
         try {
-            $result = $this->conn->query('SELECT COUNT(*) as total FROM products');
+            $result = $this->conn->query('SELECT COUNT(*) as total FROM categories');
             $row = $result->fetch_assoc();
 
             return $row['total'];
