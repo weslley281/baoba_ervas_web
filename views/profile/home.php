@@ -20,9 +20,11 @@ if (isset($_SESSION["user_id"])) {
                 <a style="text-decoration: none;" href="">
                     <li class="list-group-item list-group-item-action <?= $action == "" ? "active" : "" ?>">Perfil</li>
                 </a>
+
                 <a style="text-decoration: none;" href="">
                     <li class="list-group-item list-group-item-action">Carrinho</li>
                 </a>
+
                 <?php
                 //var_dump($_SESSION["user_type"]);
                 if ($_SESSION["user_type"] == "admin") {
@@ -30,9 +32,15 @@ if (isset($_SESSION["user_id"])) {
                     <a style="text-decoration: none;" href="index.php?page=profile&action=products">
                         <li class="list-group-item list-group-item-action <?= $action == "products" ? "active" : "" ?>">Produtos</li>
                     </a>
+
+                    <a style="text-decoration: none;" href="index.php?page=profile&action=categories">
+                        <li class="list-group-item list-group-item-action <?= $action == "categories" ? "active" : "" ?>">Categorias</li>
+                    </a>
+
                     <a style="text-decoration: none;" href="">
                         <li class="list-group-item list-group-item-action">Usuários</li>
                     </a>
+
                     <a style="text-decoration: none;" href="">
                         <li class="list-group-item list-group-item-action">Pedidos</li>
                     </a>
@@ -50,6 +58,8 @@ if (isset($_SESSION["user_id"])) {
             <?php
             } elseif ($action == "products") {
                 require_once "product.php";
+            } elseif ($action == "categories") {
+                require_once "categories.php";
             } else {
                 switch ($action) {
                     case 'invalid':

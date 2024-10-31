@@ -93,7 +93,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
             case 'update': // Atualiza um usuário existente
                 if ($id === null) {
                     echo "errei no id";
-                    //header("Location: ../index.php?page=profile&action=products&action2=invalid");
+                    header("Location: ../index.php?page=profile&action=products&action2=invalid");
                     exit;
                 }
                 $data = getproductData($_POST);
