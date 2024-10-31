@@ -25,7 +25,8 @@ $action = $_GET['action'] ?? '';
 $titles = [
     'home' => 'Pagina inicial',
     'login' => 'Login',
-    'users' => 'Usuários'
+    'users' => 'Usuários',
+    'profile' => 'Perfil e Administração'
 ];
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';

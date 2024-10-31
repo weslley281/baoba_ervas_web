@@ -54,11 +54,25 @@ class Product
         }
     }
 
-    public function getById($id)
+    public function getById($product_id)
     {
         try {
             $stmt = $this->conn->prepare('SELECT * FROM products WHERE id = ?');
-            $stmt->bind_param('i', $id);
+            $stmt->bind_param('i', $product_id);
+            $stmt->execute();
+
+            return $stmt->get_result()->fetch_assoc();
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return null;
+        }
+    }
+
+    public function getBySlogan($slogan)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT * FROM products WHERE slogan = ?');
+            $stmt->bind_param('s', $slogan);
             $stmt->execute();
 
             return $stmt->get_result()->fetch_assoc();
@@ -69,23 +83,23 @@ class Product
     }
 
     public function getByName($name)
-{
-    try {
-        $name = '%' . $name . '%';
-        $stmt = $this->conn->prepare('SELECT * FROM products WHERE name LIKE ?');
-        
-        $stmt->bind_param('s', $name);
-        $stmt->execute();
-        
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    } catch (mysqli_sql_exception $e) {
-        error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
-        return null;
+    {
+        try {
+            $name = '%' . $name . '%';
+            $stmt = $this->conn->prepare('SELECT * FROM products WHERE name LIKE ?');
+
+            $stmt->bind_param('s', $name);
+            $stmt->execute();
+
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return null;
+        }
     }
-}
 
 
-    public function update(array $data, $id)
+    public function update(array $data, $product_id)
     {
         try {
             $stmt = $this->conn->prepare(
@@ -102,7 +116,7 @@ class Product
                 $data['discount'],
                 $data['stock_quantity'],
                 $data['reference'],
-                $id
+                $product_id
             );
 
             $stmt->execute();
@@ -113,11 +127,11 @@ class Product
         }
     }
 
-    public function delete($id)
+    public function delete($product_id)
     {
         try {
-            $stmt = $this->conn->prepare('DELETE FROM products WHERE id = ?');
-            $stmt->bind_param('i', $id);
+            $stmt = $this->conn->prepare('DELETE FROM products WHERE product_id = ?');
+            $stmt->bind_param('i', $product_id);
             return $stmt->execute();
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');

@@ -42,7 +42,7 @@ class CreateTables
             product_id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255),
             slogan VARCHAR(255),
-            description VARCHAR(255),
+            description TEXT,
             path_image VARCHAR(255),
             price DECIMAL(10, 2) NOT NULL,
             discount DECIMAL(10, 2) NOT NULL,
