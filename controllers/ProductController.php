@@ -58,6 +58,11 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 }
             }
 
+            var_dump($path);
+            if ($path == null || $path == "") {
+                $path = $_POST["old_path_image"];
+            }
+
             // Retorna os dados do produto com o caminho da imagem atualizado ou existente
             return [
                 "name" => htmlspecialchars($post["name"] ?? ''),
@@ -87,10 +92,12 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
             case 'update': // Atualiza um usuário existente
                 if ($id === null) {
-                    header("Location: ../index.php?page=profile&action=products&action2=invalid");
+                    echo "errei no id";
+                    //header("Location: ../index.php?page=profile&action=products&action2=invalid");
                     exit;
                 }
                 $data = getproductData($_POST);
+                var_dump($data);
                 if ($product->update($data, $id)) {
                     header("Location: ../index.php?page=profile&action=products&action2=saved");
                 } else {

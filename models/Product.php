@@ -103,7 +103,7 @@ class Product
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE products SET name = ?, slogan = ?, description = ?, path_image = ?, price = ?, discount = ?, stock_quantity = ?, reference = ? WHERE id = ?'
+                'UPDATE products SET name = ?, slogan = ?, description = ?, path_image = ?, price = ?, discount = ?, stock_quantity = ?, reference = ? WHERE product_id = ?'
             );
 
             $stmt->bind_param(

@@ -6,7 +6,10 @@ if (isset($_GET["product"])) {
     <!-- Formulário de Edição de Produto -->
     <div class="container mt-5">
         <h2 class="text-center mb-4">Editar Produto</h2>
-        <form action="productController.php?action=update&id=<?php echo $get_product['product_id']; ?>" method="POST" enctype="multipart/form-data">
+        <form action="./controllers/productController.php?action=update" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<?php echo $get_product['product_id']; ?>">
+            <input type="hidden" name="old_path_image" value="<?php echo $get_product['path_image']; ?>">
+
             <div class="form-group mb-3">
                 <label for="name">Nome do Produto</label>
                 <input type="text" class="form-control" id="name" name="name" value="<?php echo $get_product['name']; ?>" required>
