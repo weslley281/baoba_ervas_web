@@ -10,9 +10,11 @@ require_once './utils/openssl.php';
 require_once './utils/generateRandomPassword.php';
 
 require_once './models/User.php';
+require_once './models/Product.php';
 
 $createTable = new CreateTables;
 $user = new User($conn);
+$product = new Product($conn);
 
 $createTable->createUsersTable($conn);
 $createTable->createProductsTable($conn);
