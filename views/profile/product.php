@@ -1,7 +1,9 @@
 <!-- Lista de Produtos -->
 <?php
+$get_categories = $category->getAll();
 if (isset($_GET["product"])) {
     $get_product = $product->getBySlogan($_GET["product"]);
+
 ?>
     <!-- Formulário de Edição de Produto -->
     <div class="container mt-5">
@@ -38,10 +40,45 @@ if (isset($_GET["product"])) {
                 <label for="reference">Referência</label>
                 <input type="text" class="form-control" id="reference" name="reference" value="<?php echo $get_product['reference']; ?>">
             </div>
-            <div class="form-group mb-3">
-                <label for="image">Imagem do Produto</label>
-                <input type="file" class="form-control" id="image" name="image">
+
+            <div class="form-group">
+                <label for="image">Imagem</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" onchange="previewImage(event)">
             </div>
+
+            <!-- Área de Visualização da Imagem Selecionada -->
+            <div class="container form-group text-center">
+                <img class="img-fluid  text-center" id="imagePreview" src="<?php echo htmlspecialchars($get_product['path_image'], ENT_QUOTES, 'UTF-8'); ?>"
+                    style="max-width: 200px; max-height: 200px; display: block;">
+            </div>
+
+            <div class="form-group">
+                <label for="category_id">Categoria:</label>
+                <select class="form-control" name="category_id" id="category_id">
+                    <?php foreach ($get_categories as $cat): ?>
+                        <option value="<?php echo $cat['category_id']; ?>"
+                            <?php echo ($cat['category_id'] == $get_product['category_id']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8'); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="active">Ativo?</label>
+                <select class="form-control" name="active" id="active">
+                    <?php if ($get_product["active"]) : ?>
+                        <option value="1" selected>Ativo</option>
+                        <option value="0">Inativo</option>
+                    <?php else : ?>
+                        <option value="0" selected>Inativo</option>
+                        <option value="1">Ativo</option>
+                    <?php endif; ?>
+                </select>
+            </div>
+
+
             <button type="submit" class="btn btn-primary">Salvar Alterações</button>
         </form>
     </div>
@@ -87,7 +124,7 @@ if (isset($_GET["product"])) {
                 }
             ?>
                 <tr>
-                    <td><img src="<?= "." . $path_image; ?>" width="50" height="50" alt="Imagem"></td>
+                    <td><img src="<?= '.' . $path_image; ?>" width="50" height="50" alt="Imagem"></td>
                     <td><?php echo $product['name']; ?></td>
                     <td>R$ <?php echo number_format($product['price'], 2, ',', '.'); ?></td>
                     <td><?php echo $product['discount']; ?>%</td>
@@ -114,6 +151,7 @@ if (isset($_GET["product"])) {
             </div>
             <div class="modal-body">
                 <form action="./controllers/productController.php?action=create" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="active" value="1">
                     <div class="form-group mb-3">
                         <label for="name">Nome do Produto</label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -131,7 +169,7 @@ if (isset($_GET["product"])) {
 
                     <div class="form-group mb-3">
                         <label for="discount">Desconto (%)</label>
-                        <input type="number" class="form-control" id="discount" name="discount" step="0.01">
+                        <input type="number" class="form-control" id="discount" name="discount" step="0.01" value="0">
                     </div>
 
                     <div class="form-group mb-3">
@@ -147,6 +185,20 @@ if (isset($_GET["product"])) {
                     <div class="form-group mb-3">
                         <label for="image">Imagem do Produto</label>
                         <input type="file" class="form-control" id="image" name="image">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="category_id">Categoria</label>
+                        <select class="form-control" id="category_id" name="category_id" required>
+                            <option value="" disabled selected>Selecione uma Categoria</option>
+                            <?php
+                            foreach ($get_categories as $cat) {
+                                echo '<option value="' . htmlspecialchars($cat['category_id'], ENT_QUOTES, 'UTF-8') . '">'
+                                    . htmlspecialchars($cat['name'], ENT_QUOTES, 'UTF-8')
+                                    . '</option>';
+                            }
+                            ?>
+                        </select>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Criar Produto</button>

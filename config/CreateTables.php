@@ -66,7 +66,7 @@ class CreateTables
     {
         $sql = "
         CREATE TABLE IF NOT EXISTS categories (
-            product_id INT AUTO_INCREMENT PRIMARY KEY,
+            category_id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255),
             slogan VARCHAR(255),
             description TEXT,

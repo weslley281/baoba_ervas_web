@@ -22,7 +22,7 @@ class Category
             );
 
             $stmt->bind_param(
-                'ssssddds',
+                'ssss',
                 $data['name'],
                 $data['slogan'],
                 $data['description'],
@@ -50,11 +50,11 @@ class Category
         }
     }
 
-    public function getById($product_id)
+    public function getById($category_id)
     {
         try {
             $stmt = $this->conn->prepare('SELECT * FROM categories WHERE category_id = ?');
-            $stmt->bind_param('i', $product_id);
+            $stmt->bind_param('i', $category_id);
             $stmt->execute();
 
             return $stmt->get_result()->fetch_assoc();
@@ -95,11 +95,11 @@ class Category
     }
 
 
-    public function update(array $data, $product_id)
+    public function update(array $data, $category_id)
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE category SET name = ?, slogan = ?, description = ?, path_image = ? WHERE product_id = ?'
+                'UPDATE categories SET name = ?, slogan = ?, description = ?, path_image = ? WHERE category_id = ?'
             );
 
             $stmt->bind_param(
@@ -108,7 +108,7 @@ class Category
                 $data['slogan'],
                 $data['description'],
                 $data['path_image'],
-                $product_id
+                $category_id
             );
 
             $stmt->execute();
@@ -119,11 +119,11 @@ class Category
         }
     }
 
-    public function delete($product_id)
+    public function delete($category_id)
     {
         try {
-            $stmt = $this->conn->prepare('DELETE FROM categories WHERE product_id = ?');
-            $stmt->bind_param('i', $product_id);
+            $stmt = $this->conn->prepare('DELETE FROM categories WHERE category_id = ?');
+            $stmt->bind_param('i', $category_id);
             return $stmt->execute();
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');

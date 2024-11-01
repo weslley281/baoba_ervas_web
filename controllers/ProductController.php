@@ -6,7 +6,8 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
     require_once __DIR__ . '/../utils/generateRandomPassword.php';
     require_once __DIR__ . '/../utils/openssl.php';
 
-    function generateSlogan($string) {
+    function generateSlogan($string)
+    {
         $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
         $string = preg_replace('/[^A-Za-z0-9]/', '_', $string);
         return strtolower($string);
@@ -30,7 +31,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 $extensionImage = strtolower(pathinfo($path, PATHINFO_EXTENSION));
 
                 // Definindo as extensões de imagem permitidas
-                $allowedExtensions = ["jpg", "jpeg", "gif", "png"];
+                $allowedExtensions = ["jpg", "jpeg", "gif", "png", "webp", "svg"];
                 if (!in_array($extensionImage, $allowedExtensions)) {
                     echo "<center><strong><h1>Formato de imagem inválido. Use JPG, JPEG, GIF ou PNG.</h1></strong></center>";
                     header("Location: ../index.php?page=profile&action=products&action2=invalid_format");

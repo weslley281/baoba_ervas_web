@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar navbar-success bg-success">
+<nav class="navbar navbar-expand-lg navbar navbar-success bg-success px-2">
     <a class="navbar-brand" href="index.php"><span class="text-white"><?php echo $page_title; ?></span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
         <span class="navbar-toggler-icon"></span>

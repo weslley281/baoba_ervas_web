@@ -34,7 +34,7 @@ $titles = [
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
 
-if (!$user->getByEmail("baobaervas.com.br")) {
+if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
     $password = password_hash("Admin@123", PASSWORD_DEFAULT);
     $cpf = encrypt("21.468.275/0002-05", ENCRYPTION_KEY);
 

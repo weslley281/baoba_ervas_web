@@ -5,37 +5,27 @@
 
         <?php
         // Array de produtos
-        $produtos = [
-            [
-                "nome" => "Produto 1",
-                "descricao" => "Descrição breve do produto 1.",
-                "preco" => "99.90",
-                "imagem" => "https://via.placeholder.com/150"
-            ],
-            [
-                "nome" => "Produto 2",
-                "descricao" => "Descrição breve do produto 2.",
-                "preco" => "129.90",
-                "imagem" => "https://via.placeholder.com/150"
-            ],
-            [
-                "nome" => "Produto 3",
-                "descricao" => "Descrição breve do produto 3.",
-                "preco" => "79.90",
-                "imagem" => "https://via.placeholder.com/150"
-            ]
-        ];
+        $get_products = $product->getAll();
 
         // Loop para gerar os cards
-        foreach ($produtos as $produto) {
+        foreach ($get_products as $pro) {
+            $array_path_image = explode("/", $pro['path_image']);
+
+            $path_image = "";
+
+            foreach ($array_path_image as $key => $value) {
+                if ($key != 0) {
+                    $path_image = $path_image . "/" . $value;
+                }
+            }
         ?>
             <div class="col">
                 <div class="card h-100">
-                    <img src="<?= $produto["imagem"] ?>" class="card-img-top" alt="<?= $produto["nome"] ?>">
+                    <img src="<?= '.' . $path_image; ?>" class="card-img-top" alt="<?= $pro["name"] ?>">
                     <div class="card-body">
-                        <h5 class="card-title"><?= $produto["nome"] ?></h5>
-                        <p class="card-text"><?= $produto["descricao"] ?></p>
-                        <p class="card-text"><strong>R$ <?= $produto["preco"] ?></strong></p>
+                        <h5 class="card-title"><?= $pro["name"] ?></h5>
+                        <p class="card-text"><?= htmlspecialchars_decode($pro["description"], ENT_QUOTES) ?></p>
+                        <p class="card-text"><strong>R$ <?= $pro["price"] ?></strong></p>
                         <a href="#" class="btn btn-primary">Adicionar ao Carrinho</a>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ if (isset($_SESSION["user_id"])) {
     <div class="row my-5">
         <div class="col-sm-12 col-lg-2 ">
             <ul class="list-group">
-                <a style="text-decoration: none;" href="">
+                <a style="text-decoration: none;" href="index.php?page=profile&action=">
                     <li class="list-group-item list-group-item-action <?= $action == "" ? "active" : "" ?>">Perfil</li>
                 </a>
 
