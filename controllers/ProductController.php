@@ -67,12 +67,14 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
             return [
                 "name" => htmlspecialchars($post["name"] ?? ''),
                 "slogan" => generateSlogan($post["name"] ?? ''),
+                "category_id" => generateSlogan($post["category_id"] ?? 0),
                 "description" => htmlspecialchars($post["description"] ?? ''),
                 "path_image" => $path, // Usa o novo caminho de imagem ou o existente
-                "price" => htmlspecialchars($post["price"] ?? ''),
-                "discount" => htmlspecialchars($post["discount"] ?? ''),
-                "stock_quantity" => htmlspecialchars($post["stock_quantity"] ?? ''),
-                "reference" => htmlspecialchars($post["reference"] ?? '')
+                "price" => htmlspecialchars($post["price"] ?? 0),
+                "discount" => htmlspecialchars($post["discount"] ?? 0),
+                "stock_quantity" => htmlspecialchars($post["stock_quantity"] ?? 0),
+                "reference" => htmlspecialchars($post["reference"] ?? ''),
+                "active" => htmlspecialchars($post["active"] ?? 0)
             ];
         }
 

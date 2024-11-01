@@ -49,6 +49,7 @@ class CreateTables
             discount DECIMAL(10, 2) NOT NULL,
             stock_quantity DECIMAL(10, 2) NOT NULL,
             reference VARCHAR(255),
+            active INT,
             editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );

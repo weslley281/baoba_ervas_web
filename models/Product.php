@@ -17,12 +17,12 @@ class Product
     {
         try {
             $stmt = $this->conn->prepare(
-                'INSERT INTO products (name, slogan, category_id, description, path_image, price, discount, stock_quantity, reference)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+                'INSERT INTO products (name, slogan, category_id, description, path_image, price, discount, stock_quantity, reference, active)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             );
 
             $stmt->bind_param(
-                'ssissddds',
+                'ssissdddsi',
                 $data['name'],
                 $data['slogan'],
                 $data['category_id'],
@@ -31,7 +31,8 @@ class Product
                 $data['price'],
                 $data['discount'],
                 $data['stock_quantity'],
-                $data['reference']
+                $data['reference'],
+                $data['active']
             );
 
             $stmt->execute();
@@ -104,11 +105,11 @@ class Product
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE products SET name = ?, slogan = ?, category_id = ?, description = ?, path_image = ?, price = ?, discount = ?, stock_quantity = ?, reference = ? WHERE product_id = ?'
+                'UPDATE products SET name = ?, slogan = ?, category_id = ?, description = ?, path_image = ?, price = ?, discount = ?, stock_quantity = ?, reference = ?, active = ? WHERE product_id = ?'
             );
 
             $stmt->bind_param(
-                'ssissdddsi',
+                'ssissdddsii',
                 $data['name'],
                 $data['slogan'],
                 $data['category_id'],
@@ -118,6 +119,7 @@ class Product
                 $data['discount'],
                 $data['stock_quantity'],
                 $data['reference'],
+                $data['active'],
                 $product_id
             );
 
