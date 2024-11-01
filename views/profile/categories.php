@@ -6,7 +6,7 @@ if (isset($_GET["category"])) {
     <!-- Formulário de Edição de Categoria -->
     <div class="container mt-5">
         <h2 class="text-center mb-4">Editar Categoria</h2>
-        <form action="./controllers/categoryController.php?action=update" method="POST" enctype="multipart/form-data">
+        <form action="./controllers/CategoryController.php?action=update" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?php echo $get_category['category_id']; ?>">
             <input type="hidden" name="old_path_image" value="<?php echo $get_category['path_image']; ?>">
 
@@ -94,7 +94,7 @@ if (isset($_GET["category"])) {
                 </button>
             </div>
             <div class="modal-body">
-                <form action="./controllers/categoryController.php?action=create" method="POST" enctype="multipart/form-data">
+                <form action="./controllers/CategoryController.php?action=create" method="POST" enctype="multipart/form-data">
                     <div class="form-group mb-3">
                         <label for="name">Nome do Categoria</label>
                         <input type="text" class="form-control" id="name" name="name" required>
