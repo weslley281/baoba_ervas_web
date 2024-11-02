@@ -22,18 +22,6 @@ $createTable->createUsersTable($conn);
 $createTable->createProductsTable($conn);
 $createTable->createCategoriesTable($conn);
 
-$page = $_GET['page'] ?? 'home';
-$action = $_GET['action'] ?? '';
-
-$titles = [
-    'home' => 'Pagina inicial',
-    'login' => 'Login',
-    'users' => 'Usuários',
-    'profile' => 'Perfil e Administração'
-];
-
-$page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
-
 if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
     $password = password_hash("Admin@123", PASSWORD_DEFAULT);
     $cpf = encrypt("21.468.275/0002-05", ENCRYPTION_KEY);
@@ -58,6 +46,25 @@ if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
 
     $user->create($data);
 }
+
+if (isset($_GET["slogan"])) {
+    $name_product = $product->getNameBySlogan($_GET["slogan"]);
+} else {
+    $name_product = "";
+}
+
+$page = $_GET['page'] ?? 'home';
+$action = $_GET['action'] ?? '';
+
+$titles = [
+    'home' => 'Pagina inicial',
+    'login' => 'Login',
+    'users' => 'Usuários',
+    'profile' => 'Perfil e Administração',
+    'product' => $name_product
+];
+
+$page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
 
 require_once "./header.php";
 ?>
@@ -85,6 +92,10 @@ require_once "./header.php";
                 }
 
                 require_once "./views/login.php";
+                break;
+
+            case 'product':
+                require_once "./views/product.php";
                 break;
 
             default:

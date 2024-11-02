@@ -8,7 +8,18 @@
     <meta name="owner" content="Comercio de utilidades Baoba LTDA - ME" />
     <meta name="copyright" content="Weslley Henrique Vieira Ferraz" />
     <meta name="keywords" content="erva, tempero, produto natural, cha, castanha, farinaceo, farinha, doce, fruta seca">
-    <meta name="description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
+    <?php
+    if (isset($_GET["slogan"])) {
+        $description = $product->getDescription($_GET["slogan"]);
+    ?>
+        <meta name="description" content="<?= htmlspecialchars_decode($description, ENT_QUOTES) ?>">
+    <?php
+    } else {
+    ?>
+        <meta name="description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
+    <?php
+    }
+    ?>
 
     <meta http-equiv="refresh" content="3600">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />

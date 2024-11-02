@@ -84,6 +84,45 @@ class Product
         }
     }
 
+    public function getDescription($param)
+    {
+        try {
+            // Define a consulta SQL e o tipo do parâmetro com base no tipo do dado
+            if (is_int($param)) {
+                $sql = 'SELECT description FROM products WHERE product_id = ?';
+                $type = 'i'; // Inteiro para product_id
+            } else {
+                $sql = 'SELECT description FROM products WHERE slogan = ?';
+                $type = 's'; // String para slogan
+            }
+
+            // Prepara e executa a consulta
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param($type, $param);
+            $stmt->execute();
+
+            // Retorna apenas a descrição do produto
+            return $stmt->get_result()->fetch_assoc()['description'];
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return null;
+        }
+    }
+
+    public function getNameBySlogan($slogan)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT name FROM products WHERE slogan = ?');
+            $stmt->bind_param('s', $slogan);
+            $stmt->execute();
+
+            return $stmt->get_result()->fetch_assoc()['name'];
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return null;
+        }
+    }
+
     public function getByName($name)
     {
         try {

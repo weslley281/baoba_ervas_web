@@ -26,10 +26,13 @@
         ?>
             <div class="col">
                 <div class="card h-100">
-                    <img src="<?= '.' . $path_image; ?>" class="card-img-top" alt="<?= $pro["name"] ?>">
+                    <a href="index.php?page=product&slogan=<?= $pro['slogan'] ?>" target="_blank" rel="noopener noreferrer">
+                        <img src="<?= '.' . $path_image; ?>" class="card-img-top" alt="<?= $pro["name"] ?>">
+                    </a>
                     <div class="card-body">
-                        <h5 class="card-title"><?= $pro["name"] ?></h5>
-                        <p class="card-text"><?= htmlspecialchars_decode($pro["description"], ENT_QUOTES) ?></p>
+                        <a href="index.php?page=product&slogan=<?= $pro['slogan'] ?>" target="_blank" rel="noopener noreferrer">
+                            <h5 class="card-title"><?= $pro["name"] ?></h5>
+                        </a>
                         <p class="card-text"><strong>R$ <?= $pro["price"] ?></strong></p>
                         <?php if (isset($_SESSION["user_id"])) { ?>
                             <a href="#" class="btn btn-primary">Adicionar ao Carrinho</a>
