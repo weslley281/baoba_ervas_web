@@ -26,7 +26,9 @@
                         <h5 class="card-title"><?= $pro["name"] ?></h5>
                         <p class="card-text"><?= htmlspecialchars_decode($pro["description"], ENT_QUOTES) ?></p>
                         <p class="card-text"><strong>R$ <?= $pro["price"] ?></strong></p>
+                        <?php if (isset($_SESSION["user_id"])) { ?>
                         <a href="#" class="btn btn-primary">Adicionar ao Carrinho</a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>

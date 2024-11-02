@@ -8,10 +8,13 @@
     <meta name="owner" content="Comercio de utilidades Baoba LTDA - ME" />
     <meta name="copyright" content="Weslley Henrique Vieira Ferraz" />
     <meta name="keywords" content="erva, tempero, produto natural, cha, castanha, farinaceo, farinha, doce, fruta seca">
-    <meta name="description" content="Somos uma federação, criada com o intuito de divulgar o karate kenshydokan e outras artes marciais.">
+    <meta name="description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
+
     <meta http-equiv="refresh" content="3600">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title><?php echo $page_title; ?></title>
+
+    <link rel="shortcut icon" href="./images/icone.png" type="image/x-icon">
 
     <link rel="stylesheet" href="./libs/bootstrap/bootstrap.css">
     <link href="./css/styles.css" rel="stylesheet" />

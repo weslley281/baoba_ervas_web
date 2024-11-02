@@ -8,15 +8,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.php"><span class="text-white"><i class="fa-solid fa-house"></i> Home</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=profile"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=financial"><span class="text-white"><i class="fa-solid fa-hand-holding-dollar"></i> Carrinho</span></a>
-            </li>
             <?php if (isset($_SESSION["user_id"])) { ?>
                 <li class="nav-item">
+                    <a class="nav-link" href="index.php?page=profile"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?page=financial"><span class="text-white"><i class="fa-solid fa-hand-holding-dollar"></i> Carrinho</span></a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link text-danger" href="./utils/go_out.php"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
+                </li>
+            <?php } else { ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?page=login"><span class="text-white"><i class="fa-solid fa-user"></i> Login</span></a>
                 </li>
             <?php } ?>
         </ul>
