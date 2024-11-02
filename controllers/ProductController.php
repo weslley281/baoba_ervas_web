@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
-    require_once __DIR__ . '/../models/product.php';
+    require_once __DIR__ . '/../models/Product.php';
     require_once __DIR__ . '/../config/db.php';
     require_once __DIR__ . '/../utils/generateRandomPassword.php';
     require_once __DIR__ . '/../utils/openssl.php';
