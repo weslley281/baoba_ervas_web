@@ -8,6 +8,7 @@ require_once "./utils/renderAlert.php";
 require_once "./utils/truncate.php";
 require_once './utils/openssl.php';
 require_once './utils/generateRandomPassword.php';
+require_once './utils/cart.php';
 
 require_once './models/User.php';
 require_once './models/Product.php';
@@ -61,7 +62,8 @@ $titles = [
     'login' => 'Login',
     'users' => 'Usuários',
     'profile' => 'Perfil e Administração',
-    'product' => $name_product
+    'product' => $name_product,
+    'cart' => 'Carrinho'
 ];
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
@@ -96,6 +98,10 @@ require_once "./header.php";
 
             case 'product':
                 require_once "./views/product.php";
+                break;
+
+            case 'cart':
+                require_once "./views/profile/cart.php";
                 break;
 
             default:

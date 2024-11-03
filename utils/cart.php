@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 function initializeCart()
 {
     if (!isset($_SESSION['cart'])) {
@@ -8,23 +6,30 @@ function initializeCart()
     }
 }
 
-function adicionarAoCart($id, $name, $amount, $price)
+function addCart($id, $data)
 {
     initializeCart();
 
-    if (isset($_SESSION['cart'][$id])) {
-        $_SESSION['cart'][$id]['amount'] += $amount;
-    } else {
-        $_SESSION['cart'][$id] = [
-            'product_id' => $id,
-            'name' => $name,
-            'amount' => $amount,
-            'price' => $price
-        ];
+    try {
+        if (isset($_SESSION['cart'][$id])) {
+            $_SESSION['cart'][$id]['amount'] += $data["amount"];
+        } else {
+            $_SESSION['cart'][$id] = [
+                'product_id' => $id,
+                'name' => $data["name"],
+                'amount' => $data["amount"],
+                'price' => $data["price"],
+                'path_image' => $data["path_image"]
+            ];
+        }
+        return true;
+    } catch (\Throwable $th) {
+        return false;
     }
+    
 }
 
-function removerDoCart($id)
+function removeCart($id)
 {
     initializeCart();
 
@@ -41,12 +46,12 @@ function atualizarAmount($id, $amount)
         if ($amount > 0) {
             $_SESSION['cart'][$id]['amount'] = $amount;
         } else {
-            removerDoCart($id);
+            removeCart($id);
         }
     }
 }
 
-function exibirCart()
+function showCart()
 {
     initializeCart();
 
@@ -61,7 +66,7 @@ function exibirCart()
     }
 }
 
-function calcularTotalCart()
+function calculateTotalCart()
 {
     initializeCart();
 

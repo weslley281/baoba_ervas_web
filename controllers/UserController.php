@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
+if (isset($_SESSION["user_id"])) {
     require_once __DIR__ . '/../models/User.php';
     require_once __DIR__ . '/../config/db.php';
     require_once __DIR__ . '/../utils/generateRandomPassword.php';
@@ -48,7 +48,6 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                         echo $user->create($data);
                         header("Location: ../index.php?page=profile&action=fail");
                     }
-
                 } else {
                     echo "<center><strong><h1>As duas senhas diferem uma da outra</h1></strong></center>";
                     echo "<script>";
@@ -102,6 +101,11 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 echo $_GET['action'];
                 break;
         }
+    } else {
+        echo "<center><strong><h1>Requisição incorreta</h1></strong></center>";
+        echo "<script>";
+        echo "setTimeout(function() { window.location.href = '../index.php'; }, 3000);";
+        echo "</script>";
     }
 } else {
     echo "<center><strong><h1>Você não Tem permição para isso</h1></strong></center>";

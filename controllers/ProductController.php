@@ -126,6 +126,11 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 echo $_GET['action'];
                 break;
         }
+    } else {
+        echo "<center><strong><h1>Requisição incorreta</h1></strong></center>";
+        echo "<script>";
+        echo "setTimeout(function() { window.location.href = '../index.php'; }, 3000);";
+        echo "</script>";
     }
 } else {
     echo "<center><strong><h1>Você não Tem permição para isso</h1></strong></center>";

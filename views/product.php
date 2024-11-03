@@ -35,11 +35,10 @@ foreach ($array_path_image as $key => $value) {
             <!-- Detalhes do Produto -->
             <div class="col-md-6">
                 <h1><?= htmlspecialchars($get_product['name']) ?></h1>
-                <p class="text-muted"><?= htmlspecialchars($get_product['slogan']) ?></p>
 
                 <?php if ($get_product['discount'] > 0): ?>
                     <p class="text-danger">De: <s>R$ <?= number_format($get_product['price'], 2, ',', '.') ?></s></p>
-                    <h3 class="text-success">Por: R$ <?= number_format($get_product['price'] - $get_product['discount'], 2, ',', '.') ?></h3>
+                    <h3 class="text-success">Por: R$ <?= number_format($get_product['price'] * $get_product['discount'], 2, ',', '.') ?></h3>
                 <?php else: ?>
                     <h3>R$ <?= number_format($get_product['price'], 2, ',', '.') ?></h3>
                 <?php endif; ?>
@@ -47,9 +46,14 @@ foreach ($array_path_image as $key => $value) {
                 <p><strong>Estoque:</strong> <?= intval($get_product['stock_quantity']) ?> unidades</p>
                 <p><strong>Referência:</strong> <?= htmlspecialchars($get_product['reference']) ?></p>
 
-                <form action="add_to_cart.php" method="POST">
-                    <input type="hidden" name="product_id" value="<?= $get_product['product_id'] ?>">
-                    <button type="submit" class="btn btn-primary btn-lg">Adicionar ao Carrinho</button>
+                <form action="./controllers/CartController.php?action=add" method="POST">
+                    <input type="hidden" name="id" value="<?= $get_product['product_id'] ?>">
+                    <input type="hidden" name="name" value="<?= $get_product['name'] ?>">
+                    <input type="hidden" name="path_image" value="<?= $path_image ?>">
+                    <input type="hidden" name="price" value="<?= $get_product['price'] ?>">
+                    <input type="hidden" name="slogan" value="<?= $_GET['slogan'] ?>">
+                    <input type="hidden" name="amount" value="1">
+                    <button type="submit" class="btn btn-info btn-lg"><i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho</button>
                 </form>
             </div>
         </div>

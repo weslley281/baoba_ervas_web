@@ -6,13 +6,15 @@
 </div>
 
 <form class="mt-5" action="./utils/authentication.php" method="POST">
-    <div class="form-group">
+    <div class="form-group my-2">
         <label for="email">Endereço de email</label>
         <input type="email" class="form-control" id="email" placeholder="Seu email" name="email">
     </div>
-    <div class="form-group">
+    <div class="form-group my-2">
         <label for="password">Senha</label>
         <input type="password" class="form-control" id="password" name="password" placeholder="Senha">
     </div>
-    <button type="submit" class="btn btn-primary">Entrar</button>
+    <div class="form-group my-2">
+        <button type="submit" class="btn btn-success">Entrar</button>
+    </div>
 </form>
