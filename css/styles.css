@@ -2,3 +2,22 @@
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+#logo {
+    max-width: 250px;
+    border-radius: 1rem;
+}
+
+#banner {
+    max-width: 100%;
+    border-radius: 1rem;
+}
+
+#widthOutDecoration {
+    text-decoration: none;
+}
+
+#widthOutDecoration:hover {
+    text: green;
+    text-decoration: underline;
+}

@@ -2,7 +2,7 @@
 <section class="py-5">
     <!-- Banner antes dos produtos -->
     <div class="text-center mb-4">
-        <img src="./images/banner.svg" alt="Banner da loja" class="img-fluid rounded" style="width: 1000px; height: 400px;">
+        <img id="banner" src="./images/banner.png" alt="Banner da loja" class="img-fluid rounded-3">
     </div>
 
     <h2 class="text-center mb-4">Nossos Produtos</h2>
@@ -42,6 +42,6 @@
     </div>
 
     <div class="text-center mt-5 mb-2">
-        <img src="./images/zap.svg" alt="Banner da loja" class="img-fluid rounded" style="width: 800px; height: 400px;">
+        <img src="./images/zap.svg" alt="Banner da loja" class="img-fluid rounded-3" style="width: 800px; height: 400px;">
     </div>
 </section>

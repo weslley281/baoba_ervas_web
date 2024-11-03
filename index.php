@@ -111,6 +111,34 @@ require_once "./header.php";
     </div>
 
     <?php require_once "./footer.php" ?>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ModalWhatsapp" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalLongoExemplo">Quer Conversar com Qual Loja</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a id="widthOutDecoration" href="https://api.whatsapp.com/send/?phone=556533621007&text=Olá%20gostaria%20de%20tirar%20umas%20dúvidas" target="_blank">
+                        <p class="text-success"><strong>Loja do Centro de Várzea Grande</strong></p>
+                    </a>
+                    <a id="widthOutDecoration" href="https://api.whatsapp.com/send/?phone=556533621008&text=Olá%20gostaria%20de%20tirar%20umas%20dúvidas" target="_blank">
+                        <p class="text-success"><strong>Loja do Centro de Cuiabá</strong></p>
+                    </a>
+                    <a id="widthOutDecoration" href="https://api.whatsapp.com/send/?phone=556530239010&text=Olá%20gostaria%20de%20tirar%20umas%20dúvidas" target="_blank">
+                        <p class="text-success"><strong>Loja do Porto - Cuiabá</strong></p>
+                    </a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
