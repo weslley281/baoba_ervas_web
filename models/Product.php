@@ -45,16 +45,40 @@ class Product
         }
     }
 
-    public function getAll()
+    // public function getAll()
+    // {
+    //     try {
+    //         $result = $this->conn->query('SELECT * FROM products');
+    //         return $result->fetch_all(MYSQLI_ASSOC);
+    //     } catch (mysqli_sql_exception $e) {
+    //         error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+    //         return [];
+    //     }
+    // }
+
+    public function getAll($page = 1, $perPage = 10)
     {
         try {
-            $result = $this->conn->query('SELECT * FROM products');
+            // Calcula o offset com base na página atual
+            $offset = ($page - 1) * $perPage;
+
+            // Prepara a consulta com limite e offset para paginação
+            $stmt = $this->conn->prepare('SELECT * FROM products LIMIT ? OFFSET ?');
+            $stmt->bind_param('ii', $perPage, $offset);
+
+            // Executa a consulta
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            // Retorna os resultados como um array associativo
             return $result->fetch_all(MYSQLI_ASSOC);
         } catch (mysqli_sql_exception $e) {
+            // Registra o erro em um arquivo de log
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
             return [];
         }
     }
+
 
     public function getById($product_id)
     {
@@ -123,21 +147,48 @@ class Product
         }
     }
 
-    public function getByName($name)
+    // public function getByName($name)
+    // {
+    //     try {
+    //         $name = '%' . $name . '%';
+    //         $stmt = $this->conn->prepare('SELECT * FROM products WHERE name LIKE ?');
+
+    //         $stmt->bind_param('s', $name);
+    //         $stmt->execute();
+
+    //         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    //     } catch (mysqli_sql_exception $e) {
+    //         error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+    //         return null;
+    //     }
+    // }
+
+    public function getByName($name, $page = 1, $perPage = 10)
     {
         try {
+            // Formata o nome para a busca com LIKE
             $name = '%' . $name . '%';
-            $stmt = $this->conn->prepare('SELECT * FROM products WHERE name LIKE ?');
 
-            $stmt->bind_param('s', $name);
+            // Calcula o offset com base na página atual
+            $offset = ($page - 1) * $perPage;
+
+            // Prepara a consulta com LIMIT e OFFSET para paginação
+            $stmt = $this->conn->prepare('SELECT * FROM products WHERE name LIKE ? LIMIT ? OFFSET ?');
+            $stmt->bind_param('sii', $name, $perPage, $offset);
+
+            // Executa a consulta
             $stmt->execute();
+            $result = $stmt->get_result();
 
-            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            // Retorna os resultados como um array associativo
+            return $result->fetch_all(MYSQLI_ASSOC);
         } catch (mysqli_sql_exception $e) {
+            // Registra o erro em um arquivo de log
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
             return null;
         }
     }
+
 
 
     public function update(array $data, $product_id)

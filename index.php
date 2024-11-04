@@ -63,10 +63,14 @@ $titles = [
     'users' => 'Usuários',
     'profile' => 'Perfil e Administração',
     'product' => $name_product,
-    'cart' => 'Carrinho'
+    'cart' => 'Carrinho',
+    'register' => 'Registrar-se'
 ];
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
+
+// Limita o título a 20 caracteres e adiciona reticências se for maior que 20
+$page_title = strlen($page_title) > 20 ? substr($page_title, 0, 20) . '...' : $page_title;
 
 require_once "./header.php";
 ?>
@@ -102,6 +106,10 @@ require_once "./header.php";
 
             case 'cart':
                 require_once "./views/profile/cart.php";
+                break;
+
+            case 'register':
+                require_once "./views/register.php";
                 break;
 
             default:

@@ -12,6 +12,7 @@
 <script src="./libs/bootstrap/popper.js"></script>
 <script src="./libs/bootstrap/bootstrap.js"></script>
 <script src="./utils/maskCPF.js"></script>
+<script src="./utils/formatPhone.js"></script>
 <script src="./libs/DataTables/datatables.js"></script>
 <script src="./libs/tinymce/tinymce.min.js"></script>
 <script src="./libs/select2/js/select2.js"></script>
@@ -34,16 +35,6 @@
         });
     });
 </script>
-
-<script>
-    function formatarNumero(input) {
-        if (input.id === "value") {
-            // Remove caracteres que não são números, pontos ou a primeira ocorrência de ponto após a primeira posição
-            input.value = input.value.replace(/[^\d.]/g, '').replace(/^(\d*\.)(.*)\./g, '$1$2');
-        }
-    }
-</script>
-
 
 <script>
     tinymce.init({

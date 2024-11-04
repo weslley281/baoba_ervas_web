@@ -1,11 +1,15 @@
 <?php
 if (isset($_SESSION["user_id"])) {
     if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-        echo "<p>Seu carrinho está vazio.</p>";
+?>
+        <div class="container my-5">
+            <h2 class="text-center mb-4">Seu carrinho está vazio</h2>
+        </div>
+    <?php
         exit;
     }
     $total = 0;
-?>
+    ?>
     <div class="container my-5">
         <h2 class="text-center mb-4">Carrinho de Compras</h2>
         <table class="table table-hover">

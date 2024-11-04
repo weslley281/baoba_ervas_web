@@ -11,8 +11,11 @@
     <?php
     if (isset($_GET["slogan"])) {
         $description = $product->getDescription($_GET["slogan"]);
+        $description = htmlspecialchars_decode($description, ENT_QUOTES);
+        // Limita o título a 20 caracteres e adiciona reticências se for maior que 20
+        $description = strlen($description) > 20 ? substr($description, 0, 20) . '...' : $description;
     ?>
-        <meta name="description" content="<?= htmlspecialchars_decode($description, ENT_QUOTES) ?>">
+        <meta name="description" content="<?= $description; ?>">
     <?php
     } else {
     ?>

@@ -18,3 +18,5 @@
         <button type="submit" class="btn btn-success">Entrar</button>
     </div>
 </form>
+
+<p>Não tem uma conta? <a href="index.php?page=register">Registrar-se</a></p>
