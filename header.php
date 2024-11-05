@@ -26,6 +26,12 @@
 
     <meta http-equiv="refresh" content="3600">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+
+
     <title><?php echo $page_title; ?></title>
 
     <link rel="shortcut icon" href="./images/icone.png" type="image/x-icon">

@@ -19,7 +19,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 </div>
                 <div class="form-group mb-3">
                     <label for="slogan">Slogan</label>
-                    <input type="text" class="form-control" id="slogan" name="slogan" value="<?php echo $get_product['slogan']; ?>">
+                    <input type="text" class="form-control" id="slogan" name="slogan" value="<?php echo $get_product['slogan']; ?>" readonly required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="description">Descrição</label>
@@ -31,7 +31,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 </div>
                 <div class="form-group mb-3">
                     <label for="discount">Desconto (%)</label>
-                    <input type="number" class="form-control" id="discount" name="discount" step="0.01" value="<?php echo $get_product['discount']; ?>">
+                    <input type="number" class="form-control" id="discount" name="discount" step="0.01" value="<?php echo $get_product['discount']; ?>" required>
                 </div>
                 <div class="form-group mb-3">
                     <label for="stock_quantity">Quantidade em Estoque</label>
@@ -39,7 +39,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 </div>
                 <div class="form-group mb-3">
                     <label for="reference">Referência</label>
-                    <input type="text" class="form-control" id="reference" name="reference" value="<?php echo $get_product['reference']; ?>">
+                    <input type="text" class="form-control" id="reference" name="reference" value="<?php echo $get_product['reference']; ?>" required>
                 </div>
 
                 <div class="form-group">
@@ -55,7 +55,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
                 <div class="form-group">
                     <label for="category_id">Categoria:</label>
-                    <select class="form-control" name="category_id" id="category_id">
+                    <select class="form-control" name="category_id" id="category_id" required>
                         <?php foreach ($get_categories as $cat): ?>
                             <option value="<?php echo $cat['category_id']; ?>"
                                 <?php echo ($cat['category_id'] == $get_product['category_id']) ? 'selected' : ''; ?>>
@@ -68,7 +68,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
                 <div class="form-group">
                     <label for="active">Ativo?</label>
-                    <select class="form-control" name="active" id="active">
+                    <select class="form-control" name="active" id="active" required>
                         <?php if ($get_product["active"]) : ?>
                             <option value="1" selected>Ativo</option>
                             <option value="0">Inativo</option>
@@ -170,22 +170,22 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
                         <div class="form-group mb-3">
                             <label for="discount">Desconto (%)</label>
-                            <input type="number" class="form-control" id="discount" name="discount" step="0.01" value="0">
+                            <input type="number" class="form-control" id="discount" name="discount" step="0.01" value="0" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="stock_quantity">Quantidade em Estoque</label>
-                            <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" required>
+                            <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" value="1" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="reference">Referência</label>
-                            <input type="text" class="form-control" id="reference" name="reference">
+                            <input type="text" class="form-control" id="reference" name="reference" required>
                         </div>
 
                         <div class="form-group mb-3">
                             <label for="image">Imagem do Produto</label>
-                            <input type="file" class="form-control" id="image" name="image">
+                            <input type="file" class="form-control" id="image" name="image" required>
                         </div>
 
                         <div class="form-group mb-3">

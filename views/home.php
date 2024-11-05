@@ -6,7 +6,7 @@
     </div>
 
     <h2 class="text-center mb-4">Nossos Produtos</h2>
-    <div id="products" class="row row-cols-1 row-cols-md-3 g-3">
+    <div id="products" class="row row-cols-1 row-cols-md-3 g-4"> <!-- Alterado para g-4 para maior espaçamento entre cards -->
 
         <?php
         // Determina a página atual e o número de itens por página
@@ -34,9 +34,9 @@
             <div class="col">
                 <!-- Link envolve o card inteiro -->
                 <a href="index.php?page=product&slogan=<?= $pro['slogan'] ?>" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
-                    <div class="card h-100" style="min-width: 220px; padding: 10px; transition: transform 0.2s, box-shadow 0.2s;">
-                        <img src="<?= '.' . $path_image; ?>" class="card-img-top" alt="<?= $pro["name"] ?>" style="height: 150px; object-fit: cover;">
-                        <div class="card-body">
+                    <div class="card h-100 p-3 shadow-sm" style="transition: transform 0.2s, box-shadow 0.2s;">
+                        <img src="<?= '.' . $path_image; ?>" class="card-img-top img-fluid mx-auto" alt="<?= $pro["name"] ?>" style="max-width: 180px; height: auto; object-fit: cover;">
+                        <div class="card-body text-center">
                             <h6 class="card-title text-dark"><?= $pro["name"] ?></h6>
                             <p class="card-text text-dark"><strong>R$ <?= $pro["price"] ?></strong></p>
                         </div>
@@ -54,7 +54,7 @@
         <ul class="pagination justify-content-center">
             <?php
             // Determina o número total de produtos para calcular o total de páginas
-            $totalProducts = count($product->getAll()); // Pode-se criar um método específico para contar todos os produtos
+            $totalProducts = count($product->getAll());
             $totalPages = ceil($totalProducts / $perPage);
 
             // Link para a página anterior

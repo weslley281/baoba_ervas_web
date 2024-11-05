@@ -21,8 +21,8 @@ if (isset($_SESSION["user_id"])) {
                     <li class="list-group-item list-group-item-action <?= $action == "" ? "active" : "" ?>">Perfil</li>
                 </a>
 
-                <a style="text-decoration: none;" href="">
-                    <li class="list-group-item list-group-item-action">Carrinho</li>
+                <a style="text-decoration: none;" href="index.php?page=cart">
+                    <li class="list-group-item list-group-item-action <?= $page == "cart" ? "active" : "" ?>">Carrinho</li>
                 </a>
 
                 <?php
