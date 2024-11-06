@@ -12,11 +12,28 @@
 <script src="./libs/bootstrap/popper.js"></script>
 <script src="./libs/bootstrap/bootstrap.js"></script>
 <script src="./utils/maskCPF.js"></script>
-<script src="./utils/formatPhone.js"></script>
 <script src="./libs/DataTables/datatables.js"></script>
 <script src="./libs/tinymce/tinymce.min.js"></script>
 <script src="./libs/select2/js/select2.js"></script>
 <script src="./libs/alertifyjs/alertify.js"></script>
+
+<script>
+document.getElementById('phone').addEventListener('input', function (e) {
+    let input = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    input = input.substring(0, 11); // Limita a 11 dígitos
+
+    // Aplica a máscara de acordo com a quantidade de dígitos
+    if (input.length > 10) {
+        input = `(${input.slice(0, 2)}) ${input.slice(2, 7)}-${input.slice(7, 11)}`;
+    } else if (input.length > 6) {
+        input = `(${input.slice(0, 2)}) ${input.slice(2, 6)}-${input.slice(6, 10)}`;
+    } else if (input.length > 2) {
+        input = `(${input.slice(0, 2)}) ${input.slice(2)}`;
+    }
+
+    e.target.value = input; // Atualiza o valor do campo com a máscara
+});
+</script>
 
 <script>
     $(document).ready(function() {

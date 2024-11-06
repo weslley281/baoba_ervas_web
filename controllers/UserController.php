@@ -37,20 +37,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     switch ($action) {
         case 'create':
-            if ($_POST["password"] == $_POST["password2"]) {
+            if ($_POST["password"] == $_POST["confirmPassword"]) {
 
                 $data = getUserData($_POST);
 
                 if ($user->create($data)) {
-                    header("Location: ../index.php?page=profile&action=success");
+                    header("Location: ../index.php?page=login");
                 } else {
                     echo $user->create($data);
-                    header("Location: ../index.php?page=profile&action=fail");
+                    header("Location: ../index.php?page=login&action=fail");
                 }
             } else {
                 echo "<center><strong><h1>As duas senhas diferem uma da outra</h1></strong></center>";
                 echo "<script>";
-                echo "setTimeout(function() { window.location.href = '../index.php?page=profile&action=fail'; }, 3000);";
+                echo "setTimeout(function() { window.location.href = '../index.php?page=login&action=fail'; }, 3000);";
                 echo "</script>";
             }
             break;

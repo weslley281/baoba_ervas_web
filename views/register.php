@@ -1,3 +1,10 @@
+<?php
+switch ($action) {
+    case 'fail':
+        echo renderAlert('danger', 'Erro!', 'Erro ao cadastrar usuário - contate o desenvolvedor do software.');
+        break;
+}
+?>
 <form action="./controllers/UserController.php?action=create" method="POST">
     <div class="form-group">
         <label for="name">Nome:</label>
@@ -6,7 +13,10 @@
 
     <div class="form-group">
         <label for="phone">Telefone:</label>
-        <input type="text" class="form-control" id="phone" name="phone">
+        <input class="form-control" type="tel" id="phone" name="phone" placeholder="(XX) XXXXX-XXXX" required />
+        <div id="phone" class="form-text">
+            Com DDD, somente números
+        </div>
     </div>
 
     <div class="form-group">
@@ -15,49 +25,49 @@
     </div>
 
     <div class="form-group">
-        <label for="email">Endereço de email</label>
+        <label for="email">Endereço de email:</label>
         <input type="email" class="form-control" id="email" name="email">
     </div>
 
     <div class="form-group">
-        <label for="postal_code">Código Postal</label>
+        <label for="postal_code">Código Postal:</label>
         <input type="text" class="form-control" id="postal_code" name="postal_code">
     </div>
 
     <div class="form-group">
-        <label for="address">Endereço</label>
+        <label for="address">Endereço:</label>
         <input type="text" class="form-control" id="address" name="address">
     </div>
 
     <div class="form-group">
-        <label for="complement">Complemento</label>
+        <label for="complement">Complemento:</label>
         <input type="text" class="form-control" id="complement" name="complement">
     </div>
 
     <div class="form-group">
-        <label for="neighborhood">Bairro</label>
+        <label for="neighborhood">Bairro:</label>
         <input type="text" class="form-control" id="neighborhood" name="neighborhood">
     </div>
 
     <div class="form-group">
-        <label for="city">Cidade</label>
+        <label for="city">Cidade:</label>
         <input type="text" class="form-control" id="city" name="city">
     </div>
 
     <div class="form-group">
-        <label for="state">Estado</label>
-        <select name="state" id="state">
+        <label for="state">Estado:</label>
+        <select class="form-control" name="state" id="state">
             <option value="MT">Mato Grosso</option>
         </select>
     </div>
 
     <div class="form-group">
-        <label for="country">País</label>
+        <label for="country">País:</label>
         <input type="text" class="form-control" id="country" name="country" value="Brasil" readonly>
     </div>
 
     <div class="form-group">
-        <label for="gender">Gênero</label>
+        <label for="gender">Gênero:</label>
         <select class="form-control" name="gender" id="gender">
             <?php
             $gender = [
@@ -80,18 +90,18 @@
     </div>
 
     <div class="form-group">
-        <label for="birth_date">Data de Nascimento</label>
+        <label for="birth_date">Data de Nascimento:</label>
         <input type="date" class="form-control" id="birth_date" name="birth_date">
     </div>
 
     <div class="form-group">
-        <label for="birth_date">Senha</label>
-        <input type="password" class="form-control" id="birth_date" name="birth_date">
+        <label for="password">Senha:</label>
+        <input type="password" class="form-control" id="password" name="password">
     </div>
 
     <div class="form-group">
-        <label for="birth_date">Repita a Senha</label>
-        <input type="confirmPassword" class="form-control" id="birth_date" name="birth_date">
+        <label for="birth_date">Repita a Senha:</label>
+        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
     </div>
 
     <div class="form-group mt-2">
