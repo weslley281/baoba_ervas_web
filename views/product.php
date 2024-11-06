@@ -29,7 +29,9 @@ foreach ($array_path_image as $key => $value) {
         <!-- Imagem do Produto -->
         <div class="row">
             <div class="col-md-6">
-                <img src="<?= '.' . htmlspecialchars($path_image); ?>" class="img-fluid" alt="<?= htmlspecialchars($get_product['name']) ?>">
+                ​<picture>
+                    <img src="<?= '.' . htmlspecialchars($path_image); ?>" class="img-fluid img-thumbnail rounded mx-auto d-block" alt="<?= htmlspecialchars($get_product['name']) ?>">
+                </picture>
             </div>
 
             <!-- Detalhes do Produto -->
