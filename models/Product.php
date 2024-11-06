@@ -58,12 +58,20 @@ class Product
 
     public function getAll($page = 1, $perPage = 10)
     {
+        // Limite de segurança para a quantidade de registros por página
+        $perPage = max(1, min($perPage, 100)); // Limita o perPage entre 1 e 100
+
         try {
             // Calcula o offset com base na página atual
-            $offset = ($page - 1) * $perPage;
+            $offset = ($page > 1 ? ($page - 1) * $perPage : 0);
 
             // Prepara a consulta com limite e offset para paginação
             $stmt = $this->conn->prepare('SELECT * FROM products LIMIT ? OFFSET ?');
+            if (!$stmt) {
+                throw new Exception('Falha ao preparar a consulta SQL.');
+            }
+
+            // Liga os parâmetros como inteiros
             $stmt->bind_param('ii', $perPage, $offset);
 
             // Executa a consulta
@@ -73,11 +81,33 @@ class Product
             // Retorna os resultados como um array associativo
             return $result->fetch_all(MYSQLI_ASSOC);
         } catch (mysqli_sql_exception $e) {
-            // Registra o erro em um arquivo de log
-            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            // Registra o erro específico do MySQL em um arquivo de log
+            error_log("Erro MySQL: " . $e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        } catch (Exception $e) {
+            // Registra erros genéricos em um arquivo de log
+            error_log("Erro geral: " . $e->getMessage(), 3, __DIR__ . '/errors.log');
             return [];
         }
     }
+
+    public function getTotalProducts()
+    {
+        try {
+            // Prepara e executa a consulta para contar o total de produtos
+            $stmt = $this->conn->prepare('SELECT COUNT(*) as total FROM products');
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+
+            // Retorna o número total de produtos
+            return $row['total'];
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return 0;
+        }
+    }
+
 
 
     public function getById($product_id)

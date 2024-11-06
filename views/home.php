@@ -6,12 +6,12 @@
     </div>
 
     <h2 class="text-center mb-4">Nossos Produtos</h2>
-    <div id="products" class="row row-cols-1 row-cols-md-3 g-4"> <!-- Alterado para g-4 para maior espaçamento entre cards -->
+    <div id="products" class="row row-cols-2 row-cols-md-4 g-4"> <!-- Alterado para g-4 para maior espaçamento entre cards -->
 
         <?php
         // Determina a página atual e o número de itens por página
         $pagination = isset($_GET['pagination']) ? (int)$_GET['pagination'] : 1;
-        $perPage = 9; // Número de produtos por página
+        $perPage = 12; // Número de produtos por página
 
         // Obtém produtos com base na busca e na paginação
         if (isset($_GET["search"])) {
@@ -35,7 +35,7 @@
                 <!-- Link envolve o card inteiro -->
                 <a href="index.php?page=product&slogan=<?= $pro['slogan'] ?>" target="_blank" rel="noopener noreferrer" class="text-decoration-none">
                     <div class="card h-100 p-3 shadow-sm" style="transition: transform 0.2s, box-shadow 0.2s;">
-                        <img src="<?= '.' . $path_image; ?>" class="card-img-top img-fluid mx-auto" alt="<?= $pro["name"] ?>" style="max-width: 180px; height: auto; object-fit: cover;">
+                        <img src="<?= '.' . $path_image; ?>" class="img-fluid mx-auto rounded" alt="<?= $pro["name"] ?>" style="width: 100%; height: auto; object-fit: cover;">
                         <div class="card-body text-center">
                             <h6 class="card-title text-dark"><?= $pro["name"] ?></h6>
 
@@ -63,15 +63,16 @@
         <ul class="pagination justify-content-center">
             <?php
             // Determina o número total de produtos para calcular o total de páginas
-            $totalProducts = count($product->getAll());
+            $totalProducts = $product->getTotalProducts(); // Usa a nova função que retorna o total de produtos
             $totalPages = ceil($totalProducts / $perPage);
+            $nextPage = $pagination < $totalPages ? $pagination + 1 : $totalPages;
 
-            // Link para a página anterior
+            /// Link para a página anterior
             $previousPage = $pagination > 1 ? $pagination - 1 : 1;
             $searchQuery = isset($_GET['search']) ? '&search=' . $_GET['search'] : '';
             echo '<li class="page-item ' . ($pagination <= 1 ? 'disabled' : '') . '">
-                    <a class="page-link" href="?pagination=' . $previousPage . $searchQuery . '#products">Anterior</a>
-                  </li>';
+            <a class="page-link" href="?pagination=' . $previousPage . $searchQuery . '#products">Anterior</a>
+          </li>';
 
             // Links para cada página
             for ($i = 1; $i <= $totalPages; $i++) {
@@ -82,8 +83,8 @@
             // Link para a próxima página
             $nextPage = $pagination < $totalPages ? $pagination + 1 : $totalPages;
             echo '<li class="page-item ' . ($pagination >= $totalPages ? 'disabled' : '') . '">
-                    <a class="page-link" href="?pagination=' . $nextPage . $searchQuery . '#products">Próximo</a>
-                  </li>';
+            <a class="page-link" href="?pagination=' . $nextPage . $searchQuery . '#products">Próximo</a>
+          </li>';
             ?>
         </ul>
     </nav>

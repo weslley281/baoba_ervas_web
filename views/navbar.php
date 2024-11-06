@@ -36,8 +36,8 @@
         <div class="col-lg-4 col-md-6 col-sm-12 text-center">
             <nav class="navbar">
                 <div class="container-fluid">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Search">
+                    <form class="d-flex" action="index.php" method="GET">
+                        <input class="form-control me-2" type="text" placeholder="Pesquisar" id="search" name="search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Pesquisar</button>
                     </form>
                 </div>

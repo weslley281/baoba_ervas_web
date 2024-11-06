@@ -55,7 +55,13 @@ foreach ($array_path_image as $key => $value) {
                     <input type="hidden" name="price" value="<?= $get_product['price'] ?>">
                     <input type="hidden" name="slogan" value="<?= $_GET['slogan'] ?>">
                     <input type="hidden" name="amount" value="1">
-                    <button type="submit" class="btn btn-info btn-lg"><i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho</button>
+                    <?php
+                    if (isset($_SESSION["user_id"])) {
+                    ?>
+                        <button type="submit" class="btn btn-info btn-lg"><i class="fa-solid fa-cart-shopping"></i> Adicionar ao Carrinho</button>
+                    <?php } else { ?>
+                        <p><strong>Faça login para adcionar esse item ao seu carrinho</strong></p>
+                    <?php } ?>
                 </form>
             </div>
         </div>
