@@ -38,6 +38,15 @@
                         <img src="<?= '.' . $path_image; ?>" class="card-img-top img-fluid mx-auto" alt="<?= $pro["name"] ?>" style="max-width: 180px; height: auto; object-fit: cover;">
                         <div class="card-body text-center">
                             <h6 class="card-title text-dark"><?= $pro["name"] ?></h6>
+
+                            <div class="text-warning mb-2">
+                                <!-- Avaliação com ícones de estrela (exemplo com 5 estrelas preenchidas) -->
+                                <?php for ($i = 0; $i < 4; $i++): ?>
+                                    <i class="fa-solid fa-star"></i>
+                                <?php endfor; ?>
+                                <i class="text-dark fa-regular fa-star"></i>
+                            </div>
+
                             <p class="card-text text-dark"><strong>R$ <?= $pro["price"] ?></strong></p>
                         </div>
                     </div>
