@@ -28,14 +28,14 @@ foreach ($array_path_image as $key => $value) {
     <div class="container my-5">
         <!-- Imagem do Produto -->
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 my-2">
                 ​<picture>
                     <img src="<?= '.' . htmlspecialchars($path_image); ?>" class="img-fluid img-thumbnail rounded mx-auto d-block" alt="<?= htmlspecialchars($get_product['name']) ?>">
                 </picture>
             </div>
 
             <!-- Detalhes do Produto -->
-            <div class="col-md-6">
+            <div class="col-md-6 my-2">
                 <h1><?= htmlspecialchars($get_product['name']) ?></h1>
 
                 <?php if ($get_product['discount'] > 0): ?>

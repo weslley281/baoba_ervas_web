@@ -47,7 +47,7 @@
                                 <i class="text-dark fa-regular fa-star"></i>
                             </div>
 
-                            <p class="card-text text-dark"><strong>R$ <?= $pro["price"] ?></strong></p>
+                            <p class="card-text text-dark"><strong>R$ <?= number_format($pro['price'], 2, ',', '.') ?></strong></p>
                         </div>
                     </div>
                 </a>
