@@ -43,7 +43,7 @@ document.getElementById('phone').addEventListener('input', function (e) {
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#minhaTabela').DataTable({
+        $('#myTable').DataTable({
             "order": [
                 [0, "asc"]
             ], // Ordena a primeira coluna em ordem crescente

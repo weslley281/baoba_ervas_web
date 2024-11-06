@@ -45,28 +45,34 @@ class Product
         }
     }
 
-    // public function getAll()
-    // {
-    //     try {
-    //         $result = $this->conn->query('SELECT * FROM products');
-    //         return $result->fetch_all(MYSQLI_ASSOC);
-    //     } catch (mysqli_sql_exception $e) {
-    //         error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
-    //         return [];
-    //     }
-    // }
+    public function getAllWithouPagnation()
+    {
+        try {
+            $result = $this->conn->query('SELECT * FROM products');
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        }
+    }
 
-    public function getAll($page = 1, $perPage = 10)
+    public function getAll($page = 1, $perPage = 12, $orderBy = 'RAND()')
     {
         // Limite de segurança para a quantidade de registros por página
         $perPage = max(1, min($perPage, 100)); // Limita o perPage entre 1 e 100
+
+        // Verifica o tipo de ordenação e define RAND() como padrão se o valor não for permitido
+        $allowedOrders = ['ASC', 'DESC', 'RAND()'];
+        $orderBy = in_array(strtoupper($orderBy), $allowedOrders) ? strtoupper($orderBy) : 'RAND()';
 
         try {
             // Calcula o offset com base na página atual
             $offset = ($page > 1 ? ($page - 1) * $perPage : 0);
 
-            // Prepara a consulta com limite e offset para paginação
-            $stmt = $this->conn->prepare('SELECT * FROM products LIMIT ? OFFSET ?');
+            // Prepara a consulta com o tipo de ordenação dinâmico, limite e offset para paginação
+            $query = "SELECT * FROM products ORDER BY $orderBy LIMIT ? OFFSET ?";
+            $stmt = $this->conn->prepare($query);
+
             if (!$stmt) {
                 throw new Exception('Falha ao preparar a consulta SQL.');
             }
@@ -90,6 +96,7 @@ class Product
             return [];
         }
     }
+
 
     public function getTotalProducts()
     {

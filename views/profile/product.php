@@ -98,7 +98,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 </button>
             </div>
         </div>
-        <table class="table table-bordered table-hover">
+        <table id="myTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>Imagem</th>
@@ -111,7 +111,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
             </thead>
             <tbody>
                 <?php
-                $get_products = $product->getAll();
+                $get_products = $product->getAllWithouPagnation();
 
                 foreach ($get_products as $product) :
                     $array_path_image = explode("/", $product['path_image']);
