@@ -89,7 +89,7 @@
         </ul>
     </nav>
 
-    <div class="text-center mt-5 mb-2">
+    <div class="text-center mt-5">
         <img src="./images/zap.svg" alt="Banner da loja" class="img-fluid rounded-3" style="width: 800px; height: 400px;">
     </div>
 </section>

@@ -37,8 +37,8 @@ if (isset($_SESSION["user_id"])) {
                             <td>R$ <?= number_format($item['price'], 2, ',', '.') ?></td>
                             <td>R$ <?= number_format($subtotal, 2, ',', '.') ?></td>
                             <td>
-                                <button type="submit" name="action" value="update_<?= $id ?>" class="btn btn-primary btn-sm my-1 mx-1"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button type="submit" name="action" value="remove_<?= $id ?>" class="btn btn-danger btn-sm my-1 mx-1"><i class="fa-solid fa-trash-can"></i></button>
+                                <button type="submit" name="action" value="update_<?= $id ?>" class="btn btn-primary btn-sm my-1 mx-1" title="Editar"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button type="submit" name="action" value="remove_<?= $id ?>" class="btn btn-danger btn-sm my-1 mx-1" title="Remover"><i class="fa-solid fa-trash-can"></i></button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -56,9 +56,34 @@ if (isset($_SESSION["user_id"])) {
             }
             $whatsappMessage .= "Total:%20R$%20" . number_format($total, 2, ',', '.');
             ?>
-            <a href="https://wa.me/5565981233996?text=<?= $whatsappMessage ?>" target="_blank" class="btn btn-success btn-lg">
-                Enviar Pedido para WhatsApp
-            </a>
+            <a class="text-dark py-2 px-1" href="#" data-toggle="modal" data-target="#ModalPedidoWhatsapp"><i class="fa-brands fa-whatsapp fa-2x mx-1 my-2"></i> Enviar Pedido para WhatsApp</a>
+        </div>
+    </div>
+
+    <div class="modal fade" id="ModalPedidoWhatsapp" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalLongoExemplo">Quer Pedir para Qual Loja</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a id="widthOutDecoration" href="https://wa.me/556533621007?text=<?= $whatsappMessage ?>" target="_blank">
+                        <p class="text-success"><strong>Loja do Centro de Várzea Grande</strong></p>
+                    </a>
+                    <a id="widthOutDecoration" href="https://wa.me/556533621008?text=<?= $whatsappMessage ?>" target="_blank">
+                        <p class="text-success"><strong>Loja do Centro de Cuiabá</strong></p>
+                    </a>
+                    <a id="widthOutDecoration" href="https://wa.me/556530239010?text=<?= $whatsappMessage ?>" target="_blank">
+                        <p class="text-success"><strong>Loja do Porto - Cuiabá</strong></p>
+                    </a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
         </div>
     </div>
 <?php
