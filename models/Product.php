@@ -48,7 +48,7 @@ class Product
     public function getAllWithouPagnation()
     {
         try {
-            $result = $this->conn->query('SELECT * FROM products');
+            $result = $this->conn->query('SELECT * FROM products ORDER BY product_id DESC');
             return $result->fetch_all(MYSQLI_ASSOC);
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
@@ -120,7 +120,7 @@ class Product
     public function getById($product_id)
     {
         try {
-            $stmt = $this->conn->prepare('SELECT * FROM products WHERE id = ?');
+            $stmt = $this->conn->prepare('SELECT * FROM products WHERE product_id = ?');
             $stmt->bind_param('i', $product_id);
             $stmt->execute();
 
