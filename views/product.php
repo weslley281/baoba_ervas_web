@@ -23,6 +23,21 @@ foreach ($array_path_image as $key => $value) {
 ?>
 <!-- Section-->
 <section class="py-5">
+    <?php
+    switch ("$action") {
+        case 'add':
+            echo renderAlert('success', 'Sucesso!', 'Produto adcionado ao carrinho com sucesso.');
+            break;
+
+        case 'invalid':
+            echo renderAlert('warning', 'Aviso!', 'Erro ao editar produto - contate o desenvolvedor do software.');
+            break;
+
+        case 'fail':
+            echo renderAlert('danger', 'Erro!', 'Erro ao editar produto - contate o desenvolvedor do software.');
+            break;
+    }
+    ?>
     <h2 class="text-center mb-4">Nossos Produtos</h2>
     <!-- Container principal -->
     <div class="container my-5">

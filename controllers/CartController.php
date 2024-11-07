@@ -20,7 +20,7 @@ if (isset($_SESSION["user_id"])) {
         switch ($action) {
             case 'add':
                 $data = getCartData($_POST);
-                $redirect = "../index.php?page=product&slogan=" . $_POST['slogan'];
+                $redirect = "../index.php?page=product&slogan=" . $_POST['slogan'] . "&action=add";
 
                 if (addCart($id, $data)) {
                     header("Location: $redirect");
@@ -36,7 +36,7 @@ if (isset($_SESSION["user_id"])) {
                 header("Location: ../index.php?page=profile&action=categories&action2=unknown");
                 echo $_GET['action'];
                 break;
-            }
+        }
     } else {
         echo "<center><strong><h1>Requisição incorreta</h1></strong></center>";
         echo "<script>";

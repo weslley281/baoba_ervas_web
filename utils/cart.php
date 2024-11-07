@@ -38,7 +38,7 @@ function removeCart($id)
     }
 }
 
-function atualizarAmount($id, $amount)
+function updateAmount($id, $amount)
 {
     initializeCart();
 
@@ -57,12 +57,26 @@ function showCart()
 
     echo "<h2>Cart de Compras</h2>";
     if (empty($_SESSION['cart'])) {
-        echo "<p>O cart está vazio.</p>";
+        echo "<p>O carrinho está vazio.</p>";
         return;
     }
 
     foreach ($_SESSION['cart'] as $id => $item) {
-        echo "<p>Produto: {$item['name']} | Amount: {$item['amount']} | Preço: R$ " . number_format($item['price'], 2) . "</p>";
+        echo "<p>Produto: {$item['name']} | Quantidade: {$item['amount']} | Preço: R$ " . number_format($item['price'], 2) . "</p>";
+    }
+}
+
+function sendCartToWhatsapp()
+{
+    initializeCart();
+
+    if (empty($_SESSION['cart'])) {
+        echo "O%20carrinho%20está%20vazio.";
+        return;
+    }
+
+    foreach ($_SESSION['cart'] as $id => $item) {
+        echo "Produto:%20{$item['name']}%20|%20Quantidade:%20{$item['amount']}%20|%20Preço:%20R$%20" . number_format($item['price'], 2) . "%20";
     }
 }
 
