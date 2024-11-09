@@ -5,6 +5,19 @@
         <img id="banner" src="./images/banner.png" alt="Banner da loja" class="img-fluid rounded-3">
     </div>
 
+    <di class="row text-center">
+        <?php
+        $categories = $category->getAll();
+        foreach ($categories as $cat) {
+        ?>
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 my-1">
+                <a href="index.php?category_slogan=<?= $cat['slogan'] ?>#products" class="btn btn-outline-success btn-lg w-100 h-auto" role="button" aria-pressed="true"><?= $cat["name"] ?></a>
+            </div>
+        <?php
+        }
+        ?>
+    </di>
+
     <h2 class="text-center mb-4">Nossos Produtos</h2>
     <div id="products" class="row row-cols-2 row-cols-md-4 g-4"> <!-- Alterado para g-4 para maior espaçamento entre cards -->
 
@@ -16,8 +29,14 @@
         // Obtém produtos com base na busca e na paginação
         if (isset($_GET["search"])) {
             $get_products = $product->getByName($_GET["search"], $pagination, $perPage);
+            $totalProducts = count($get_products);
+        } elseif (isset($_GET["category_slogan"])) {
+            $category_id = $category->getIDBySlogan($_GET["category_slogan"]);
+            $get_products = $product->getAllByCategorySlogan($category_id, $pagination, $perPage);
+            $totalProducts = $product->getTotalProductsByIdCategory($category_id);
         } else {
             $get_products = $product->getAll($pagination, $perPage);
+            $totalProducts = $product->getTotalProducts();
         }
 
         // Loop para gerar os cards
@@ -62,14 +81,21 @@
     <nav aria-label="Navegação de página" class="mt-4">
         <ul class="pagination justify-content-center">
             <?php
-            // Determina o número total de produtos para calcular o total de páginas
-            $totalProducts = $product->getTotalProducts(); // Usa a nova função que retorna o total de produtos
             $totalPages = ceil($totalProducts / $perPage);
             $nextPage = $pagination < $totalPages ? $pagination + 1 : $totalPages;
 
+
             /// Link para a página anterior
             $previousPage = $pagination > 1 ? $pagination - 1 : 1;
-            $searchQuery = isset($_GET['search']) ? '&search=' . $_GET['search'] : '';
+
+            if (isset($_GET["search"])) {
+                $searchQuery = '&search=' . $_GET['search'];
+            } elseif (isset($_GET["category_slogan"])) {
+                $searchQuery = '&category_slogan=' . $_GET["category_slogan"];
+            } else {
+                $searchQuery = '';
+            }
+            //$searchQuery = isset($_GET['search']) ? '&search=' . $_GET['search'] : '';
             echo '<li class="page-item ' . ($pagination <= 1 ? 'disabled' : '') . '">
             <a class="page-link" href="?pagination=' . $previousPage . $searchQuery . '#products">Anterior</a>
           </li>';

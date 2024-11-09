@@ -97,6 +97,47 @@ class Product
         }
     }
 
+    public function getAllByCategorySlogan($category_id, $page = 1, $perPage = 12, $orderBy = 'RAND()')
+    {
+        // Limite de segurança para a quantidade de registros por página
+        $perPage = max(1, min($perPage, 100)); // Limita o perPage entre 1 e 100
+
+        // Verifica o tipo de ordenação e define RAND() como padrão se o valor não for permitido
+        $allowedOrders = ['ASC', 'DESC', 'RAND()'];
+        $orderBy = in_array(strtoupper($orderBy), $allowedOrders) ? strtoupper($orderBy) : 'RAND()';
+
+        try {
+            // Calcula o offset com base na página atual
+            $offset = ($page > 1 ? ($page - 1) * $perPage : 0);
+
+            // Prepara a consulta com o tipo de ordenação dinâmico, limite e offset para paginação
+            $query = "SELECT * FROM products WHERE category_id = ? ORDER BY $orderBy LIMIT ? OFFSET ?";
+            $stmt = $this->conn->prepare($query);
+
+            if (!$stmt) {
+                throw new Exception('Falha ao preparar a consulta SQL.');
+            }
+
+            // Liga os parâmetros como inteiros
+            $stmt->bind_param('iii', $category_id, $perPage, $offset);
+
+            // Executa a consulta
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            // Retorna os resultados como um array associativo
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } catch (mysqli_sql_exception $e) {
+            // Registra o erro específico do MySQL em um arquivo de log
+            error_log("Erro MySQL: " . $e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        } catch (Exception $e) {
+            // Registra erros genéricos em um arquivo de log
+            error_log("Erro geral: " . $e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        }
+    }
+
 
     public function getTotalProducts()
     {
@@ -107,13 +148,30 @@ class Product
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
 
-            // Retorna o número total de produtos
             return $row['total'];
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
             return 0;
         }
     }
+
+    public function getTotalProductsByIdCategory($category_id)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT COUNT(*) as total FROM products WHERE category_id = ?');
+            $stmt->bind_param('i', $category_id);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+
+            return isset($row['total']) ? $row['total'] : 0;
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return 0;
+        }
+    }
+
 
 
 
