@@ -79,8 +79,11 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     </select>
                 </div>
 
+                <div class="row">
+                    <div class="col-6"><button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Salvar Alterações</button></div>
+                    <div class="col-6" style="text-align: right;"><a class="btn btn-secondary" href="index.php?page=profile&action=products"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
+                </div>
 
-                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
             </form>
         </div>
 
@@ -103,6 +106,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 <tr>
                     <th>Imagem</th>
                     <th>Nome</th>
+                    <th>Categoria</th>
                     <th>Preço</th>
                     <th>Desconto</th>
                     <th>Estoque</th>
@@ -114,6 +118,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 $get_products = $product->getAllWithouPagnation();
 
                 foreach ($get_products as $product) :
+                    $category_name = $category->getNameById($product['category_id']);
                     $array_path_image = explode("/", $product['path_image']);
 
                     $path_image = "";
@@ -125,14 +130,15 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     }
                 ?>
                     <tr>
-                        <td><img src="<?= '.' . $path_image; ?>" width="50" height="50" alt="Imagem"></td>
+                        <td><img class="img-fluid rounded border-5" src="<?= '.' . $path_image; ?>" width="50" height="50" alt="Imagem"></td>
                         <td><?php echo $product['name']; ?></td>
+                        <td><?php echo $category_name; ?></td>
                         <td>R$ <?php echo number_format($product['price'], 2, ',', '.'); ?></td>
                         <td><?php echo $product['discount']; ?>%</td>
                         <td><?php echo $product['stock_quantity']; ?></td>
                         <td>
-                            <a href="index.php?page=profile&action=products&product=<?php echo $product['slogan']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                            <a href="index.php?page=profile&action=products&action2=delete&id=<?php echo $product['product_id']; ?>" class="btn btn-danger btn-sm">Excluir</a>
+                            <a href="index.php?page=profile&action=products&product=<?php echo $product['slogan']; ?>" class="btn btn-warning btn-sm my-1 mx-1"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="index.php?page=profile&action=products&action2=delete&id=<?php echo $product['product_id']; ?>" class="btn btn-danger btn-sm my-1 mx-1"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

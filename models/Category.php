@@ -78,6 +78,26 @@ class Category
         }
     }
 
+    public function getNameById($category_id)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT name FROM categories WHERE category_id = ?');
+            $stmt->bind_param('i', $category_id);
+            $stmt->execute();
+
+            $result = $stmt->get_result()->fetch_assoc();
+
+            if ($result) {
+                return $result["name"];
+            } else {
+                return null;
+            }
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return null;
+        }
+    }
+
     public function getIDBySlogan($slogan)
 {
     try {

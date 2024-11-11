@@ -32,7 +32,6 @@
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
 
-
     <title><?php echo $page_title; ?></title>
 
     <link rel="shortcut icon" href="./images/icone.png" type="image/x-icon">
@@ -48,4 +47,7 @@
     <link rel="stylesheet" href="./libs/DataTables/datatables.css">
     <link rel="icon" href="./images/icone.png" type="image/jpg">
     <link rel="stylesheet" href="./libs/select2/css/select2.css">
+
+    <!-- Link para o Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>

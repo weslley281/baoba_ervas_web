@@ -18,7 +18,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
                 <div class="form-group mb-3">
                     <label for="slogan">Slogan</label>
-                    <input type="text" class="form-control" id="slogan" name="slogan" value="<?php echo $get_category['slogan']; ?>">
+                    <input type="text" class="form-control" id="slogan" name="slogan" value="<?php echo $get_category['slogan']; ?>" readonly>
                 </div>
 
                 <div class="form-group mb-3">
@@ -30,7 +30,11 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     <label for="image">Imagem do Categoria</label>
                     <input type="file" class="form-control" id="image" name="image">
                 </div>
-                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+
+                <div class="row">
+                    <div class="col-6"><button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Salvar Alterações</button></div>
+                    <div class="col-6" style="text-align: right;"><a class="btn btn-secondary" href="index.php?page=profile&action=categories"><i class="fa-solid fa-xmark"></i> Cancelar</a></div>
+                </div>
             </form>
         </div>
 
@@ -108,7 +112,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
                         <div class="form-group mb-3">
                             <label for="image">Imagem do Categoria</label>
-                            <input type="file" class="form-control" id="image" name="image">
+                            <input type="file" class="form-control" id="image" name="image" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Criar Categoria</button>

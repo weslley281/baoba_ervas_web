@@ -75,7 +75,7 @@ $page_title = strlen($page_title) > 20 ? substr($page_title, 0, 20) . '...' : $p
 require_once "./header.php";
 ?>
 
-<body>
+<body style="font-family: 'Roboto', sans-serif;">
     <?php include_once './views/navbar.php'; ?>
 
     <div class="container">

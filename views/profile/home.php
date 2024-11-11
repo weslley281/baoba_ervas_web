@@ -57,22 +57,24 @@ if (isset($_SESSION["user_id"])) {
 
             <?php
             } elseif ($action == "products") {
-                switch ($_GET["action2"]) {
-                    case 'success':
-                        echo renderAlert('success', 'Sucesso!', 'Produto cadastrado com sucesso.');
-                        break;
+                if (isset($_GET["action2"])) {
+                    switch ($_GET["action2"]) {
+                        case 'success':
+                            echo renderAlert('success', 'Sucesso!', 'Produto cadastrado com sucesso.');
+                            break;
 
-                    case 'saved':
-                        echo renderAlert('primary', 'Sucesso!', 'Produto editado com sucesso.');
-                        break;
+                        case 'saved':
+                            echo renderAlert('primary', 'Sucesso!', 'Produto editado com sucesso.');
+                            break;
 
-                    case 'invalid':
-                        echo renderAlert('warning', 'Aviso!', 'Erro ao editar produto - contate o desenvolvedor do software.');
-                        break;
+                        case 'invalid':
+                            echo renderAlert('warning', 'Aviso!', 'Erro ao editar produto - contate o desenvolvedor do software.');
+                            break;
 
-                    case 'fail':
-                        echo renderAlert('danger', 'Erro!', 'Erro ao editar produto - contate o desenvolvedor do software.');
-                        break;
+                        case 'fail':
+                            echo renderAlert('danger', 'Erro!', 'Erro ao editar produto - contate o desenvolvedor do software.');
+                            break;
+                    }
                 }
                 require_once "product.php";
             } elseif ($action == "categories") {
