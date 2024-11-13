@@ -13,15 +13,21 @@ require_once './utils/cart.php';
 require_once './models/User.php';
 require_once './models/Product.php';
 require_once './models/Category.php';
+require_once './models/Sale.php';
+require_once './models/SaleItem.php';
 
 $createTable = new CreateTables;
 $user = new User($conn);
 $product = new Product($conn);
 $category = new Category($conn);
+$sale = new Sale($conn);
+$sale_item = new SaleItem($conn);
 
 $createTable->createUsersTable($conn);
 $createTable->createProductsTable($conn);
 $createTable->createCategoriesTable($conn);
+$createTable->createSalesTable($conn);
+$createTable->createSalesItemTable($conn);
 
 if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
     $password = password_hash("Admin@123", PASSWORD_DEFAULT);

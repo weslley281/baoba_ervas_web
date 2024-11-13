@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
-class Sale
+class SaleItem
 {
     private $conn;
 
@@ -16,11 +16,11 @@ class Sale
     public function create(array $data)
     {
         try {
-            $stmt = $this->conn->prepare("INSERT INTO sales (customer_id, situation)");
+            $stmt = $this->conn->prepare("INSERT INTO sales_item (sale_id, product_id, price, quantity, name)");
 
-            $stmt->bind_param('is', $data["customer_id"], $data["situation"]);
+            $stmt->bind_param('iidds', $data["sale_id"], $data["product_id"], $data["price"], $data["quantity"], $data["name"]);
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
@@ -28,10 +28,10 @@ class Sale
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE sales SET situation = ? WHERE sale_id = ?'
+                'UPDATE sales_item SET sale_id = ?, product_id = ?, price = ?, quantity = ?, name = ? WHERE sale_item_id = ?'
             );
 
-            $stmt->bind_param('si', $data["situation"], $data["sale_id"]);
+            $stmt->bind_param('iiddsi', $data["sale_id"], $data["product_id"], $data["price"], $data["quantity"], $data["name"], $data["sale_item_id"]);
 
             $stmt->execute();
             return true;
@@ -41,11 +41,11 @@ class Sale
         }
     }
 
-    public function delete($sale_id)
+    public function delete($sale_item_id)
     {
         try {
-            $stmt = $this->conn->prepare('DELETE FROM sales WHERE sale_id = ?');
-            $stmt->bind_param('i', $sale_id);
+            $stmt = $this->conn->prepare('DELETE FROM sales_item WHERE sale_item_id = ?');
+            $stmt->bind_param('i', $sale_item_id);
             return $stmt->execute();
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');

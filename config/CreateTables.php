@@ -82,4 +82,45 @@ class CreateTables
             echo "Erro ao criar tabela 'categories': " . $conn->error;
         }
     }
+    
+    public static function createSalesTable($conn)
+    {
+        $sql = "
+        CREATE TABLE IF NOT EXISTS sales (
+            sale_id INT AUTO_INCREMENT PRIMARY KEY,
+            customer_id INT,
+            situation VARCHAR(255),
+            editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        ";
+
+        if ($conn->query($sql) === true) {
+            //echo "Tabela 'sales' criada com sucesso.";
+        } else {
+            echo "Erro ao criar tabela 'sales': " . $conn->error;
+        }
+    }
+    
+    public static function createSalesItemTable($conn)
+    {
+        $sql = "
+        CREATE TABLE IF NOT EXISTS sales_item (
+            sale_item_id INT AUTO_INCREMENT PRIMARY KEY,
+            sale_id INT,
+            product_id INT,
+            name VARCHAR(255),
+            price DECIMAL(10, 2) NOT NULL,
+            quantity DECIMAL(10, 2) NOT NULL,
+            editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        ";
+
+        if ($conn->query($sql) === true) {
+            //echo "Tabela 'sales_item' criada com sucesso.";
+        } else {
+            echo "Erro ao criar tabela 'sales_item': " . $conn->error;
+        }
+    }
 }
