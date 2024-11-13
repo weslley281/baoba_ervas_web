@@ -23,4 +23,21 @@ class Sale
             //throw $th;
         }
     }
+
+    public function update(array $data)
+    {
+        try {
+            $stmt = $this->conn->prepare(
+                'UPDATE sales SET situation = ? WHERE sale_id = ?'
+            );
+
+            $stmt->bind_param('si', $data["situation"], $data["sale_id"]);
+
+            $stmt->execute();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return false;
+        }
+    }
 }
