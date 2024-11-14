@@ -155,4 +155,35 @@ require_once "./header.php";
     </div>
 </body>
 
-</html>
+<!-- Ícone flutuante para abrir a modal -->
+<div class="chat-icon" data-toggle="modal" data-target="#chatbotModal">
+    <i class="fas fa-comments"></i>
+</div>
+
+<!-- Modal do chatbot -->
+<div class="modal fade" id="chatbotModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatbotModalLabel">Chatbot</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Conteúdo do chat -->
+
+                <div id="chatContainer">
+                    <div class="message bot-message" id="chat-messages" class="mb-3"></div>
+                    <div id="user-input" class="input-group">
+                        <input
+                            type="text"
+                            id="user-message"
+                            class="form-control"
+                            placeholder="Digite sua pergunta..." />
+                        <button id="send-button" class="btn btn-success">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </html>

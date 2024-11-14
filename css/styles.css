@@ -69,3 +69,38 @@ a.close.disabled {
   padding: 0.75rem 1.25rem;
   color: inherit;
 }
+
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0a3622;
+  color: white;
+  border-radius: 50%;
+  padding: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+}
+
+/* Estilo da modal */
+.modal-content {
+  padding: 20px;
+}
+
+#chat-messages {
+  height: auto;
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+#user-input {
+  margin-top: 10px;
+}
+
+#chat-container {
+  max-width: 600px;
+  margin: auto;
+}
