@@ -21,11 +21,18 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
         function getproductData($post, $existingImagePath = null)
         {
+            var_dump($existingImagePath);
             $directoryUpload = "../images/";
-            $path = $existingImagePath; // Usa o caminho da imagem existente, se não houver nova imagem
+            $path = $existingImagePath;
 
             // Verifica se uma nova imagem foi enviada
             if (!empty($_FILES["image"]["name"])) {
+                // Apaga a imagem existente, se houver
+                if ($existingImagePath && file_exists($existingImagePath)) {
+
+                    unlink($existingImagePath);
+                }
+
                 $imageName = uniqid() . "_" . basename($_FILES["image"]["name"]);
                 $path = $directoryUpload . $imageName;
                 $extensionImage = strtolower(pathinfo($path, PATHINFO_EXTENSION));
@@ -57,10 +64,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     header("Location: ../index.php?page=profile&action=products&action2=move_error");
                     exit;
                 }
-            }
-
-            var_dump($path);
-            if ($path == null || $path == "") {
+            } else if ($path == null || $path == "") {
                 $path = $_POST["old_path_image"];
             }
 
@@ -70,7 +74,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 "slogan" => generateSlogan($post["name"] ?? ''),
                 "category_id" => generateSlogan($post["category_id"] ?? 0),
                 "description" => htmlspecialchars($post["description"] ?? ''),
-                "path_image" => $path, // Usa o novo caminho de imagem ou o existente
+                "path_image" => $path,
                 "price" => htmlspecialchars($post["price"] ?? 0),
                 "discount" => htmlspecialchars($post["discount"] ?? 0),
                 "stock_quantity" => htmlspecialchars($post["stock_quantity"] ?? 0),
@@ -78,6 +82,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 "active" => htmlspecialchars($post["active"] ?? 0)
             ];
         }
+
 
 
         switch ($action) {
@@ -99,7 +104,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     header("Location: ../index.php?page=profile&action=products&action2=invalid");
                     exit;
                 }
-                $data = getproductData($_POST);
+                $data = getproductData($_POST, $_POST["old_path_image"]);
                 var_dump($data);
                 if ($product->update($data, $id)) {
                     header("Location: ../index.php?page=profile&action=products&action2=saved");
