@@ -8,6 +8,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.php"><span class="text-white"><i class="fa-solid fa-house"></i> Home</span></a>
             </li>
+            
             <?php if (isset($_SESSION["user_id"])) { ?>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?page=profile"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
@@ -24,6 +25,10 @@
                     <a class="nav-link" href="index.php?page=login"><span class="text-white"><i class="fa-solid fa-user"></i> Login</span></a>
                 </li>
             <?php } ?>
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.php"><span class="text-white"><i class="fa-solid fa-house"></i> Avalie a nossa loja</span></a>
+            </li>
         </ul>
     </div>
 </nav>

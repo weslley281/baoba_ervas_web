@@ -32,6 +32,50 @@
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="expires" content="0">
 
+
+    <?php
+    if ($page == "product") {
+        $sup = $product->getBySlogan($_GET["slogan"]);
+        $array_path_image = explode("/", $sup['path_image']);
+        $path_image = "";
+
+        foreach ($array_path_image as $key => $value) {
+            if ($key != 0) {
+                $path_image = $path_image . "/" . $value;
+            }
+        }
+    ?>
+        <!-- Open Graph para compartilhamento -->
+        <meta property="og:title" content="<?= $page_title; ?>">
+        <meta property="og:description" content="<?= htmlspecialchars_decode($sup["description"], ENT_QUOTES); ?>">
+        <meta property="og:image" content="<?= '.' . $path_image; ?>">
+        <meta property="og:url" content="https://exemplo.com/produto-x">
+        <meta property="og:type" content="product">
+
+        <!-- Informações adicionais para produtos no Open Graph -->
+        <meta property="product:price:amount" content="<?= number_format($sup['price'], 2, ',', '.') ?>">
+        <meta property="product:price:currency" content="BRL">
+        <meta property="product:availability" content="in stock"> <!-- 'out of stock' se estiver indisponível -->
+        <meta property="product:brand" content="Baobá Brasil">
+
+        <!-- Twitter Cards -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="<?= $page_title; ?>">
+        <meta name="twitter:description" content="<?= htmlspecialchars_decode($sup["description"], ENT_QUOTES); ?>">
+        <meta name="twitter:image" content="<?= '.' . $path_image; ?>">
+    <?php
+    } else {
+    ?>
+        <!-- Metatags de Open Graph -->
+        <meta property="og:title" content="<?= '.' .  $page_title; ?>">
+        <meta property="og:description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
+        <meta property="og:image" content="images/logo.png">
+        <meta property="og:url" content="https://baobaervas.com.br/">
+        <meta property="og:type" content="website">
+    <?php
+    }
+    ?>
+
     <title><?php echo $page_title; ?></title>
 
     <link rel="shortcut icon" href="./images/icone.png" type="image/x-icon">
