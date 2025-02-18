@@ -8,7 +8,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.php"><span class="text-white"><i class="fa-solid fa-house"></i> Home</span></a>
             </li>
-            
+
             <?php if (isset($_SESSION["user_id"])) { ?>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?page=profile"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
@@ -27,7 +27,7 @@
             <?php } ?>
 
             <li class="nav-item">
-                <a class="nav-link" href="index.php"><span class="text-white"><i class="fa-solid fa-house"></i> Avalie a nossa loja</span></a>
+                <a class="nav-link" href="index.php?page=assessment"><span class="text-white"><i class="fa-solid fa-star"></i> Avalie a nossa loja</span></a>
             </li>
         </ul>
     </div>
@@ -54,7 +54,7 @@
             <a class="text-dark py-2 px-2" href="index.php?page=cart" target="_blank" rel="noopener noreferrer" title="Carrinho"><i class="fa-solid fa-cart-shopping fa-2x mx-1 my-2"></i></a>
             <a class="text-dark py-2 px-1" href="https://www.facebook.com/lojasbaobabrasil/" target="_blank" rel="noopener noreferrer" title="Facebook"><i class="fa-brands fa-square-facebook fa-2x mx-1 my-2"></i></a>
             <a class="text-dark py-2 px-1" href="https://www.instagram.com/baobabrasilervas/" target="_blank" rel="noopener noreferrer" title="Instagran"><i class="fa-brands fa-instagram fa-2x mx-1 my-2"></i></a>
-            <a class="text-dark py-2 px-1" href="#" data-toggle="modal" data-target="#ModalWhatsapp"  title="Whatsapp"><i class="fa-brands fa-whatsapp fa-2x mx-1 my-2"></i></a>
+            <a class="text-dark py-2 px-1" href="#" data-toggle="modal" data-target="#ModalWhatsapp" title="Whatsapp"><i class="fa-brands fa-whatsapp fa-2x mx-1 my-2"></i></a>
         </div>
     </div>
 </div>

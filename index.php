@@ -26,7 +26,7 @@ $sale_item = new SaleItem($conn);
 $createTable->createUsersTable($conn);
 $createTable->createProductsTable($conn);
 $createTable->createCategoriesTable($conn);
-$createTable->createSalesTable($conn);
+//$createTable->createSalesTable($conn);
 $createTable->createSalesItemTable($conn);
 
 if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
@@ -70,7 +70,8 @@ $titles = [
     'profile' => 'Perfil e Administração',
     'product' => $name_product,
     'cart' => 'Carrinho',
-    'register' => 'Registrar-se'
+    'register' => 'Registrar-se',
+    'assessment' => 'Avaliação'
 ];
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
@@ -116,6 +117,10 @@ require_once "./header.php";
 
             case 'register':
                 require_once "./views/register.php";
+                break;
+
+            case 'assessment':
+                require_once "./views/assessment.php";
                 break;
 
             default:
