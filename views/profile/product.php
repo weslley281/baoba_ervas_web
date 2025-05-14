@@ -104,6 +104,8 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
         <table id="myTable" class="table table-bordered table-hover">
             <thead>
                 <tr>
+                    <th>id</th>
+                    <th>ref</th>
                     <th>Imagem</th>
                     <th>Nome</th>
                     <th>Categoria</th>
@@ -117,9 +119,9 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 <?php
                 $get_products = $product->getAllWithouPagnation();
 
-                foreach ($get_products as $product) :
-                    $category_name = $category->getNameById($product['category_id']);
-                    $array_path_image = explode("/", $product['path_image']);
+                foreach ($get_products as $item) :
+                    $category_name = $category->getNameById($item['category_id']);
+                    $array_path_image = explode("/", $item['path_image']);
 
                     $path_image = "";
 
@@ -130,15 +132,17 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     }
                 ?>
                     <tr>
+                        <td><?php echo $item['product_id']; ?></td>
+                        <td><?php echo $item['reference']; ?></td>
                         <td><img class="img-fluid rounded border-5" src="<?= '.' . $path_image; ?>" width="50" height="50" alt="Imagem"></td>
-                        <td><?php echo $product['name']; ?></td>
+                        <td><?php echo $item['name']; ?></td>
                         <td><?php echo $category_name; ?></td>
-                        <td>R$ <?php echo number_format($product['price'], 2, ',', '.'); ?></td>
-                        <td><?php echo $product['discount']; ?>%</td>
-                        <td><?php echo $product['stock_quantity']; ?></td>
+                        <td>R$ <?php echo number_format($item['price'], 2, ',', '.'); ?></td>
+                        <td><?php echo $item['discount']; ?>%</td>
+                        <td><?php echo $item['stock_quantity']; ?></td>
                         <td>
-                            <a href="index.php?page=profile&action=products&product=<?php echo $product['slogan']; ?>" class="btn btn-warning btn-sm my-1 mx-1" target="_blank"><i class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="index.php?page=profile&action=products&action2=delete&id=<?php echo $product['product_id']; ?>" class="btn btn-danger btn-sm my-1 mx-1"><i class="fa-solid fa-trash-can"></i></a>
+                            <a href="index.php?page=profile&action=products&product=<?php echo $item['slogan']; ?>" class="btn btn-warning btn-sm my-1 mx-1" target="_blank"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="index.php?page=profile&action=products&action2=delete&id=<?php echo $item['product_id']; ?>" class="btn btn-danger btn-sm my-1 mx-1"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

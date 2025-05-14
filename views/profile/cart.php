@@ -26,24 +26,27 @@ if (isset($_SESSION["user_id"])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($_SESSION['cart'] as $id => $item): ?>
-                        <?php
-                        $subtotal = $item['price'] * $item['amount'];
-                        $total += $subtotal;
-                        ?>
-                        <tr>
-                            <td><?= htmlspecialchars($item['name']) ?></td>
-                            <td>
-                                <input type="number" name="quantities[<?= $id ?>]" value="<?= $item['amount'] ?>" min="1" class="form-control form-control-sm">
-                            </td>
-                            <td>R$ <?= number_format($item['price'], 2, ',', '.') ?></td>
-                            <td>R$ <?= number_format($subtotal, 2, ',', '.') ?></td>
-                            <td>
-                                <button type="submit" name="action" value="update_<?= $id ?>" class="btn btn-primary btn-sm my-1 mx-1" title="Editar"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button type="submit" name="action" value="remove_<?= $id ?>" class="btn btn-danger btn-sm my-1 mx-1" title="Remover"><i class="fa-solid fa-trash-can"></i></button>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
+                    <?php
+                    if (isset($_SESSION['cart'])) {
+                        foreach ($_SESSION['cart'] as $id => $item): ?>
+                            <?php
+                            $subtotal = $item['price'] * $item['amount'];
+                            $total += $subtotal;
+                            ?>
+                            <tr>
+                                <td><?= htmlspecialchars($item['name']) ?></td>
+                                <td>
+                                    <input type="number" name="quantities[<?= $id ?>]" value="<?= $item['amount'] ?>" min="1" class="form-control form-control-sm">
+                                </td>
+                                <td>R$ <?= number_format($item['price'], 2, ',', '.') ?></td>
+                                <td>R$ <?= number_format($subtotal, 2, ',', '.') ?></td>
+                                <td>
+                                    <button type="submit" name="action" value="update_<?= $id ?>" class="btn btn-primary btn-sm my-1 mx-1" title="Editar"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button type="submit" name="action" value="remove_<?= $id ?>" class="btn btn-danger btn-sm my-1 mx-1" title="Remover"><i class="fa-solid fa-trash-can"></i></button>
+                                </td>
+                            </tr>
+                    <?php endforeach;
+                    } ?>
                 </tbody>
             </table>
 
@@ -53,12 +56,21 @@ if (isset($_SESSION["user_id"])) {
         <div class="text-center mt-4">
             <?php
             $whatsappMessage = "Olá,%20eu%20sou%20{$_SESSION['name']}-{$_SESSION['user_id']}%20gostaria%20de%20finalizar%20meu%20pedido:%0A";
-            foreach ($_SESSION['cart'] as $item) {
-                $whatsappMessage .= "Produto:%20{$item['name']}%20|%20Quantidade:%20{$item['amount']}%20|%20Preço:%20R$%20" . number_format($item['price'], 2, ',', '.') . "%0A";
+
+            if (isset($_SESSION['cart'])) {
+                foreach ($_SESSION['cart'] as $item) {
+                    $whatsappMessage .= "Produto:%20{$item['name']}%20|%20Quantidade:%20{$item['amount']}%20|%20Preço:%20R$%20" . number_format($item['price'], 2, ',', '.') . "%0A";
+                }
             }
+
             $whatsappMessage .= "Total:%20R$%20" . number_format($total, 2, ',', '.');
+
+            if (isset($_SESSION['cart'])) {
             ?>
-            <a class="text-dark py-2 px-1" href="#" data-toggle="modal" data-target="#ModalPedidoWhatsapp"><i class="fa-brands fa-whatsapp fa-2x mx-1 my-2"></i> Enviar Pedido para WhatsApp</a>
+                <a class="text-dark py-2 px-1" href="#" data-toggle="modal" data-target="#ModalPedidoWhatsapp"><i class="fa-brands fa-whatsapp fa-2x mx-1 my-2"></i> Enviar Pedido para WhatsApp</a>
+            <?php } else { ?>
+                <p><strong>Adcione itens ao carrinho, para poder mandar sua lista de pedidos por whatsapp</strong></p>
+            <?php } ?>
         </div>
     </div>
 
