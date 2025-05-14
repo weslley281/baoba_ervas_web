@@ -27,11 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "city" => htmlspecialchars($post["city"] ?? ''),
             "neighborhood" => htmlspecialchars($post["neighborhood"] ?? ''),
             "postal_code" => htmlspecialchars($post["postal_code"] ?? ''),
-            "gender" => htmlspecialchars($post["gender"] ?? ''),
             "birth_date" => htmlspecialchars($post["birth_date"] ?? ''),
             "password" => $password,
-            "user_type" => 'client',
-            "cpf" => $cpf
+            "user_type" => 'client'
         ];
     }
 

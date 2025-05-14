@@ -137,7 +137,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                         <td><?php echo $product['discount']; ?>%</td>
                         <td><?php echo $product['stock_quantity']; ?></td>
                         <td>
-                            <a href="index.php?page=profile&action=products&product=<?php echo $product['slogan']; ?>" class="btn btn-warning btn-sm my-1 mx-1"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="index.php?page=profile&action=products&product=<?php echo $product['slogan']; ?>" class="btn btn-warning btn-sm my-1 mx-1" target="_blank"><i class="fa-solid fa-pen-to-square"></i></a>
                             <a href="index.php?page=profile&action=products&action2=delete&id=<?php echo $product['product_id']; ?>" class="btn btn-danger btn-sm my-1 mx-1"><i class="fa-solid fa-trash-can"></i></a>
                         </td>
                     </tr>

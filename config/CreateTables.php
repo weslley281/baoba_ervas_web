@@ -12,7 +12,6 @@ class CreateTables
             phone VARCHAR(100),
             email VARCHAR(191) UNIQUE,
             password VARCHAR(255),
-            cpf VARCHAR(255),
             user_type ENUM('admin', 'client', 'attendant'),
             address VARCHAR(255),
             complement VARCHAR(255),
@@ -21,7 +20,6 @@ class CreateTables
             city VARCHAR(100),
             neighborhood VARCHAR(100),
             postal_code VARCHAR(10),
-            gender ENUM('masculine', 'feminine', 'non-binary', 'gender-fluid', 'transgender', 'agender', 'two-spirit', 'other', 'null'),
             birth_date DATE,
             editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP

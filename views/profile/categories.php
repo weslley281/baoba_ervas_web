@@ -79,7 +79,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                         <td><img src="<?= "." . $path_image; ?>" width="50" height="50" alt="Imagem"></td>
                         <td><?php echo $category['name']; ?></td>
                         <td>
-                            <a href="index.php?page=profile&action=categories&category=<?php echo $category['slogan']; ?>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="index.php?page=profile&action=categories&category=<?php echo $category['slogan']; ?>" class="btn btn-warning btn-sm" target="_blank">Editar</a>
                             <a href="index.php?page=profile&action=categories&action2=delete&id=<?php echo $category['category_id']; ?>" class="btn btn-danger btn-sm">Excluir</a>
                         </td>
                     </tr>

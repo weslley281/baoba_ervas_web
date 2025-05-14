@@ -17,12 +17,12 @@ class User
     {
         try {
             $stmt = $this->conn->prepare(
-                'INSERT INTO users (name, phone, email, address, complement, country, state, city, neighborhood, postal_code, gender, birth_date, password, cpf, user_type)
+                'INSERT INTO users (name, phone, email, address, complement, country, state, city, neighborhood, postal_code, birth_date, password, user_type)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             );
 
             $stmt->bind_param(
-                'sssssssssssssss',
+                'sssssssssssss',
                 $data['name'],
                 $data['phone'],
                 $data['email'],
@@ -33,7 +33,6 @@ class User
                 $data['city'],
                 $data['neighborhood'],
                 $data['postal_code'],
-                $data['gender'],
                 $data['birth_date'],
                 $data['password'],
                 $data['cpf'],
@@ -93,11 +92,11 @@ class User
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE users SET name = ?, phone = ?, email = ?, address = ?, complement = ?, country = ?, state = ?, city = ?, neighborhood = ?, postal_code = ?, gender = ?, birth_date = ?, cpf = ?, user_type = ? WHERE user_id = ?'
+                'UPDATE users SET name = ?, phone = ?, email = ?, address = ?, complement = ?, country = ?, state = ?, city = ?, neighborhood = ?, postal_code = ?, birth_date = ?, user_type = ? WHERE user_id = ?'
             );
 
             $stmt->bind_param(
-                'ssssssssssssssi',
+                'ssssssssssssi',
                 $data['name'],
                 $data['phone'],
                 $data['email'],
@@ -108,9 +107,7 @@ class User
                 $data['city'],
                 $data['neighborhood'],
                 $data['postal_code'],
-                $data['gender'],
                 $data['birth_date'],
-                $data['cpf'],
                 $data['user_type'],
                 $user_id
             );

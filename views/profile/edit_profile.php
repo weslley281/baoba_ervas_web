@@ -12,11 +12,6 @@
     </div>
 
     <div class="form-group">
-        <label for="cpf">CPF:</label>
-        <input type="text" class="form-control" id="cpf" value="<?= $cpf ?>" name="cpf">
-    </div>
-
-    <div class="form-group">
         <label for="email">Endereço de email</label>
         <input type="email" class="form-control" id="email" value="<?= $get_user["email"] ?>" name="email">
     </div>
@@ -54,20 +49,6 @@
     <div class="form-group">
         <label for="country">País</label>
         <input type="text" class="form-control" id="country" value="<?= $get_user["country"] ?>" name="country" readonly>
-    </div>
-
-    <div class="form-group">
-        <label for="gender">Gênero</label>
-        <select class="form-control" name="gender" id="gender">
-            <option value="<?= $get_user["gender"] ?>"><?= $gender[$get_user["gender"]] ?></option>
-            <?php
-            foreach ($gender as $key => $value) {
-                if ($key != $get_user["gender"]) {
-                    echo "<option value=\"$key\">$value</option>";
-                }
-            }
-            ?>
-        </select>
     </div>
 
     <div class="form-group">

@@ -78,7 +78,7 @@ foreach ($array_path_image as $key => $value) {
                     } else {
                         $whatsappMessage = "Olá,%20eu%20estou%20interessado%20no%20produto%20" . $get_product['name'];
                     ?>
-                        <a class="btn btn-success btn-lg" href="https://wa.me/556533621007?text=<?= $whatsappMessage ?>" target="_blank"><i class="fa-solid fa-cart-shopping"></i> Comprar</a>
+                        <a class="btn btn-success btn-lg" href="https://wa.me/556530239010?text=<?= $whatsappMessage ?>" target="_blank"><i class="fa-solid fa-cart-shopping"></i> Comprar</a>
                         <p><strong>Faça login para adcionar esse item ao seu carrinho</strong></p>
                     <?php } ?>
                 </form>

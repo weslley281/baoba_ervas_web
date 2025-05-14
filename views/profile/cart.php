@@ -12,6 +12,9 @@ if (isset($_SESSION["user_id"])) {
     ?>
     <div class="container my-5">
         <h2 class="text-center mb-4">Carrinho de Compras</h2>
+        <div id="rotate-warning" class="alert alert-warning text-center d-none" style="position: fixed; top: 0; left: 0; right: 0; z-index: 9999;">
+            Para melhor visualização, gire seu dispositivo para o modo paisagem.
+        </div>
         <form method="post" action="update_cart.php">
             <table class="table table-hover">
                 <thead>
@@ -86,6 +89,26 @@ if (isset($_SESSION["user_id"])) {
             </div>
         </div>
     </div>
+
+    <script>
+        function isMobileDevice() {
+            return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
+        function checkOrientation() {
+            const warning = document.getElementById('rotate-warning');
+
+            if (isMobileDevice() && window.innerHeight > window.innerWidth) {
+                warning.classList.remove('d-none'); // Mostrar aviso
+            } else {
+                warning.classList.add('d-none'); // Esconder aviso
+            }
+        }
+
+        window.addEventListener("orientationchange", checkOrientation);
+        window.addEventListener("resize", checkOrientation);
+        window.addEventListener("load", checkOrientation);
+    </script>
 <?php
 } else {
     echo "<center><strong><h1>Você não tem permissão para isso</h1></strong></center>";
