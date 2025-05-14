@@ -34,7 +34,7 @@ if (isset($_POST['credential'])) {
             $_SESSION['name'] = $user['name'];
         } else {
             // Cadastro automático
-            $defaultType = 'cliente'; // Pode mudar conforme sua regra
+            $defaultType = 'client'; // Pode mudar conforme sua regra
             $stmt = $conn->prepare("INSERT INTO users (name, email, user_type) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $name, $email, $defaultType);
             $stmt->execute();
