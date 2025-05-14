@@ -62,14 +62,14 @@
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="<?= $page_title; ?>">
         <meta name="twitter:description" content="<?= htmlspecialchars_decode($sup["description"], ENT_QUOTES); ?>">
-        <meta name="twitter:image" content="<?= '.' . $path_image; ?>">
+        <meta name="twitter:image" content="<?= '.' .  $path_image; ?>">
     <?php
     } else {
     ?>
         <!-- Metatags de Open Graph -->
-        <meta property="og:title" content="<?= '.' .  $page_title; ?>">
+        <meta property="og:title" content="<?= $page_title; ?>">
         <meta property="og:description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
-        <meta property="og:image" content="images/logo.png">
+        <meta property="og:image" content="./images/logo.png">
         <meta property="og:url" content="https://baobaervas.com.br/">
         <meta property="og:type" content="website">
     <?php

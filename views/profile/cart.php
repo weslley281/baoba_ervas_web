@@ -6,7 +6,6 @@ if (isset($_SESSION["user_id"])) {
             <h2 class="text-center mb-4">Seu carrinho está vazio</h2>
         </div>
     <?php
-        exit;
     }
     $total = 0;
     ?>
