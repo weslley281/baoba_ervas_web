@@ -90,3 +90,13 @@ document.getElementById('postal_code').addEventListener('blur', function () {
         .catch(() => alert("Erro ao buscar o CEP. Tente novamente mais tarde."));
 });
 </script>
+
+<script>
+function mascaraCep(input) {
+    let valor = input.value.replace(/\D/g, "");
+    if (valor.length > 5) {
+        input.value = valor.substring(0, 5) + '-' + valor.substring(5, 8);
+    } else {
+        input.value = valor;
+    }
+}

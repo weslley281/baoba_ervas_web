@@ -60,10 +60,12 @@
 
                             <div class="text-warning mb-2">
                                 <!-- Avaliação com ícones de estrela (exemplo com 5 estrelas preenchidas) -->
-                                <?php for ($i = 0; $i < 4; $i++): ?>
+                                <?php for ($i = 0; $i < 5; $i++): ?>
                                     <i class="fa-solid fa-star"></i>
                                 <?php endfor; ?>
+                                <!--
                                 <i class="text-dark fa-regular fa-star"></i>
+                                -->
                             </div>
 
                             <p class="card-text text-dark"><strong>R$ <?= number_format($pro['price'], 2, ',', '.') ?></strong></p>

@@ -49,8 +49,8 @@
         <meta property="og:title" content="<?= $page_title; ?>">
         <meta property="og:description" content="<?= htmlspecialchars_decode($sup["description"], ENT_QUOTES); ?>">
         <meta property="og:image" content="<?= '.' . $path_image; ?>">
-        <meta property="og:url" content="https://exemplo.com/produto-x">
-        <meta property="og:type" content="product">
+        <meta property="og:url" content="https://baobaervas.com.br/index.php?page=product&slogan=<?= $sup['slogan'] ?>">
+        <meta property="og:type" content="website">
 
         <!-- Informações adicionais para produtos no Open Graph -->
         <meta property="product:price:amount" content="<?= number_format($sup['price'], 2, ',', '.') ?>">
@@ -70,7 +70,7 @@
         <meta property="og:title" content="<?= $page_title; ?>">
         <meta property="og:description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
         <meta property="og:image" content="./images/logo.png">
-        <meta property="og:url" content="https://baobaervas.com.br/">
+        <meta property="og:url" content="https://baobaervas.com.br">
         <meta property="og:type" content="website">
     <?php
     }
