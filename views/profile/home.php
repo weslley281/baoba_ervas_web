@@ -83,11 +83,11 @@ if (isset($_SESSION["user_id"])) {
                             break;
 
                         case 'invalid':
-                            echo renderAlert('warning', 'Aviso!', 'Erro ao editar produto - contate o desenvolvedor do software.');
+                            echo renderAlert('warning', 'Aviso!', 'Erro ao editar produto - verifique se todos os campos foram preenchidos.');
                             break;
 
                         case 'fail':
-                            echo renderAlert('danger', 'Erro!', 'Erro ao editar produto - contate o desenvolvedor do software.');
+                            echo renderAlert('danger', 'Erro!', 'Erro ao editar produto - contate o verifique se todos os campos foram preenchidos.');
                             break;
                     }
                 }
@@ -97,11 +97,11 @@ if (isset($_SESSION["user_id"])) {
             } else {
                 switch ($action) {
                     case 'invalid':
-                        echo renderAlert('warning', 'Aviso!', 'Erro ao editar usuário - contate o desenvolvedor do software.');
+                        echo renderAlert('warning', 'Aviso!', 'Erro ao editar usuário - verifique se todos os campos foram preenchidos.');
                         break;
 
                     case 'fail':
-                        echo renderAlert('danger', 'Erro!', 'Erro ao editar usuário - contate o desenvolvedor do software.');
+                        echo renderAlert('danger', 'Erro!', 'Erro ao editar usuário - verifique se todos os campos foram preenchidos.');
                         break;
                 }
                 require_once "edit_profile.php";

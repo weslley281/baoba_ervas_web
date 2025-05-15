@@ -18,7 +18,12 @@
 
     <div class="form-group">
         <label for="postal_code">Código Postal</label>
-        <input type="text" class="form-control" id="postal_code" value="<?= $get_user["postal_code"] ?>" name="postal_code">
+        <div class="input-group">
+            <input type="text" class="form-control" id="postal_code" maxlength="9"
+                   value="<?= $get_user["postal_code"] ?>" name="postal_code"
+                   oninput="mascaraCep(this)" placeholder="00000-000">
+            <button type="button" class="btn btn-secondary" onclick="buscarCep()">Buscar</button>
+        </div>
     </div>
 
     <div class="form-group">
@@ -53,8 +58,35 @@
 
     <div class="form-group">
         <label for="birth_date">Data de Nascimento</label>
-        <input type="date" class="form-control" id="birth_date" value="<?= $get_user["birth_date"] ?>" name="birth_date">
+        <input type="date" class="form-control" id="birth_date" value="<?= $get_user["birth_date"] ?>" name="birth_date" required>
     </div>
 
     <button type="submit" class="btn btn-info">Editar</button>
 </form>
+
+<script>
+document.getElementById('postal_code').addEventListener('blur', function () {
+    const cep = this.value.replace(/\D/g, '');
+
+    if (cep.length !== 8) {
+        alert("CEP inválido. Digite os 8 números corretamente.");
+        return;
+    }
+
+    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                alert("CEP não encontrado.");
+                return;
+            }
+
+            document.getElementById('address').value = data.logradouro || '';
+            document.getElementById('neighborhood').value = data.bairro || '';
+            document.getElementById('city').value = data.localidade || '';
+            document.getElementById('state').value = data.uf || '';
+            document.getElementById('country').value = 'Brasil';
+        })
+        .catch(() => alert("Erro ao buscar o CEP. Tente novamente mais tarde."));
+});
+</script>
