@@ -20,8 +20,8 @@
         <label for="postal_code">Código Postal</label>
         <div class="input-group">
             <input type="text" class="form-control" id="postal_code" maxlength="9"
-                   value="<?= $get_user["postal_code"] ?>" name="postal_code"
-                   oninput="mascaraCep(this)" placeholder="00000-000">
+                value="<?= $get_user["postal_code"] ?>" name="postal_code"
+                oninput="mascaraCep(this)" placeholder="00000-000">
             <button type="button" class="btn btn-secondary" onclick="buscarCep()">Buscar</button>
         </div>
     </div>
@@ -65,38 +65,39 @@
 </form>
 
 <script>
-document.getElementById('postal_code').addEventListener('blur', function () {
-    const cep = this.value.replace(/\D/g, '');
+    document.getElementById('postal_code').addEventListener('blur', function() {
+        const cep = this.value.replace(/\D/g, '');
 
-    if (cep.length !== 8) {
-        alert("CEP inválido. Digite os 8 números corretamente.");
-        return;
-    }
+        if (cep.length !== 8) {
+            alert("CEP inválido. Digite os 8 números corretamente.");
+            return;
+        }
 
-    fetch(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.erro) {
-                alert("CEP não encontrado.");
-                return;
-            }
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.erro) {
+                    alert("CEP não encontrado.");
+                    return;
+                }
 
-            document.getElementById('address').value = data.logradouro || '';
-            document.getElementById('neighborhood').value = data.bairro || '';
-            document.getElementById('city').value = data.localidade || '';
-            document.getElementById('state').value = data.uf || '';
-            document.getElementById('country').value = 'Brasil';
-        })
-        .catch(() => alert("Erro ao buscar o CEP. Tente novamente mais tarde."));
-});
+                document.getElementById('address').value = data.logradouro || '';
+                document.getElementById('neighborhood').value = data.bairro || '';
+                document.getElementById('city').value = data.localidade || '';
+                document.getElementById('state').value = data.uf || '';
+                document.getElementById('country').value = 'Brasil';
+            })
+            .catch(() => alert("Erro ao buscar o CEP. Tente novamente mais tarde."));
+    });
 </script>
 
 <script>
-function mascaraCep(input) {
-    let valor = input.value.replace(/\D/g, "");
-    if (valor.length > 5) {
-        input.value = valor.substring(0, 5) + '-' + valor.substring(5, 8);
-    } else {
-        input.value = valor;
+    function mascaraCep(input) {
+        let valor = input.value.replace(/\D/g, "");
+        if (valor.length > 5) {
+            input.value = valor.substring(0, 5) + '-' + valor.substring(5, 8);
+        } else {
+            input.value = valor;
+        }
     }
-}
+</script>

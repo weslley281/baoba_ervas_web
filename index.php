@@ -71,7 +71,8 @@ $titles = [
     'product' => $name_product,
     'cart' => 'Carrinho',
     'register' => 'Registrar-se',
-    'assessment' => 'Avaliação'
+    'assessment' => 'Avaliação',
+    'contact' => 'Fale Conosco'
 ];
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
@@ -121,6 +122,10 @@ require_once "./header.php";
 
             case 'assessment':
                 require_once "./views/assessment.php";
+                break;
+
+            case 'contact':
+                require_once "./views/contact.php";
                 break;
 
             default:

@@ -29,6 +29,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="index.php?page=assessment"><span class="text-white"><i class="fa-solid fa-star"></i> Avalie a nossa loja</span></a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?page=contact"><span class="text-white"><i class="fa-solid fa-envelope"></i> Contato</span></a>
+            </li>
         </ul>
     </div>
 </nav>
