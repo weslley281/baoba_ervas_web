@@ -170,7 +170,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
                         <div class="form-group mb-3">
                             <label for="description">Descrição</label>
-                            <textarea class="form-control" id="description" name="description"></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="6" required></textarea>
                         </div>
 
                         <div class="form-group mb-3">
