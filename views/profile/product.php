@@ -23,7 +23,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 </div>
                 <div class="form-group mb-3">
                     <label for="description">Descrição</label>
-                    <textarea class="form-control" id="description" name="description"><?php echo $get_product['description']; ?></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="6"><?php echo $get_product['description']; ?></textarea>
                 </div>
                 <div class="form-group mb-3">
                     <label for="price">Preço</label>

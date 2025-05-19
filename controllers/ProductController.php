@@ -21,7 +21,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
         function getproductData($post, $existingImagePath = null)
         {
-            var_dump($existingImagePath);
+            //var_dump($existingImagePath);
             $directoryUpload = "../images/";
             $path = $existingImagePath;
 
@@ -41,13 +41,20 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 $allowedExtensions = ["jpg", "jpeg", "gif", "png", "webp", "svg"];
                 if (!in_array($extensionImage, $allowedExtensions)) {
                     echo "<center><strong><h1>Formato de imagem inválido. Use JPG, JPEG, GIF ou PNG.</h1></strong></center>";
-                    header("Location: ../index.php?page=profile&action=products&action2=invalid_format");
+
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=invalid_format';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=invalid_format");
                     exit;
                 }
 
                 if ($_FILES["image"]["error"] !== UPLOAD_ERR_OK) {
                     echo "<center><strong><h1>Erro no upload da imagem. Código de erro: {$_FILES['image']['error']}</h1></strong></center>";
-                    header("Location: ../index.php?page=profile&action=products&action2=upload_error");
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=upload_error';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=upload_error");
                     exit;
                 }
 
@@ -55,13 +62,19 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 $maxFileSize = 5 * 1024 * 1024; // 5MB
                 if ($_FILES["image"]["size"] > $maxFileSize) {
                     echo "<center><strong><h1>O arquivo é muito grande. O tamanho máximo é de 5MB.</h1></strong></center>";
-                    header("Location: ../index.php?page=profile&action=products&action2=file_too_large");
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=file_too_large';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=file_too_large");
                     exit;
                 }
 
                 if (!move_uploaded_file($_FILES["image"]["tmp_name"], $path)) {
                     echo "<center><strong><h1>Falha ao mover a imagem para o diretório de upload.</h1></strong></center>";
-                    header("Location: ../index.php?page=profile&action=products&action2=move_error");
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=move_error';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=move_error");
                     exit;
                 }
             } else if ($path == null || $path == "") {
@@ -90,56 +103,91 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 $data = getproductData($_POST);
 
                 if ($product->create($data)) {
-                    header("Location: ../index.php?page=profile&action=products&action2=success");
+                    echo "<center><strong><h1>Produto cadastrado com sucesso!</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=success';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=success");
                 } else {
                     echo $product->create($data);
-                    header("Location: ../index.php?page=profile&action=products&action2=fail");
+                    echo "<center><strong><h1>Erro ao cadastrar produto - contate o desenvolvedor do software.</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=fail';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=fail");
                 }
 
                 break;
 
             case 'update': // Atualiza um usuário existente
                 if ($id === null) {
-                    echo "errei no id";
-                    header("Location: ../index.php?page=profile&action=products&action2=invalid");
+                    //echo "errei no id";
+                    echo "<center><strong><h1>Erro ao editar produto - contate o desenvolvedor do software.</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=invalid';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=invalid");
                     exit;
                 }
                 $data = getproductData($_POST, $_POST["old_path_image"]);
-                var_dump($data);
+                //var_dump($data);
                 if ($product->update($data, $id)) {
-                    header("Location: ../index.php?page=profile&action=products&action2=saved");
+                    echo "<center><strong><h1>Produto editado com sucesso!</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=saved';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=saved");
                 } else {
-                    header("Location: ../index.php?page=profile&action=products&action2=fail");
+                    echo "<center><strong><h1>Erro ao editar produto - contate o desenvolvedor do software.</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=fail';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=fail");
                 }
                 break;
 
             case 'delete': // Deleta um usuário pelo ID
                 if ($id === null) {
-                    header("Location: ../index.php?page=profile&action=products&action2=invalid");
+                    echo "<center><strong><h1>Erro ao editar produto - contate o desenvolvedor do software.</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=invalid';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=invalid");
                     exit;
                 }
                 if ($product->delete($id)) {
-                    header("Location: ../index.php?page=profile&action=products&action2=deleted");
+                    echo "<center><strong><h1>Produto deletado com sucesso!</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=deleted';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=deleted");
                 } else {
-                    header("Location: ../index.php?page=profile&action=products&action2=fail");
+                    echo "<center><strong><h1>Erro ao deletar produto - contate o desenvolvedor do software.</h1></strong></center>";
+                    echo "<script>";
+                    echo "window.location.href = '../index.php?page=profile&action=products&action2=fail';";
+                    echo "</script>";
+                    //header("Location: ../index.php?page=profile&action=products&action2=fail");
                 }
                 break;
 
             default: // Se nenhuma ação for definida
-                echo "<center><strong><h1>Ação incorreta</h1></strong></center>";
-                header("Location: ../index.php?page=profile&action=products&action2=unknown");
+                echo "<center><strong><h1>Erro ao editar produto - contate o desenvolvedor do software.</h1></strong></center>";
+                echo "<script>";
+                echo "window.location.href = '../index.php?page=profile&action=products&action2=unknown';";
+                echo "</script>";
+                //header("Location: ../index.php?page=profile&action=products&action2=unknown");
                 echo $_GET['action'];
                 break;
         }
     } else {
         echo "<center><strong><h1>Requisição incorreta</h1></strong></center>";
         echo "<script>";
-        echo "setTimeout(function() { window.location.href = '../index.php'; }, 3000);";
+        echo "window.location.href = '../index.php'; }, 3000);";
         echo "</script>";
     }
 } else {
     echo "<center><strong><h1>Você não Tem permição para isso</h1></strong></center>";
     echo "<script>";
-    echo "setTimeout(function() { window.location.href = '../index.php?page=login'; }, 3000);";
+    echo "window.location.href = '../index.php?page=login'; }, 3000);";
     echo "</script>";
 }
