@@ -17,26 +17,32 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                     <label for="name">Nome do Produto</label>
                     <input type="text" class="form-control" id="name" name="name" value="<?php echo $get_product['name']; ?>" required>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="slogan">Slogan</label>
                     <input type="text" class="form-control" id="slogan" name="slogan" value="<?php echo $get_product['slogan']; ?>" readonly required>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="description">Descrição</label>
                     <textarea class="form-control" id="description" name="description" rows="6"><?php echo $get_product['description']; ?></textarea>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="price">Preço</label>
                     <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?php echo $get_product['price']; ?>" required>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="discount">Desconto (%)</label>
                     <input type="number" class="form-control" id="discount" name="discount" step="0.01" value="<?php echo $get_product['discount']; ?>" required>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="stock_quantity">Quantidade em Estoque</label>
                     <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" value="<?php echo $get_product['stock_quantity']; ?>" required>
                 </div>
+
                 <div class="form-group mb-3">
                     <label for="reference">Referência</label>
                     <input type="text" class="form-control" id="reference" name="reference" value="<?php echo $get_product['reference']; ?>" required>
@@ -221,7 +227,46 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
             </div>
         </div>
     </div>
+
+    <!-- Modal de Deletar Produto -->
+
+    <?php
+    if (isset($_GET["action2"]) && $_GET["action2"] == "delete") {
+        $get_product = $product->getById($_GET["id"]);
+    ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                $('#ModalDeletarProduto').modal('show');
+            });
+        </script>
+        <div class="modal fade" id="ModalDeletarProduto" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoDeletar" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="TituloModalLongoDelerta">Deletar Produto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <h2 class="text-center mb-4">Deletar Produto</h2>
+                            <p><strong>Você tem certeza que deseja deletar este produto <?php echo $get_product['name']; ?>?</strong></p>
+                            <p><strong>Essa ação não pode ser desfeita.</strong></p>
+                        </div>
+                        <form action="./controllers/ProductController.php?action=delete" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="<?php echo $get_product['product_id']; ?>">
+                            <button type="submit" class="btn btn-danger">Deletar Produto</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 <?php
+    }
 } else {
     echo "<center><strong><h1>Você não Tem permição para isso</h1></strong></center>";
     echo "<script>";

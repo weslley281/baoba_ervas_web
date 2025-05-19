@@ -88,6 +88,17 @@ class User
         }
     }
 
+    public function getAllWithouPagnation()
+    {
+        try {
+            $result = $this->conn->query('SELECT * FROM users ORDER BY user_id DESC');
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        }
+    }
+
     public function update(array $data, $user_id)
     {
         try {

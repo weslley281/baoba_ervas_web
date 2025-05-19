@@ -53,11 +53,8 @@ if (isset($_SESSION["user_id"])) {
                     <a style="text-decoration: none;" href="index.php?page=profile&action=categories">
                         <li class="list-group-item list-group-item-action <?= $action == "categories" ? "active" : "" ?>">Categorias</li>
                     </a>
-                    <a style="text-decoration: none;" href="#">
-                        <li class="list-group-item list-group-item-action">Usuários</li>
-                    </a>
-                    <a style="text-decoration: none;" href="#">
-                        <li class="list-group-item list-group-item-action">Pedidos</li>
+                    <a style="text-decoration: none;" href="index.php?page=profile&action=users">
+                        <li class="list-group-item list-group-item-action <?= $action == "users" ? "active" : "" ?>">Usuários</li>
                     </a>
                 <?php } ?>
             </ul>
@@ -89,11 +86,17 @@ if (isset($_SESSION["user_id"])) {
                         case 'fail':
                             echo renderAlert('danger', 'Erro!', 'Erro ao editar produto - contate o verifique se todos os campos foram preenchidos.');
                             break;
+
+                        case 'deleted':
+                            echo renderAlert('success', 'Sucesso!', 'Produto excluído com sucesso.');
+                            break;
                     }
                 }
                 require_once "product.php";
             } elseif ($action == "categories") {
                 require_once "categories.php";
+            } elseif ($action == "users") {
+                require_once "users.php";
             } else {
                 switch ($action) {
                     case 'invalid':

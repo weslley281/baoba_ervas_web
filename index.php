@@ -72,7 +72,8 @@ $titles = [
     'cart' => 'Carrinho',
     'register' => 'Registrar-se',
     'assessment' => 'Avaliação',
-    'contact' => 'Fale Conosco'
+    'contact' => 'Fale Conosco',
+    'users' => 'Usuários'
 ];
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';

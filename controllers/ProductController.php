@@ -148,7 +148,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
 
             case 'delete': // Deleta um usuário pelo ID
                 if ($id === null) {
-                    echo "<center><strong><h1>Erro ao editar produto - contate o desenvolvedor do software.</h1></strong></center>";
+                    echo "<center><strong><h1>Erro ao deletar produto - o id não foi informado.</h1></strong></center>";
                     echo "<script>";
                     echo "window.location.href = '../index.php?page=profile&action=products&action2=invalid';";
                     echo "</script>";
