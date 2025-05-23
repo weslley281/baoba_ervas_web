@@ -68,6 +68,7 @@ $titles = [
     'login' => 'Login',
     'users' => 'Usuários',
     'profile' => 'Perfil',
+    'ticket' => 'Tickets',
     'product' => $name_product,
     'cart' => 'Carrinho',
     'register' => 'Registrar-se',
@@ -96,6 +97,10 @@ require_once "./header.php";
 
             case 'profile':
                 require_once "./views/profile/home.php";
+                break;
+
+            case 'ticket':
+                require_once "./views/ticket/home.php";
                 break;
 
             case 'login':

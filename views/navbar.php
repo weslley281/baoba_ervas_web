@@ -13,6 +13,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?page=profile"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php?page=ticket"><span class="text-white"><i class="fa-solid fa-file-lines"></i> Ticket</span></a>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?page=cart"><span class="text-white"><i class="fa-solid fa-hand-holding-dollar"></i> Carrinho</span></a>
                 </li>

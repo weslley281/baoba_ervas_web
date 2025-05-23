@@ -1,0 +1,28 @@
+{
+    "lastCommon": 2,
+    "lastPriority": 2,
+    "queueCommon": [],
+    "queuePriority": [],
+    "calledTickets": [
+        {
+            "ticket": "P001",
+            "atendente": "1",
+            "hora": "19:13:08"
+        },
+        {
+            "ticket": "P002",
+            "atendente": "1",
+            "hora": "19:14:47"
+        },
+        {
+            "ticket": "C001",
+            "atendente": "3",
+            "hora": "19:21:59"
+        },
+        {
+            "ticket": "C002",
+            "atendente": "2",
+            "hora": "20:24:33"
+        }
+    ]
+}
