@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Ticket.php';
+date_default_timezone_set('America/Cuiaba');
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -15,11 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo "setTimeout(function() { window.location.href = '../index.php?page=ticket'; }, 5000);";
                     echo "</script>";
                 } else {
+                    $tipo = htmlspecialchars($tipo);
                     $ticket = Ticket::generateTicket($tipo);
                     $ticket = htmlspecialchars($ticket);
                     echo "<center><h1>Seu ticket: <strong>$ticket</strong></h1></center>";
                     echo "<script>";
-                    echo "setTimeout(function() { window.location.href = '../index.php?page=ticket'; }, 5000);";
+                    echo "setTimeout(function() { window.location.href = '../views/ticket/pdf_ticket.php?ticket=$ticket&tipo=$tipo'; }, 1000);";
                     echo "</script>";
                 }
             } else {
@@ -71,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 echo "<p>Ticket <strong>$ticket</strong> — Atendente <strong>$atendente</strong> — Hora <strong>$hora</strong></p>";
             }
-            
+
             if (empty($chamados)) {
                 $erro = "Nenhum ticket chamado.";
                 echo "<center><h1>$erro</h1></center>";

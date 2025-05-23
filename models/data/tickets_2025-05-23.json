@@ -1,0 +1,11 @@
+{
+    "lastCommon": 3,
+    "lastPriority": 0,
+    "queueCommon": [
+        "C001",
+        "C002",
+        "C003"
+    ],
+    "queuePriority": [],
+    "calledTickets": []
+}

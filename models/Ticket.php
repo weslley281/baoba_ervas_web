@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Cuiaba');
+
 class Ticket {
     private static $file;
     private static $data;
