@@ -17,12 +17,15 @@ class User
     {
         try {
             $stmt = $this->conn->prepare(
-                'INSERT INTO users (name, phone, email, address, complement, country, state, city, neighborhood, postal_code, birth_date, password, user_type)
+                'INSERT INTO users (name, phone, email, address, complement, country, state, city, neighborhood, postal_code, birth_date, password, user_type, cpf, gender)
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             );
 
+            $cpf = $data['cpf'] ?? null;
+            $gender = $data['gender'] ?? null;
+
             $stmt->bind_param(
-                'sssssssssssss',
+                'sssssssssssssss',
                 $data['name'],
                 $data['phone'],
                 $data['email'],
@@ -35,16 +38,15 @@ class User
                 $data['postal_code'],
                 $data['birth_date'],
                 $data['password'],
-                $data['cpf'],
-                $data['user_type']
+                $data['user_type'],
+                $cpf,
+                $gender
             );
 
             $stmt->execute();
-            //echo "Deu certo";
             return true;
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
-            //echo "Deu merda";
             return false;
         }
     }
@@ -103,11 +105,14 @@ class User
     {
         try {
             $stmt = $this->conn->prepare(
-                'UPDATE users SET name = ?, phone = ?, email = ?, address = ?, complement = ?, country = ?, state = ?, city = ?, neighborhood = ?, postal_code = ?, birth_date = ?, user_type = ? WHERE user_id = ?'
+                'UPDATE users SET name = ?, phone = ?, email = ?, address = ?, complement = ?, country = ?, state = ?, city = ?, neighborhood = ?, postal_code = ?, birth_date = ?, user_type = ?, cpf = ?, gender = ? WHERE user_id = ?'
             );
 
+            $cpf = $data['cpf'] ?? null;
+            $gender = $data['gender'] ?? null;
+
             $stmt->bind_param(
-                'ssssssssssssi',
+                'ssssssssssssssi',
                 $data['name'],
                 $data['phone'],
                 $data['email'],
@@ -120,6 +125,8 @@ class User
                 $data['postal_code'],
                 $data['birth_date'],
                 $data['user_type'],
+                $cpf,
+                $gender,
                 $user_id
             );
 

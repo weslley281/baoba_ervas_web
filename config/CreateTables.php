@@ -21,13 +21,23 @@ class CreateTables
             neighborhood VARCHAR(100),
             postal_code VARCHAR(10),
             birth_date DATE,
+            cpf VARCHAR(255),
+            gender VARCHAR(50),
             editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
         ";
 
         if ($conn->query($sql) === true) {
-            //echo "Tabela 'users' criada com sucesso.";
+            // Verificar e adicionar colunas cpf e gender se não existirem
+            $checkCpf = $conn->query("SHOW COLUMNS FROM users LIKE 'cpf'");
+            if ($checkCpf && $checkCpf->num_rows == 0) {
+                $conn->query("ALTER TABLE users ADD COLUMN cpf VARCHAR(255)");
+            }
+            $checkGender = $conn->query("SHOW COLUMNS FROM users LIKE 'gender'");
+            if ($checkGender && $checkGender->num_rows == 0) {
+                $conn->query("ALTER TABLE users ADD COLUMN gender VARCHAR(50)");
+            }
         } else {
             echo "Erro ao criar tabela 'users': " . $conn->error;
         }

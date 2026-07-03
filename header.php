@@ -10,17 +10,24 @@
     <meta name="copyright" content="Weslley Henrique Vieira Ferraz" />
     <meta name="keywords" content="erva, tempero, produto natural, cha, castanha, farinaceo, farinha, doce, fruta seca">
     <?php
-    if (isset($_GET["slogan"])) {
-        $description = $product->getDescription($_GET["slogan"]);
+    // Detecta o protocolo e host dinamicamente para gerar URLs absolutas (essencial para compartilhamento)
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $domain = $_SERVER['HTTP_HOST'];
+    $base_url = $protocol . $domain;
+    if (strpos($_SERVER['REQUEST_URI'], '/baoba_ervas_web') !== false) {
+        $base_url .= '/baoba_ervas_web';
+    }
+
+    if ($page == "product" && isset($_GET["slogan"])) {
+        $description = strip_tags($product->getDescription($_GET["slogan"]));
         $description = htmlspecialchars_decode($description, ENT_QUOTES);
-        // Limita o título a 20 caracteres e adiciona reticências se for maior que 20
-        $description = strlen($description) > 20 ? substr($description, 0, 20) . '...' : $description;
+        $description = strlen($description) > 150 ? substr($description, 0, 150) . '...' : $description;
     ?>
-        <meta name="description" content="<?= $description; ?>">
+        <meta name="description" content="<?= htmlspecialchars($description); ?>">
     <?php
     } else {
     ?>
-        <meta name="description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
+        <meta name="description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, encapsulados, chás, ervas, temperos, açúcares, castanhas, farináceos e frutas secas.">
     <?php
     }
     ?>
@@ -34,7 +41,7 @@
 
 
     <?php
-    if ($page == "product") {
+    if ($page == "product" && isset($_GET["slogan"])) {
         $sup = $product->getBySlogan($_GET["slogan"]);
         $array_path_image = explode("/", $sup['path_image']);
         $path_image = "";
@@ -44,12 +51,18 @@
                 $path_image = $path_image . "/" . $value;
             }
         }
+        $abs_image_url = $base_url . $path_image;
+        $abs_product_url = $base_url . '/index.php?page=product&slogan=' . $sup['slogan'];
+
+        // Remove tags HTML da descrição e limita tamanho
+        $clean_desc = strip_tags(htmlspecialchars_decode($sup["description"], ENT_QUOTES));
+        $clean_desc = strlen($clean_desc) > 150 ? substr($clean_desc, 0, 150) . '...' : $clean_desc;
     ?>
         <!-- Open Graph para compartilhamento -->
-        <meta property="og:title" content="<?= $page_title; ?>">
-        <meta property="og:description" content="<?= htmlspecialchars_decode($sup["description"], ENT_QUOTES); ?>">
-        <meta property="og:image" content="<?= '.' . $path_image; ?>">
-        <meta property="og:url" content="https://baobaervas.com.br/index.php?page=product&slogan=<?= $sup['slogan'] ?>">
+        <meta property="og:title" content="<?= htmlspecialchars($sup['name']); ?>">
+        <meta property="og:description" content="<?= htmlspecialchars($clean_desc); ?>">
+        <meta property="og:image" content="<?= $abs_image_url; ?>">
+        <meta property="og:url" content="<?= $abs_product_url; ?>">
         <meta property="og:type" content="website">
 
         <!-- Informações adicionais para produtos no Open Graph -->
@@ -60,17 +73,20 @@
 
         <!-- Twitter Cards -->
         <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="<?= $page_title; ?>">
-        <meta name="twitter:description" content="<?= htmlspecialchars_decode($sup["description"], ENT_QUOTES); ?>">
-        <meta name="twitter:image" content="<?= '.' .  $path_image; ?>">
+        <meta name="twitter:title" content="<?= htmlspecialchars($sup['name']); ?>">
+        <meta name="twitter:description" content="<?= htmlspecialchars($clean_desc); ?>">
+        <meta name="twitter:image" content="<?= $abs_image_url; ?>">
     <?php
     } else {
+        $abs_logo_url = $base_url . '/images/logo.png';
+        $abs_site_url = $base_url . '/index.php';
+        $site_desc = "Somos uma loja de produtos naturais, trabalhamos com venda de ervas, encapsulados, chás, ervas, temperos, açúcares, castanhas, farináceos e frutas secas.";
     ?>
         <!-- Metatags de Open Graph -->
         <meta property="og:title" content="<?= $page_title; ?>">
-        <meta property="og:description" content="Somos uma loja de produtos naturais, trabalhamos com venda de ervas, emcapsulados, chás, ervas, temperos, açucares, castanhas, farinaceos e frutas secas.">
-        <meta property="og:image" content="./images/logo.png">
-        <meta property="og:url" content="https://baobaervas.com.br">
+        <meta property="og:description" content="<?= $site_desc; ?>">
+        <meta property="og:image" content="<?= $abs_logo_url; ?>">
+        <meta property="og:url" content="<?= $abs_site_url; ?>">
         <meta property="og:type" content="website">
     <?php
     }

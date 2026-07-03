@@ -5,7 +5,7 @@
         <img id="banner" src="./images/banner.png" alt="Banner da loja" class="img-fluid rounded-3">
     </div>
 
-    <di class="row text-center">
+    <div class="row text-center">
         <?php
         $categories = $category->getAll();
         foreach ($categories as $cat) {
@@ -16,7 +16,7 @@
         <?php
         }
         ?>
-    </di>
+    </div>
 
     <h2 class="text-center mb-4">Nossos Produtos</h2>
     <div id="products" class="row row-cols-2 row-cols-md-4 g-4"> <!-- Alterado para g-4 para maior espaçamento entre cards -->

@@ -27,10 +27,10 @@ if (isset($_SESSION["user_id"])) {
                                 <a class="nav-link <?= $action == "categories" ? "active" : "" ?>" href="index.php?page=profile&action=categories">Categorias</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Usuários</a>
+                                <a class="nav-link <?= $action == "users" ? "active" : "" ?>" href="index.php?page=profile&action=users">Usuários</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Pedidos</a>
+                                <a class="nav-link <?= $action == "chatbot_training" ? "active" : "" ?>" href="index.php?page=profile&action=chatbot_training">Chatbot (FAQ)</a>
                             </li>
                         <?php } ?>
                     </ul>
@@ -55,6 +55,9 @@ if (isset($_SESSION["user_id"])) {
                     </a>
                     <a style="text-decoration: none;" href="index.php?page=profile&action=users">
                         <li class="list-group-item list-group-item-action <?= $action == "users" ? "active" : "" ?>">Usuários</li>
+                    </a>
+                    <a style="text-decoration: none;" href="index.php?page=profile&action=chatbot_training">
+                        <li class="list-group-item list-group-item-action <?= $action == "chatbot_training" ? "active" : "" ?>">Chatbot (FAQ)</li>
                     </a>
                 <?php } ?>
             </ul>
@@ -97,6 +100,21 @@ if (isset($_SESSION["user_id"])) {
                 require_once "categories.php";
             } elseif ($action == "users") {
                 require_once "users.php";
+            } elseif ($action == "chatbot_training") {
+                if (isset($_GET['action2'])) {
+                    switch ($_GET['action2']) {
+                        case 'success':
+                            echo renderAlert('success', 'Sucesso!', 'Treinamento salvo com sucesso.');
+                            break;
+                        case 'deleted':
+                            echo renderAlert('success', 'Sucesso!', 'Pergunta/Resposta removida com sucesso.');
+                            break;
+                        case 'fail':
+                            echo renderAlert('danger', 'Erro!', 'Erro ao salvar o treinamento.');
+                            break;
+                    }
+                }
+                require_once "chatbot_training.php";
             } else {
                 switch ($action) {
                     case 'invalid':
@@ -114,7 +132,7 @@ if (isset($_SESSION["user_id"])) {
     </div>
 <?php
 } else {
-    echo "<center><strong><h1>Você não Tem permição para isso</h1></strong></center>";
+    echo "<center><strong><h1>Você não tem permissão para isso</h1></strong></center>";
     echo "<script>";
     echo "setTimeout(function() { window.location.href = './index.php?page=login'; }, 3000);";
     echo "</script>";

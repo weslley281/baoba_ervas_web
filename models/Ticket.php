@@ -15,15 +15,11 @@ class Ticket {
 
         if (file_exists(self::$file)) {
             self::$data = json_decode(file_get_contents(self::$file), true);
+            if (!is_array(self::$data)) {
+                self::resetDay();
+            }
         } else {
-            self::$data = [
-                'lastCommon' => 0,
-                'lastPriority' => 0,
-                'queueCommon' => [],
-                'queuePriority' => [],
-                'calledTickets' => []
-            ];
-            self::save();
+            self::resetDay();
         }
     }
 

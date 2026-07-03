@@ -12,9 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_SESSION['block']) && $_SESSION['block'] > time()) {
         $timeLeft = $_SESSION['block'] - time();
-        $message = "Usuário bloqueado, tente novamente em " . gmdate("H:i:s", $timeLeft);
+        $message = "Usuario bloqueado por excesso de tentativas. Tente novamente em " . gmdate("H:i:s", $timeLeft);
         echo "<script language='javascript'>window.alert('$message'); </script>";
-        echo "<script language='javascript'>window.location='../views/login.php'; </script>";
+        echo "<script language='javascript'>window.location='../index.php?page=login'; </script>";
         exit();
     }
 
@@ -26,27 +26,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->get_result()->fetch_assoc();
 
         if ($user && password_verify($_POST['password'], $user['password'])) {
+            $_SESSION['attempts'] = 0;
+            if (isset($_SESSION['block'])) {
+                unset($_SESSION['block']);
+            }
 
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['user_type'] = $user['user_type'];
             $_SESSION['name'] = $user['name'];
 
-            header("Location:  ../index.php?page=profile");
-
+            header("Location: ../index.php?page=profile");
             exit;
         } else {
-            // echo $_POST['password'] . "<br>";
-            // echo $user['password'] . "<br>";
-            // var_dump($user);
-            // echo "<br>";
-            // var_dump(password_verify($_POST['password'], $user['password']));
-            // echo "<br>";
-            // echo "PAREI AQUI 01";
+            $_SESSION['attempts'] = ($_SESSION['attempts'] ?? 0) + 1;
+            if ($_SESSION['attempts'] >= $limitAttempts) {
+                $_SESSION['block'] = time() + 300; // Bloqueia por 5 minutos (300 segundos)
+                $_SESSION['attempts'] = 0;
+            }
             header("Location: ../index.php?page=login&action=fail");
+            exit;
         }
     } else {
-        //echo "PAREI AQUI 02";
         header("Location: ../index.php?page=login&action=fail");
+        exit;
     }
 }

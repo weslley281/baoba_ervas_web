@@ -64,8 +64,8 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 <?php
                 $get_categories = $category->getAll();
 
-                foreach ($get_categories as $category) :
-                    $array_path_image = explode("/", $category['path_image']);
+                foreach ($get_categories as $cat) :
+                    $array_path_image = explode("/", $cat['path_image']);
 
                     $path_image = "";
 
@@ -77,10 +77,10 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
                 ?>
                     <tr>
                         <td><img src="<?= "." . $path_image; ?>" width="50" height="50" alt="Imagem"></td>
-                        <td><?php echo $category['name']; ?></td>
+                        <td><?php echo $cat['name']; ?></td>
                         <td>
-                            <a href="index.php?page=profile&action=categories&category=<?php echo $category['slogan']; ?>" class="btn btn-warning btn-sm" target="_blank">Editar</a>
-                            <a href="index.php?page=profile&action=categories&action2=delete&id=<?php echo $category['category_id']; ?>" class="btn btn-danger btn-sm">Excluir</a>
+                            <a href="index.php?page=profile&action=categories&category=<?php echo $cat['slogan']; ?>" class="btn btn-warning btn-sm" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Editar</a>
+                            <a href="index.php?page=profile&action=categories&action2=delete&id=<?php echo $cat['category_id']; ?>" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash-can"></i> Excluir</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -94,9 +94,7 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="TituloModalLongoExemplo">Cadastrar Categoria</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <form action="./controllers/CategoryController.php?action=create" method="POST" enctype="multipart/form-data">
@@ -124,9 +122,46 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
             </div>
         </div>
     </div>
+
+    <!-- Modal de Deletar Categoria -->
+    <?php
+    if (isset($_GET["action2"]) && $_GET["action2"] == "delete") {
+        $get_cat_to_delete = $category->getById($_GET["id"]);
+        if ($get_cat_to_delete) {
+    ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    $('#ModalDeletarCategoria').modal('show');
+                });
+            </script>
+            <div class="modal fade" id="ModalDeletarCategoria" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoDeletarCategoria" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="TituloModalLongoDeletarCategoria">Deletar Categoria</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <p>Você tem certeza que deseja deletar a categoria <strong><?php echo htmlspecialchars($get_cat_to_delete['name']); ?></strong>?</p>
+                            <p class="text-danger"><strong>Esta ação é irreversível e removerá todos os vínculos!</strong></p>
+                            <form action="./controllers/CategoryController.php?action=delete" method="POST">
+                                <input type="hidden" name="id" value="<?php echo $get_cat_to_delete['category_id']; ?>">
+                                <button type="submit" class="btn btn-danger">Deletar Categoria</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <?php
+        }
+    }
+    ?>
 <?php
 } else {
-    echo "<center><strong><h1>Você não Tem permição para isso</h1></strong></center>";
+    echo "<center><strong><h1>Você não tem permissão para isso</h1></strong></center>";
     echo "<script>";
     echo "setTimeout(function() { window.location.href = 'index.php?page=login'; }, 3000);";
     echo "</script>";

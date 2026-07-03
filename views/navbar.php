@@ -3,12 +3,49 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="index.php"><span class="text-white"><i class="fa-solid fa-house"></i> Home</span></a>
             </li>
 
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="storeDropdown" role="button" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="text-white"><i class="fa-solid fa-location-dot"></i> 
+                    <?php 
+                    if (isset($_SESSION['preferred_store']) && isset(STORES[$_SESSION['preferred_store']])) {
+                        echo htmlspecialchars(STORES[$_SESSION['preferred_store']]['short_name']);
+                    } else {
+                        echo "Selecionar Filial";
+                    }
+                    ?>
+                    </span>
+                </a>
+                <div class="dropdown-menu bg-success border-0 shadow" aria-labelledby="storeDropdown">
+                    <?php foreach (STORES as $key => $store) { ?>
+                        <a class="dropdown-item text-white fw-bold" href="index.php?set_store=<?= $key ?>"><?= htmlspecialchars($store['name']) ?></a>
+                    <?php } ?>
+                    <?php if (isset($_SESSION['preferred_store'])) { ?>
+                        <div class="dropdown-divider border-light" style="border-top: 1px solid rgba(255,255,255,0.25);"></div>
+                        <a class="dropdown-item text-warning fw-bold" href="index.php?set_store=none"><i class="fa-solid fa-trash-can"></i> Limpar Escolha</a>
+                    <?php } ?>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?page=cart"><span class="text-white"><i class="fa-solid fa-cart-shopping"></i> Carrinho</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?page=assessment"><span class="text-white"><i class="fa-solid fa-star"></i> Avalie a nossa loja</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="index.php?page=contact"><span class="text-white"><i class="fa-solid fa-envelope"></i> Contato</span></a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto ms-auto">
             <?php if (isset($_SESSION["user_id"])) { ?>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?page=profile"><span class="text-white"><i class="fa-solid fa-user"></i> Perfil</span></a>
@@ -19,25 +56,13 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php?page=cart"><span class="text-white"><i class="fa-solid fa-hand-holding-dollar"></i> Carrinho</span></a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="./utils/go_out.php"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sair</a>
+                    <a class="nav-link" href="./utils/go_out.php" style="color: #dc3545 !important;"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #dc3545 !important;"></i> Sair</a>
                 </li>
             <?php } else { ?>
                 <li class="nav-item">
                     <a class="nav-link" href="index.php?page=login"><span class="text-white"><i class="fa-solid fa-user"></i> Login</span></a>
                 </li>
             <?php } ?>
-
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=assessment"><span class="text-white"><i class="fa-solid fa-star"></i> Avalie a nossa loja</span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?page=contact"><span class="text-white"><i class="fa-solid fa-envelope"></i> Contato</span></a>
-            </li>
         </ul>
     </div>
 </nav>

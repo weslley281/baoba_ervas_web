@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     function getUserData($post)
     {
-        $password = isset($_POST["password"]) ? password_hash($_POST["password"], PASSWORD_DEFAULT) : '';
-        $cpf = isset($post['cpf']) ? encrypt($post['cpf'], ENCRYPTION_KEY) : null;
+        $password = !empty($_POST["password"]) ? password_hash($_POST["password"], PASSWORD_DEFAULT) : '';
+        $cpf = !empty($post['cpf']) ? encrypt($post['cpf'], ENCRYPTION_KEY) : null;
 
         return [
             "name" => htmlspecialchars($post["name"] ?? ''),
@@ -29,7 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "postal_code" => htmlspecialchars($post["postal_code"] ?? ''),
             "birth_date" => htmlspecialchars($post["birth_date"] ?? ''),
             "password" => $password,
-            "user_type" => 'client'
+            "user_type" => 'client',
+            "cpf" => $cpf,
+            "gender" => htmlspecialchars($post["gender"] ?? '')
         ];
     }
 
@@ -42,7 +44,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($user->create($data)) {
                     header("Location: ../index.php?page=login");
                 } else {
-                    echo $user->create($data);
                     header("Location: ../index.php?page=login&action=fail");
                 }
             } else {
@@ -59,35 +60,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
             $data = getUserData($_POST);
+            $existing_user = $user->getById($user_id);
+            if ($existing_user) {
+                $data['user_type'] = $existing_user['user_type'];
+                if (empty($data['password']) && !empty($existing_user['password'])) {
+                    $data['password'] = $existing_user['password'];
+                }
+            }
+            
+            $redirect_url = "../index.php?page=profile&action=saved";
+            $fail_url = "../index.php?page=profile&action=fail";
+            if (isset($_SESSION['user_type']) && $_SESSION['user_type'] === 'admin' && $user_id != $_SESSION['user_id']) {
+                $redirect_url = "../index.php?page=profile&action=users&action2=saved";
+                $fail_url = "../index.php?page=profile&action=users&action2=fail";
+            }
+
             if ($user->update($data, $user_id)) {
-                header("Location: ../index.php?page=profile&action=saved");
+                header("Location: " . $redirect_url);
             } else {
-                header("Location: ../index.php?page=profile&action=fail");
+                header("Location: " . $fail_url);
             }
             break;
 
         case 'updatetype':
             if ($user_id === null) {
-                header("Location: ../index.php?page=profile&action=invalid");
+                header("Location: ../index.php?page=profile&action=users&action2=invalid");
                 exit;
             }
 
             if ($user->updateType($_POST["user_type"], $user_id)) {
-                header("Location: ../index.php?page=profile&action=saved");
+                header("Location: ../index.php?page=profile&action=users&action2=saved");
             } else {
-                header("Location: ../index.php?page=profile&action=fail");
+                header("Location: ../index.php?page=profile&action=users&action2=fail");
             }
             break;
 
         case 'delete':
             if ($user_id === null) {
-                header("Location: ../index.php?page=profile&action=invalid");
+                header("Location: ../index.php?page=profile&action=users&action2=invalid");
                 exit;
             }
             if ($user->delete($user_id)) {
-                header("Location: ../index.php?page=profile&action=deleted");
+                header("Location: ../index.php?page=profile&action=users&action2=deleted");
             } else {
-                header("Location: ../index.php?page=profile&action=fail");
+                header("Location: ../index.php?page=profile&action=users&action2=fail");
             }
             break;
 

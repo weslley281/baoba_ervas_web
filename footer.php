@@ -20,21 +20,24 @@
 <script src="./utils/req_res_chatboot.js"></script>
 
 <script>
-    document.getElementById('phone').addEventListener('input', function(e) {
-        let input = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-        input = input.substring(0, 11); // Limita a 11 dígitos
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let input = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            input = input.substring(0, 11); // Limita a 11 dígitos
 
-        // Aplica a máscara de acordo com a quantidade de dígitos
-        if (input.length > 10) {
-            input = `(${input.slice(0, 2)}) ${input.slice(2, 7)}-${input.slice(7, 11)}`;
-        } else if (input.length > 6) {
-            input = `(${input.slice(0, 2)}) ${input.slice(2, 6)}-${input.slice(6, 10)}`;
-        } else if (input.length > 2) {
-            input = `(${input.slice(0, 2)}) ${input.slice(2)}`;
-        }
+            // Aplica a máscara de acordo com a quantidade de dígitos
+            if (input.length > 10) {
+                input = `(${input.slice(0, 2)}) ${input.slice(2, 7)}-${input.slice(7, 11)}`;
+            } else if (input.length > 6) {
+                input = `(${input.slice(0, 2)}) ${input.slice(2, 6)}-${input.slice(6, 10)}`;
+            } else if (input.length > 2) {
+                input = `(${input.slice(0, 2)}) ${input.slice(2)}`;
+            }
 
-        e.target.value = input; // Atualiza o valor do campo com a máscara
-    });
+            e.target.value = input; // Atualiza o valor do campo com a máscara
+        });
+    }
 </script>
 
 <script>

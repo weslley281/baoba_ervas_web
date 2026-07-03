@@ -3,6 +3,7 @@ session_start();
 
 require_once "config/db.php";
 require_once "config/CreateTables.php";
+require_once "config/stores.php";
 
 require_once "./utils/renderAlert.php";
 require_once "./utils/truncate.php";
@@ -26,7 +27,7 @@ $sale_item = new SaleItem($conn);
 $createTable->createUsersTable($conn);
 $createTable->createProductsTable($conn);
 $createTable->createCategoriesTable($conn);
-//$createTable->createSalesTable($conn);
+$createTable->createSalesTable($conn);
 $createTable->createSalesItemTable($conn);
 
 if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
@@ -52,6 +53,23 @@ if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
     ];
 
     $user->create($data);
+}
+
+// Handler para definir a filial preferida
+if (isset($_GET['set_store'])) {
+    $store_key = $_GET['set_store'];
+    if (defined('STORES') && array_key_exists($store_key, STORES)) {
+        $_SESSION['preferred_store'] = $store_key;
+    } elseif ($store_key === 'none') {
+        unset($_SESSION['preferred_store']);
+    }
+    
+    // Redireciona de volta limpando o parametro set_store
+    $referer = $_SERVER['HTTP_REFERER'] ?? 'index.php';
+    $referer = preg_replace('/([?&])set_store=[^&]*(&?)/', '$1', $referer);
+    $referer = rtrim($referer, '?&');
+    header("Location: " . $referer);
+    exit();
 }
 
 if (isset($_GET["slogan"])) {
@@ -152,16 +170,15 @@ require_once "./header.php";
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <a id="widthOutDecoration" href="https://api.whatsapp.com/send/?phone=556533621007&text=Olá%20gostaria%20de%20tirar%20umas%20dúvidas" target="_blank">
-                        <p class="text-success"><strong>Loja do Centro de Várzea Grande</strong></p>
-                    </a>
-                    <a id="widthOutDecoration" href="https://api.whatsapp.com/send/?phone=556533621008&text=Olá%20gostaria%20de%20tirar%20umas%20dúvidas" target="_blank">
-                        <p class="text-success"><strong>Loja do Centro de Cuiabá</strong></p>
-                    </a>
-                    <a id="widthOutDecoration" href="https://api.whatsapp.com/send/?phone=556530239010&text=Olá%20gostaria%20de%20tirar%20umas%20dúvidas" target="_blank">
-                        <p class="text-success"><strong>Loja do Porto - Cuiabá</strong></p>
-                    </a>
+                <div class="modal-body text-center">
+                    <p>Selecione uma filial para iniciar o atendimento:</p>
+                    <div class="list-group">
+                        <?php foreach (STORES as $key => $store) { ?>
+                            <a href="https://wa.me/<?= $store['phone'] ?>?text=<?= urlencode('Olá! Gostaria de tirar algumas dúvidas.') ?>" target="_blank" class="list-group-item list-group-item-action text-success py-3">
+                                <i class="fa-brands fa-whatsapp fa-lg mr-2"></i> <strong><?= htmlspecialchars($store['name']) ?></strong>
+                            </a>
+                        <?php } ?>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
@@ -170,6 +187,11 @@ require_once "./header.php";
         </div>
     </div>
 </body>
+
+<!-- Ícone flutuante do WhatsApp -->
+<div class="whatsapp-float-icon" <?php if (isset($_SESSION['preferred_store']) && isset(STORES[$_SESSION['preferred_store']])) { ?>onclick="window.open('https://wa.me/<?= STORES[$_SESSION['preferred_store']]['phone'] ?>?text=<?= urlencode('Olá! Gostaria de tirar algumas dúvidas.') ?>', '_blank')"<?php } else { ?>data-toggle="modal" data-target="#ModalWhatsapp"<?php } ?>>
+    <i class="fa-brands fa-whatsapp"></i>
+</div>
 
 <!-- Ícone flutuante para abrir a modal -->
 <div class="chat-icon" data-toggle="modal" data-target="#chatbotModal">
@@ -188,7 +210,7 @@ require_once "./header.php";
                 <!-- Conteúdo do chat -->
 
                 <div id="chatContainer">
-                    <div class="message bot-message" id="chat-messages" class="mb-3"></div>
+                    <div id="chat-messages" class="mb-3"></div>
                     <div id="user-input" class="input-group">
                         <input
                             type="text"

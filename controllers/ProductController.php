@@ -182,12 +182,12 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
     } else {
         echo "<center><strong><h1>Requisição incorreta</h1></strong></center>";
         echo "<script>";
-        echo "window.location.href = '../index.php'; }, 3000);";
+        echo "setTimeout(function() { window.location.href = '../index.php'; }, 3000);";
         echo "</script>";
     }
 } else {
-    echo "<center><strong><h1>Você não Tem permição para isso</h1></strong></center>";
+    echo "<center><strong><h1>Você não tem permissão para isso</h1></strong></center>";
     echo "<script>";
-    echo "window.location.href = '../index.php?page=login'; }, 3000);";
+    echo "setTimeout(function() { window.location.href = '../index.php?page=login'; }, 3000);";
     echo "</script>";
 }

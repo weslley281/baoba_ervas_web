@@ -3,24 +3,13 @@
     <div class="row">
         <div class="col-md-6">
             <h4>Nossas Lojas</h4>
-            <div class="mb-3">
-                <strong>Loja Centro - Cuiabá</strong><br>
-                Rua Joaquim Murtinho, 319<br>
-                Centro Norte, Cuabá - MT<br>
-                Tel: (65) 3025-7187
-            </div>
-            <div class="mb-3">
-                <strong>Loja Porto - Cuiabá</strong><br>
-                Rua Prof Feliciano Galdino, 585<br>
-                Porto, Cuiabá - MT<br>
-                Tel: (65) 3023-9010
-            </div>
-            <div class="mb-3">
-                <strong>Loja Centro - Várzea Grande</strong><br>
-                Praça Bem-Estar, 789<br>
-                Centro, Várzea Grande - MT<br>
-                Tel: (65) 3362-1007
-            </div>
+            <?php foreach (STORES as $key => $store) { ?>
+                <div class="mb-3">
+                    <strong><?= htmlspecialchars($store['name']) ?></strong><br>
+                    <?= htmlspecialchars($store['address']) ?><br>
+                    WhatsApp: <a href="https://wa.me/<?= $store['phone'] ?>" target="_blank" class="text-success"><?= htmlspecialchars($store['phone']) ?></a>
+                </div>
+            <?php } ?>
         </div>
 
         <div class="col-md-6">
@@ -48,7 +37,14 @@
         <div class="col-md-12">
             <h4>Atendimento ao Cliente</h4>
             <p>Se você tiver alguma dúvida ou precisar de assistência, entre em contato conosco através do nosso WhatsApp:</p>
-            <a href="https://api.whatsapp.com/send?phone=556530239010" target="_blank" class="btn btn-success">WhatsApp</a>
+            <?php
+            if (isset($_SESSION['preferred_store']) && isset(STORES[$_SESSION['preferred_store']])) {
+                $store = STORES[$_SESSION['preferred_store']];
+            ?>
+                <a href="https://wa.me/<?= $store['phone'] ?>" target="_blank" class="btn btn-success"><i class="fa-brands fa-whatsapp"></i> Conversar com <?= htmlspecialchars($store['short_name']) ?></a>
+            <?php } else { ?>
+                <a href="#" data-toggle="modal" data-target="#ModalWhatsapp" class="btn btn-success"><i class="fa-brands fa-whatsapp"></i> Falar Conosco</a>
+            <?php } ?>
         </div>
         <div class="col-md-12 mt-4">
             <h4>Horário de Funcionamento</h4>
