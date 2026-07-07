@@ -17,6 +17,11 @@ class Ticket {
             self::$data = json_decode(file_get_contents(self::$file), true);
             if (!is_array(self::$data)) {
                 self::resetDay();
+            } else {
+                // Previne erros caso o arquivo já exista mas não contenha a nova chave
+                if (!isset(self::$data['consecutivePriorityCalled'])) {
+                    self::$data['consecutivePriorityCalled'] = 0;
+                }
             }
         } else {
             self::resetDay();
@@ -47,10 +52,26 @@ class Ticket {
         self::init();
         $ticket = null;
 
-        if (!empty(self::$data['queuePriority'])) {
+        $hasPriority = !empty(self::$data['queuePriority']);
+        $hasCommon = !empty(self::$data['queueCommon']);
+
+        if ($hasPriority && $hasCommon) {
+            // Regra do revezamento 2:1 (chama no máximo 2 prioritários seguidos se houver comuns na fila)
+            if (self::$data['consecutivePriorityCalled'] < 2) {
+                $ticket = array_shift(self::$data['queuePriority']);
+                self::$data['consecutivePriorityCalled']++;
+            } else {
+                $ticket = array_shift(self::$data['queueCommon']);
+                self::$data['consecutivePriorityCalled'] = 0; // Reseta o contador de prioridade
+            }
+        } elseif ($hasPriority) {
+            // Apenas prioritários na fila
             $ticket = array_shift(self::$data['queuePriority']);
-        } elseif (!empty(self::$data['queueCommon'])) {
+            self::$data['consecutivePriorityCalled']++;
+        } elseif ($hasCommon) {
+            // Apenas comuns na fila
             $ticket = array_shift(self::$data['queueCommon']);
+            self::$data['consecutivePriorityCalled'] = 0; // Zera pois chamou comum
         }
 
         if ($ticket) {
@@ -69,10 +90,16 @@ class Ticket {
 
     public static function getCalledTickets() {
         self::init();
-        //return self::$data['calledTickets'];
-
         // Pega os últimos 4 chamados, mantendo a ordem do mais recente para o mais antigo
         return array_slice(array_reverse(self::$data['calledTickets']), 0, 4);
+    }
+
+    public static function getQueueCounts() {
+        self::init();
+        return [
+            'priority' => count(self::$data['queuePriority']),
+            'common' => count(self::$data['queueCommon'])
+        ];
     }
 
     public static function resetDay() {
@@ -81,7 +108,8 @@ class Ticket {
             'lastPriority' => 0,
             'queueCommon' => [],
             'queuePriority' => [],
-            'calledTickets' => []
+            'calledTickets' => [],
+            'consecutivePriorityCalled' => 0
         ];
         self::save();
     }

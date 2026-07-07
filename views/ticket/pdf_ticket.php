@@ -76,15 +76,20 @@ $hora = date('H:i:s');
     </div>
 
     <script>
+        function redirecionar() {
+            window.location.href = '../../index.php?page=ticket';
+        }
+
         window.onload = function () {
+            // Registra o evento para navegadores que suportam
+            window.onafterprint = redirecionar;
+            
             setTimeout(function () {
                 window.print();
-                window.onafterprint = () => {
-                    window.location.href = '../../index.php?page=ticket';
-                };
-            }, 500);
+                // Redirecionamento de contingência imediata logo após a caixa de impressão fechar
+                setTimeout(redirecionar, 200);
+            }, 100);
         };
-        
     </script>
 </body>
 </html>

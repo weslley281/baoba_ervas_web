@@ -1,10 +1,22 @@
 <!-- views/ticket/panel.php -->
 <div class="container mt-5">
-    <div class="card shadow-lg border-0 overflow-hidden">
-        <div class="card-header bg-success text-white text-center py-3">
+    <div id="panel-card" class="card shadow-lg border-0 overflow-hidden position-relative">
+        <!-- Botão flutuante para fechar tela cheia (apenas visível em fullscreen) -->
+        <button id="btn-exit-fullscreen" class="btn btn-dark btn-sm rounded-circle shadow" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; width: 50px; height: 50px; display: none;" onclick="toggleFullScreen()">
+            <i class="fa-solid fa-xmark fa-xl"></i>
+        </button>
+        <div class="card-header bg-success text-white text-center py-3 position-relative">
             <h2 class="mb-0"><i class="fas fa-tv"></i> Painel de Atendimento</h2>
+            <button id="btn-fullscreen" class="btn btn-outline-light btn-sm" style="position: absolute; top: 15px; right: 15px; border-radius: 8px;" onclick="toggleFullScreen()">
+                <i class="fa-solid fa-expand"></i> Tela Cheia
+            </button>
         </div>
         <div class="card-body bg-light p-4">
+            <!-- Alerta de bloqueio de autoplay do navegador -->
+            <div id="autoplay-banner" class="alert alert-warning text-center fw-bold shadow-sm mb-4" style="cursor: pointer; border-radius: 8px;" onclick="enableAudio()">
+                <i class="fa-solid fa-volume-high"></i> O navegador bloqueou o som automático. Clique aqui (ou em qualquer lugar da tela) para ativar o áudio das chamadas!
+            </div>
+            
             <div class="row">
                 <!-- Painel de Destaque -->
                 <div class="col-md-7 mb-4 mb-md-0">
@@ -39,10 +51,111 @@
     .blink-text {
         animation: blink 0.8s infinite;
     }
+
+    /* Estilos do Modo Tela Cheia Dedicado (Esconde o cabeçalho e destaca as senhas) */
+    #panel-card:fullscreen {
+        border-radius: 0 !important;
+        background-color: #0b2e1b !important;
+        border: none !important;
+    }
+    #panel-card:fullscreen .card-header {
+        display: none !important;
+    }
+    #panel-card:fullscreen .card-body {
+        background-color: #0b2e1b !important;
+        height: 100vh !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        padding: 3rem !important;
+    }
+    #panel-card:fullscreen .row {
+        width: 100% !important;
+        height: 100% !important;
+        align-items: stretch !important;
+    }
+    #panel-card:fullscreen .bg-white {
+        background-color: #124d2e !important;
+        color: #ffffff !important;
+        border-color: #1d7243 !important;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.3) !important;
+    }
+    #panel-card:fullscreen #senha-principal {
+        color: #2ebd6e !important;
+        font-size: 11rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+    }
+    #panel-card:fullscreen #atendente-principal {
+        color: #ffffff !important;
+        font-size: 5rem !important;
+    }
+    #panel-card:fullscreen .text-muted {
+        color: #a3cfb6 !important;
+        font-size: 1.5rem !important;
+    }
+    #panel-card:fullscreen .text-secondary {
+        color: #a3cfb6 !important;
+        font-size: 2rem !important;
+    }
+    #panel-card:fullscreen #btn-exit-fullscreen {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+    #panel-card:fullscreen #autoplay-banner {
+        margin-bottom: 2rem !important;
+    }
+    #panel-card:fullscreen .bg-light {
+        background-color: #124d2e !important;
+        border-color: #1d7243 !important;
+        color: #ffffff !important;
+    }
+    #panel-card:fullscreen .bg-light .text-success {
+        color: #2ebd6e !important;
+        font-size: 2rem !important;
+    }
+    #panel-card:fullscreen .bg-light .text-muted {
+        color: #a3cfb6 !important;
+    }
+    #panel-card:fullscreen .bg-light .text-secondary {
+        color: #ffffff !important;
+        font-size: 1.5rem !important;
+    }
 </style>
 
 <script>
     let ultimoTicketChamado = null;
+    let audioContextAtivo = false;
+
+    // Função para habilitar o áudio com interação
+    function enableAudio() {
+        try {
+            const tempCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (tempCtx.state === 'suspended') {
+                tempCtx.resume();
+            }
+            audioContextAtivo = true;
+            
+            // Toca som de confirmação
+            playBeep();
+            
+            // Oculta o banner de aviso
+            const banner = document.getElementById('autoplay-banner');
+            if (banner) {
+                banner.classList.add('d-none');
+            }
+        } catch (e) {
+            console.error('Erro ao ativar contexto de áudio:', e);
+        }
+    }
+
+    // Registra clique geral para ativação automática
+    document.addEventListener('click', function() {
+        if (!audioContextAtivo) {
+            enableAudio();
+        }
+    });
 
     function playBeep() {
         try {
@@ -101,16 +214,38 @@
             // O mais recente é o último no array retornado (pois api/painel.php faz array_reverse de getCalledTickets)
             const maisRecente = chamados[chamados.length - 1];
 
-            // Fala e toca som apenas se houver uma nova chamada de ticket
-            if (maisRecente && maisRecente.ticket !== ultimoTicketChamado) {
-                // Primeira execução: apenas registra sem falar para não assustar ao abrir a página
-                if (ultimoTicketChamado !== null) {
-                    playBeep();
-                    setTimeout(() => {
-                        falarSenha(maisRecente.ticket, maisRecente.atendente);
-                    }, 800);
+            // Identifica chamados novos concorrentes para enfileirar as falas
+            if (ultimoTicketChamado === null) {
+                // Primeira carga da página: apenas registra o estado atual sem emitir som
+                if (chamados.length > 0) {
+                    ultimoTicketChamado = chamados[chamados.length - 1].ticket;
                 }
-                ultimoTicketChamado = maisRecente.ticket;
+            } else {
+                const indexUltimo = chamados.findIndex(c => c.ticket === ultimoTicketChamado);
+                let novosChamados = [];
+                
+                if (indexUltimo === -1) {
+                    // Caso a senha anterior não esteja no histórico recente, trata a última como nova
+                    if (maisRecente) {
+                        novosChamados = [maisRecente];
+                    }
+                } else {
+                    // Filtra apenas os novos chamados após o último que registramos
+                    novosChamados = chamados.slice(indexUltimo + 1);
+                }
+
+                if (novosChamados.length > 0) {
+                    novosChamados.forEach((c, idx) => {
+                        // Enfileira os alertas sonoros com intervalo de 4.5 segundos para não sobrepor vozes
+                        setTimeout(() => {
+                            playBeep();
+                            setTimeout(() => {
+                                falarSenha(c.ticket, c.atendente);
+                            }, 800);
+                        }, idx * 4500);
+                    });
+                    ultimoTicketChamado = novosChamados[novosChamados.length - 1].ticket;
+                }
             }
 
             // Atualiza Destaque
@@ -152,4 +287,31 @@
 
     atualizarPainel(); // Chamada inicial
     setInterval(atualizarPainel, 3000); // Atualiza a cada 3 segundos
+
+    function toggleFullScreen() {
+        const card = document.getElementById('panel-card');
+        const btn = document.getElementById('btn-fullscreen');
+        if (!document.fullscreenElement) {
+            card.requestFullscreen().then(() => {
+                btn.innerHTML = '<i class="fa-solid fa-compress"></i> Sair da Tela Cheia';
+            }).catch(err => {
+                console.error(`Erro ao ativar tela cheia: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen().then(() => {
+                btn.innerHTML = '<i class="fa-solid fa-expand"></i> Tela Cheia';
+            });
+        }
+    }
+
+    document.addEventListener('fullscreenchange', () => {
+        const btn = document.getElementById('btn-fullscreen');
+        if (btn) {
+            if (document.fullscreenElement) {
+                btn.innerHTML = '<i class="fa-solid fa-compress"></i> Sair da Tela Cheia';
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-expand"></i> Tela Cheia';
+            }
+        }
+    });
 </script>

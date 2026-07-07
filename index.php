@@ -101,10 +101,15 @@ $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada'
 $page_title = strlen($page_title) > 20 ? substr($page_title, 0, 20) . '...' : $page_title;
 
 require_once "./header.php";
+$is_kiosk = isset($_GET['kiosk']) && $_GET['kiosk'] == 1;
 ?>
 
 <body style="font-family: 'Roboto', sans-serif;">
-    <?php include_once './views/navbar.php'; ?>
+    <?php 
+    if (!$is_kiosk) {
+        include_once './views/navbar.php'; 
+    }
+    ?>
 
     <div class="container">
         <?php
@@ -158,70 +163,77 @@ require_once "./header.php";
         ?>
     </div>
 
-    <?php require_once "./footer.php" ?>
+    <?php if (!$is_kiosk) { require_once "./footer.php"; } ?>
 
-    <!-- Modal -->
-    <div class="modal fade" id="ModalWhatsapp" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="TituloModalLongoExemplo">Quer Conversar com Qual Loja</h5>
-                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <p>Selecione uma filial para iniciar o atendimento:</p>
-                    <div class="list-group">
-                        <?php foreach (STORES as $key => $store) { ?>
-                            <a href="https://wa.me/<?= $store['phone'] ?>?text=<?= urlencode('Olá! Gostaria de tirar algumas dúvidas.') ?>" target="_blank" class="list-group-item list-group-item-action text-success py-3">
-                                <i class="fa-brands fa-whatsapp fa-lg mr-2"></i> <strong><?= htmlspecialchars($store['name']) ?></strong>
-                            </a>
-                        <?php } ?>
+    <?php if (!$is_kiosk) { ?>
+        <!-- Modal -->
+        <div class="modal fade" id="ModalWhatsapp" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="TituloModalLongoExemplo">Quer Conversar com Qual Loja</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <div class="modal-body text-center">
+                        <p>Selecione uma filial para iniciar o atendimento:</p>
+                        <div class="list-group">
+                            <?php foreach (STORES as $key => $store) { ?>
+                                <a href="https://wa.me/<?= $store['phone'] ?>?text=<?= urlencode('Olá! Gostaria de tirar algumas dúvidas.') ?>" target="_blank" class="list-group-item list-group-item-action text-success py-3">
+                                    <i class="fa-brands fa-whatsapp fa-lg mr-2"></i> <strong><?= htmlspecialchars($store['name']) ?></strong>
+                                </a>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php } ?>
 </body>
 
-<!-- Ícone flutuante do WhatsApp -->
-<div class="whatsapp-float-icon" <?php if (isset($_SESSION['preferred_store']) && isset(STORES[$_SESSION['preferred_store']])) { ?>onclick="window.open('https://wa.me/<?= STORES[$_SESSION['preferred_store']]['phone'] ?>?text=<?= urlencode('Olá! Gostaria de tirar algumas dúvidas.') ?>', '_blank')"<?php } else { ?>data-toggle="modal" data-target="#ModalWhatsapp"<?php } ?>>
-    <i class="fa-brands fa-whatsapp"></i>
-</div>
+<?php if (!$is_kiosk) { ?>
+    <!-- Ícone flutuante do WhatsApp -->
+    <div class="whatsapp-float-icon" <?php if (isset($_SESSION['preferred_store']) && isset(STORES[$_SESSION['preferred_store']])) { ?>onclick="window.open('https://wa.me/<?= STORES[$_SESSION['preferred_store']]['phone'] ?>?text=<?= urlencode('Olá! Gostaria de tirar algumas dúvidas.') ?>', '_blank')"<?php } else { ?>data-toggle="modal" data-target="#ModalWhatsapp"<?php } ?>>
+        <i class="fa-brands fa-whatsapp"></i>
+    </div>
 
-<!-- Ícone flutuante para abrir a modal -->
-<div class="chat-icon" data-toggle="modal" data-target="#chatbotModal">
-    <i class="fas fa-comments"></i>
-</div>
+    <!-- Ícone flutuante para abrir a modal -->
+    <div class="chat-icon" data-toggle="modal" data-target="#chatbotModal">
+        <i class="fas fa-comments"></i>
+    </div>
 
-<!-- Modal do chatbot -->
-<div class="modal fade" id="chatbotModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="chatbotModalLabel">Chatbot</h5>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Conteúdo do chat -->
+    <!-- Modal do chatbot -->
+    <div class="modal fade" id="chatbotModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chatbotModalLabel">Chatbot</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Conteúdo do chat -->
 
-                <div id="chatContainer">
-                    <div id="chat-messages" class="mb-3"></div>
-                    <div id="user-input" class="input-group">
-                        <input
-                            type="text"
-                            id="user-message"
-                            class="form-control"
-                            placeholder="Digite sua pergunta..." />
-                        <button id="send-button" class="btn btn-success">Enviar</button>
+                    <div id="chatContainer">
+                        <div id="chat-messages" class="mb-3"></div>
+                        <div id="user-input" class="input-group">
+                            <input
+                                type="text"
+                                id="user-message"
+                                class="form-control"
+                                placeholder="Digite sua pergunta..." />
+                            <button id="send-button" class="btn btn-success">Enviar</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+<?php } ?>
+
+</html>
 
     </html>

@@ -1,65 +1,67 @@
 <?php
 if (isset($_SESSION["user_id"]) && isset($_SESSION["user_type"]) && $_SESSION["user_type"] == "admin") {
-    //$get_user = $user->getById($_SESSION["user_id"]);
+    $is_kiosk = isset($_GET['kiosk']) && $_GET['kiosk'] == 1;
 ?>
     <div class="row my-5">
 
-        <div class="col-12 mb-3 d-lg-none">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-                <a class="navbar-brand" href="#">Menu</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Alternar navegação">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <?php if (!$is_kiosk) { ?>
+            <div class="col-12 mb-3 d-lg-none">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
+                    <a class="navbar-brand" href="#">Menu</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Alternar navegação">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <div class="collapse navbar-collapse" id="mobileMenu">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link <?= $action == "" ? "active" : "" ?>" href="index.php?page=ticket&action=">Chamar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link <?= $page == "cart" ? "active" : "" ?>" href="index.php?page=cart">Carrinho</a>
-                        </li>
-                        <?php if ($_SESSION["user_type"] == "admin") { ?>
+                    <div class="collapse navbar-collapse" id="mobileMenu">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link <?= $action == "products" ? "active" : "" ?>" href="index.php?page=ticket&action=products">Produtos</a>
+                                <a class="nav-link <?= $action == "" ? "active" : "" ?>" href="index.php?page=ticket&action=">Chamar</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link <?= $action == "categories" ? "active" : "" ?>" href="index.php?page=ticket&action=categories">Categorias</a>
+                                <a class="nav-link <?= $page == "cart" ? "active" : "" ?>" href="index.php?page=cart">Carrinho</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Usuários</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Pedidos</a>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+                            <?php if ($_SESSION["user_type"] == "admin") { ?>
+                                <li class="nav-item">
+                                    <a class="nav-link <?= $action == "products" ? "active" : "" ?>" href="index.php?page=ticket&action=products">Produtos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link <?= $action == "categories" ? "active" : "" ?>" href="index.php?page=ticket&action=categories">Categorias</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Usuários</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Pedidos</a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
 
-        <div class="col-lg-2 d-none d-lg-block">
-            <ul class="list-group">
-                <?php if ($_SESSION["user_type"] == "admin") { ?>
+            <div class="col-lg-2 d-none d-lg-block">
+                <ul class="list-group">
+                    <?php if ($_SESSION["user_type"] == "admin") { ?>
 
-                    <a style="text-decoration: none;" href="index.php?page=ticket&action=">
-                        <li class="list-group-item list-group-item-action <?= $action == "" ? "active" : "" ?>">Gerador</li>
-                    </a>
+                        <a style="text-decoration: none;" href="index.php?page=ticket&action=">
+                            <li class="list-group-item list-group-item-action <?= $action == "" ? "active" : "" ?>">Gerador</li>
+                        </a>
 
-                    <a style="text-decoration: none;" href="index.php?page=ticket&action=call">
-                        <li class="list-group-item list-group-item-action <?= $action == "call" ? "active" : "" ?>">Chamador</li>
-                    </a>
+                        <a style="text-decoration: none;" href="index.php?page=ticket&action=call">
+                            <li class="list-group-item list-group-item-action <?= $action == "call" ? "active" : "" ?>">Chamador</li>
+                        </a>
 
-                    <a style="text-decoration: none;" href="index.php?page=ticket&action=panel">
-                        <li class="list-group-item list-group-item-action <?= $action == "panel" ? "active" : "" ?>">Painel</li>
-                    </a>
+                        <a style="text-decoration: none;" href="index.php?page=ticket&action=panel">
+                            <li class="list-group-item list-group-item-action <?= $action == "panel" ? "active" : "" ?>">Painel</li>
+                        </a>
 
-                <?php } ?>
-            </ul>
-        </div>
+                    <?php } ?>
+                </ul>
+            </div>
+        <?php } ?>
 
 
-        <div class="col-sm-12 col-lg-10">
+        <div class="col-sm-12 <?= $is_kiosk ? 'col-lg-12' : 'col-lg-10' ?>">
             <?php
             if ($action == "cart") {
 

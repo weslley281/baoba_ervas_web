@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         case 'call':
             if (isset($_POST['atendente'])) {
                 $atendente = $_POST['atendente'];
+                $_SESSION['last_called_atendente'] = $atendente;
                 $info = Ticket::callNextTicket($atendente);
 
                 if ($info) {
