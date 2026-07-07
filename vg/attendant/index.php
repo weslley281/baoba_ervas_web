@@ -9,7 +9,7 @@ require_once __DIR__ . '/../models/LocalTicket.php';
 $userModel = new User();
 $ticketModel = new LocalTicket();
 
-$error = '';
+$error = $_GET['error'] ?? '';
 $success_message = '';
 
 // 1. Processamento de Login
@@ -120,6 +120,30 @@ $recent_calls = $ticketModel->getCalledTickets();
                         <input type="password" name="password" id="password" class="form-control" required style="border-radius: 8px;">
                     </div>
                     <button type="submit" class="btn btn-success w-100 py-2 fw-bold shadow-sm" style="border-radius: 8px;">Acessar Painel</button>
+                    
+                    <div class="text-center my-3 text-muted">ou</div>
+
+                    <!-- Div onde o botão do Google será exibido -->
+                    <div class="d-flex justify-content-center">
+                        <div id="g_id_onload"
+                            data-client_id="495407143203-ikc2mrf5bh2nfppqdfpm34q9e7rdebhi.apps.googleusercontent.com"
+                            data-login_uri="login_google.php"
+                            data-auto_prompt="false">
+                        </div>
+
+                        <div class="g_id_signin"
+                            data-type="standard"
+                            data-shape="rectangular"
+                            data-theme="outline"
+                            data-text="signin_with"
+                            data-size="large"
+                            data-logo_alignment="left"
+                            style="width: 100%;">
+                        </div>
+                    </div>
+
+                    <!-- Script oficial da Google Identity Services -->
+                    <script src="https://accounts.google.com/gsi/client" async defer></script>
                 </form>
             </div>
         </div>
