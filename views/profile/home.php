@@ -32,6 +32,9 @@ if (isset($_SESSION["user_id"])) {
                             <li class="nav-item">
                                 <a class="nav-link <?= $action == "chatbot_training" ? "active" : "" ?>" href="index.php?page=profile&action=chatbot_training">Chatbot (FAQ)</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $action == "ratings" ? "active" : "" ?>" href="index.php?page=profile&action=ratings">Avaliações</a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -58,6 +61,9 @@ if (isset($_SESSION["user_id"])) {
                     </a>
                     <a style="text-decoration: none;" href="index.php?page=profile&action=chatbot_training">
                         <li class="list-group-item list-group-item-action <?= $action == "chatbot_training" ? "active" : "" ?>">Chatbot (FAQ)</li>
+                    </a>
+                    <a style="text-decoration: none;" href="index.php?page=profile&action=ratings">
+                        <li class="list-group-item list-group-item-action <?= $action == "ratings" ? "active" : "" ?>">Avaliações</li>
                     </a>
                 <?php } ?>
             </ul>
@@ -115,6 +121,8 @@ if (isset($_SESSION["user_id"])) {
                     }
                 }
                 require_once "chatbot_training.php";
+            } elseif ($action == "ratings") {
+                require_once "ratings.php";
             } else {
                 switch ($action) {
                     case 'invalid':

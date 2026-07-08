@@ -19,8 +19,7 @@
     }
 
     if ($page == "product" && isset($_GET["slogan"])) {
-        $description = strip_tags($product->getDescription($_GET["slogan"]));
-        $description = htmlspecialchars_decode($description, ENT_QUOTES);
+        $description = html_entity_decode(strip_tags($product->getDescription($_GET["slogan"])), ENT_QUOTES, 'UTF-8');
         $description = strlen($description) > 150 ? substr($description, 0, 150) . '...' : $description;
     ?>
         <meta name="description" content="<?= htmlspecialchars($description); ?>">
@@ -55,7 +54,7 @@
         $abs_product_url = $base_url . '/index.php?page=product&slogan=' . $sup['slogan'];
 
         // Remove tags HTML da descrição e limita tamanho
-        $clean_desc = strip_tags(htmlspecialchars_decode($sup["description"], ENT_QUOTES));
+        $clean_desc = html_entity_decode(strip_tags($sup["description"]), ENT_QUOTES, 'UTF-8');
         $clean_desc = strlen($clean_desc) > 150 ? substr($clean_desc, 0, 150) . '...' : $clean_desc;
     ?>
         <!-- Open Graph para compartilhamento -->
