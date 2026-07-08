@@ -29,6 +29,7 @@ $createTable->createProductsTable($conn);
 $createTable->createCategoriesTable($conn);
 $createTable->createSalesTable($conn);
 $createTable->createSalesItemTable($conn);
+$createTable->createProductRatingsTable($conn);
 
 if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
     $password = password_hash("Admin@123", PASSWORD_DEFAULT);

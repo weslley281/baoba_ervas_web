@@ -59,13 +59,20 @@
                             <h6 class="card-title text-dark"><?= $pro["name"] ?></h6>
 
                             <div class="text-warning mb-2">
-                                <!-- Avaliação com ícones de estrela (exemplo com 5 estrelas preenchidas) -->
-                                <?php for ($i = 0; $i < 5; $i++): ?>
-                                    <i class="fa-solid fa-star"></i>
-                                <?php endfor; ?>
-                                <!--
-                                <i class="text-dark fa-regular fa-star"></i>
-                                -->
+                                <?php 
+                                    $rating_data = $product->getRatingAverage($pro['product_id']);
+                                    $avg_rating = round($rating_data['average']);
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $avg_rating) {
+                                            echo '<i class="fa-solid fa-star"></i>';
+                                        } else {
+                                            echo '<i class="fa-regular fa-star text-secondary" style="opacity: 0.5;"></i>';
+                                        }
+                                    }
+                                    if ($rating_data['count'] > 0) {
+                                        echo ' <span class="text-muted small" style="font-size: 0.75rem;">(' . $rating_data['count'] . ')</span>';
+                                    }
+                                ?>
                             </div>
 
                             <p class="card-text text-dark"><strong>R$ <?= number_format($pro['price'], 2, ',', '.') ?></strong></p>

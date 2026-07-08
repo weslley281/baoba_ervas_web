@@ -340,4 +340,81 @@ class Product
             return 0;
         }
     }
+
+    public function getRatingAverage($product_id)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT AVG(rating) as average, COUNT(rating_id) as count FROM product_ratings WHERE product_id = ?');
+            $stmt->bind_param('i', $product_id);
+            $stmt->execute();
+            $row = $stmt->get_result()->fetch_assoc();
+            if ($row['count'] == 0) {
+                return ['average' => 5, 'count' => 0];
+            }
+            return $row;
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return ['average' => 5, 'count' => 0];
+        }
+    }
+
+    public function getRatings($product_id)
+    {
+        try {
+            $stmt = $this->conn->prepare('
+                SELECT pr.*, u.name as user_name 
+                FROM product_ratings pr 
+                JOIN users u ON pr.user_id = u.user_id 
+                WHERE pr.product_id = ? 
+                ORDER BY pr.createDate DESC
+            ');
+            $stmt->bind_param('i', $product_id);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        }
+    }
+
+    public function addOrUpdateRating($product_id, $user_id, $rating, $comment)
+    {
+        try {
+            $stmt = $this->conn->prepare('
+                INSERT INTO product_ratings (product_id, user_id, rating, comment) 
+                VALUES (?, ?, ?, ?) 
+                ON DUPLICATE KEY UPDATE rating = VALUES(rating), comment = VALUES(comment), createDate = CURRENT_TIMESTAMP
+            ');
+            $stmt->bind_param('iiis', $product_id, $user_id, $rating, $comment);
+            return $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return false;
+        }
+    }
+
+    public function getUserRating($product_id, $user_id)
+    {
+        try {
+            $stmt = $this->conn->prepare('SELECT * FROM product_ratings WHERE product_id = ? AND user_id = ?');
+            $stmt->bind_param('ii', $product_id, $user_id);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_assoc();
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return null;
+        }
+    }
+
+    public function addAdminReply($rating_id, $reply)
+    {
+        try {
+            $stmt = $this->conn->prepare('UPDATE product_ratings SET admin_reply = ?, replyDate = CURRENT_TIMESTAMP WHERE rating_id = ?');
+            $stmt->bind_param('si', $reply, $rating_id);
+            return $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return false;
+        }
+    }
 }

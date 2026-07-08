@@ -3,26 +3,38 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once __DIR__ . '/../../shared/models/User.php';
+require_once __DIR__ . '/../config/db_main.php';
 require_once __DIR__ . '/../models/LocalTicket.php';
 
-$userModel = new User();
 $ticketModel = new LocalTicket();
 
 $error = $_GET['error'] ?? '';
 $success_message = '';
 
-// 1. Processamento de Login
+// 1. Processamento de Login Direto
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'login') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
-    $user = $userModel->verifyLogin($email, $password);
-    if ($user && ($user['user_type'] === 'admin' || $user['user_type'] === 'attendant')) {
-        $_SESSION['attendant_logged'] = true;
-        $_SESSION['attendant_user_id'] = $user['user_id'];
-        $_SESSION['attendant_name'] = $user['name'];
+    
+    $stmt = $conn_main->prepare("SELECT * FROM users WHERE email = ?");
+    if ($stmt) {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $user = $stmt->get_result()->fetch_assoc();
+        
+        if ($user && password_verify($password, $user['password'])) {
+            if ($user['user_type'] === 'admin' || $user['user_type'] === 'attendant') {
+                $_SESSION['attendant_logged'] = true;
+                $_SESSION['attendant_user_id'] = $user['user_id'];
+                $_SESSION['attendant_name'] = $user['name'];
+            } else {
+                $error = 'Acesso não autorizado: conta não habilitada para atendimento.';
+            }
+        } else {
+            $error = 'E-mail ou senha incorretos.';
+        }
     } else {
-        $error = 'Credenciais incorretas ou sem permissão de atendente.';
+        $error = 'Erro na conexão com o banco de dados principal.';
     }
 }
 
@@ -68,20 +80,20 @@ $recent_calls = $ticketModel->getCalledTickets();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Atendente - Porto</title>
+    <title>Painel do Atendente - Várzea Grande</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8fafc;
+            background-color: #f0fdf4; /* Fundo esverdeado adaptativo para filial */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .navbar-green {
-            background-color: #1e3f20;
+            background-color: #0b2e1b; /* Tom verde escuro Baobá */
         }
         .card-custom {
             border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 24px rgba(11, 46, 27, 0.08);
             border: none;
         }
         .btn-call {
@@ -99,14 +111,15 @@ $recent_calls = $ticketModel->getCalledTickets();
     <!-- Caso NÃO esteja logado -->
     <?php if (!isset($_SESSION['attendant_logged'])): ?>
         <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-            <div class="card card-custom p-5 w-100" style="max-width: 400px; background: #fff;">
+            <div class="card card-custom p-5 w-100 bg-white" style="max-width: 420px;">
                 <div class="text-center mb-4">
                     <h2 class="text-success fw-bold"><i class="fa-solid fa-leaf"></i> Baobá Ervas</h2>
-                    <p class="text-muted">Acesso ao Painel do Atendente - Várzea Grande</p>
+                    <h5 class="text-secondary fw-semibold">Painel de Atendimento</h5>
+                    <p class="text-muted small">Várzea Grande</p>
                 </div>
                 
                 <?php if ($error): ?>
-                    <div class="alert alert-danger" role="alert"><?= htmlspecialchars($error) ?></div>
+                    <div class="alert alert-danger py-2 small" role="alert"><?= htmlspecialchars($error) ?></div>
                 <?php endif; ?>
 
                 <form method="POST" action="index.php">
@@ -121,7 +134,7 @@ $recent_calls = $ticketModel->getCalledTickets();
                     </div>
                     <button type="submit" class="btn btn-success w-100 py-2 fw-bold shadow-sm" style="border-radius: 8px;">Acessar Painel</button>
                     
-                    <div class="text-center my-3 text-muted">ou</div>
+                    <div class="text-center my-3 text-muted small">ou entre com sua credencial do Google</div>
 
                     <!-- Div onde o botão do Google será exibido -->
                     <div class="d-flex justify-content-center">
@@ -151,11 +164,15 @@ $recent_calls = $ticketModel->getCalledTickets();
     <!-- Caso LOGADO mas SEM GUICHÊ selecionado -->
     <?php elseif (!isset($_SESSION['attendant_guiche'])): ?>
         <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
-            <div class="card card-custom p-5 w-100" style="max-width: 450px; background: #fff;">
+            <div class="card card-custom p-5 w-100 bg-white" style="max-width: 450px;">
                 <div class="text-center mb-4">
-                    <h3 class="fw-bold text-success"><i class="fa-solid fa-desktop"></i> Selecione seu Guichê</h3>
+                    <h3 class="fw-bold text-success"><i class="fa-solid fa-desktop"></i> Escolha seu Guichê</h3>
                     <p class="text-muted">Olá, <strong><?= htmlspecialchars($_SESSION['attendant_name']) ?></strong>! Identifique sua mesa de atendimento.</p>
                 </div>
+
+                <?php if ($error): ?>
+                    <div class="alert alert-danger py-2 small" role="alert"><?= htmlspecialchars($error) ?></div>
+                <?php endif; ?>
 
                 <form method="POST" action="index.php">
                     <input type="hidden" name="action" value="select_guiche">

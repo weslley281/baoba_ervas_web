@@ -131,4 +131,45 @@ class CreateTables
             echo "Erro ao criar tabela 'sales_item': " . $conn->error;
         }
     }
+
+    public static function createProductRatingsTable($conn)
+    {
+        try {
+            $sql = "
+            CREATE TABLE IF NOT EXISTS product_ratings (
+                rating_id INT AUTO_INCREMENT PRIMARY KEY,
+                product_id INT NOT NULL,
+                user_id INT NOT NULL,
+                rating INT NOT NULL,
+                comment TEXT NULL,
+                admin_reply TEXT NULL,
+                replyDate TIMESTAMP NULL,
+                createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                KEY idx_product (product_id),
+                KEY idx_user (user_id),
+                UNIQUE KEY unique_user_product (user_id, product_id)
+            );
+            ";
+            $conn->query($sql);
+
+            // Verificar e adicionar colunas se a tabela já existia sem elas de forma segura
+            $checkComment = $conn->query("SHOW COLUMNS FROM product_ratings LIKE 'comment'");
+            if ($checkComment && $checkComment->num_rows == 0) {
+                @$conn->query("ALTER TABLE product_ratings ADD COLUMN comment TEXT NULL");
+            }
+            
+            $checkReply = $conn->query("SHOW COLUMNS FROM product_ratings LIKE 'admin_reply'");
+            if ($checkReply && $checkReply->num_rows == 0) {
+                @$conn->query("ALTER TABLE product_ratings ADD COLUMN admin_reply TEXT NULL");
+            }
+            
+            $checkReplyDate = $conn->query("SHOW COLUMNS FROM product_ratings LIKE 'replyDate'");
+            if ($checkReplyDate && $checkReplyDate->num_rows == 0) {
+                @$conn->query("ALTER TABLE product_ratings ADD COLUMN replyDate TIMESTAMP NULL");
+            }
+        } catch (Throwable $e) {
+            // Silencia qualquer exceção de banco de dados para evitar travar a inicialização do site (HTTP 500)
+            error_log("Erro ao inicializar tabela product_ratings: " . $e->getMessage());
+        }
+    }
 }
