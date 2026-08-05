@@ -417,4 +417,64 @@ class Product
             return false;
         }
     }
+
+    public function getWeeklyPromotionalPrice($product_id)
+    {
+        try {
+            $weekday = date('N'); // 1 = Segunda, 7 = Domingo
+            $stmt = $this->conn->prepare('SELECT promotional_price FROM weekly_promotions WHERE product_id = ? AND weekday = ? AND active = 1');
+            $stmt->bind_param('ii', $product_id, $weekday);
+            $stmt->execute();
+            $res = $stmt->get_result()->fetch_assoc();
+            return $res ? floatval($res['promotional_price']) : null;
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return null;
+        }
+    }
+
+    public function getAllWeeklyPromotions()
+    {
+        try {
+            $result = $this->conn->query('
+                SELECT wp.*, p.name as product_name, p.price as original_price, c.name as category_name
+                FROM weekly_promotions wp
+                JOIN products p ON wp.product_id = p.product_id
+                JOIN categories c ON p.category_id = c.category_id
+                ORDER BY wp.weekday ASC, p.name ASC
+            ');
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        }
+    }
+
+    public function addOrUpdateWeeklyPromotion($product_id, $weekday, $price, $active)
+    {
+        try {
+            $stmt = $this->conn->prepare('
+                INSERT INTO weekly_promotions (product_id, weekday, promotional_price, active)
+                VALUES (?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE promotional_price = VALUES(promotional_price), active = VALUES(active)
+            ');
+            $stmt->bind_param('iidi', $product_id, $weekday, $price, $active);
+            return $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return false;
+        }
+    }
+
+    public function deleteWeeklyPromotion($promotion_id)
+    {
+        try {
+            $stmt = $this->conn->prepare('DELETE FROM weekly_promotions WHERE promotion_id = ?');
+            $stmt->bind_param('i', $promotion_id);
+            return $stmt->execute();
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return false;
+        }
+    }
 }

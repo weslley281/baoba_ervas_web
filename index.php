@@ -30,6 +30,8 @@ $createTable->createCategoriesTable($conn);
 $createTable->createSalesTable($conn);
 $createTable->createSalesItemTable($conn);
 $createTable->createProductRatingsTable($conn);
+$createTable->createWeeklyPromotionsTable($conn);
+
 
 if (!$user->getByEmail("admbaobabrasil@gmail.com")) {
     $password = password_hash("Admin@123", PASSWORD_DEFAULT);
@@ -83,23 +85,20 @@ $page = $_GET['page'] ?? 'home';
 $action = $_GET['action'] ?? '';
 
 $titles = [
-    'home' => 'Pagina inicial',
-    'login' => 'Login',
-    'users' => 'Usuários',
-    'profile' => 'Perfil',
-    'ticket' => 'Tickets',
-    'product' => $name_product,
-    'cart' => 'Carrinho',
-    'register' => 'Registrar-se',
-    'assessment' => 'Avaliação',
-    'contact' => 'Fale Conosco',
-    'users' => 'Usuários'
+    'home' => 'Baobá Brasil - Produtos Naturais, Chás e Temperos',
+    'login' => 'Acessar Conta - Baobá Brasil',
+    'users' => 'Gerenciamento de Usuários - Baobá Brasil',
+    'profile' => 'Minha Conta - Perfil - Baobá Brasil',
+    'ticket' => 'Painel de Senhas e Atendimento - Baobá Brasil',
+    'product' => (isset($name_product) ? $name_product . ' - Baobá Brasil' : 'Produto - Baobá Brasil'),
+    'cart' => 'Carrinho de Compras - Baobá Brasil',
+    'register' => 'Cadastrar-se - Criar Conta - Baobá Brasil',
+    'assessment' => 'Avaliação de Clientes - Baobá Brasil',
+    'contact' => 'Fale Conosco - Atendimento - Baobá Brasil',
+    'promotions' => 'Promoções Semanais - Baobá Brasil'
 ];
 
-$page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada';
-
-// Limita o título a 20 caracteres e adiciona reticências se for maior que 20
-$page_title = strlen($page_title) > 20 ? substr($page_title, 0, 20) . '...' : $page_title;
+$page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada - Baobá Brasil';
 
 require_once "./header.php";
 $is_kiosk = isset($_GET['kiosk']) && $_GET['kiosk'] == 1;

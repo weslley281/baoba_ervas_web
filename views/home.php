@@ -1,8 +1,9 @@
 <!-- Section-->
 <section class="py-5">
+    <h1 class="visually-hidden d-none">Baobá Brasil - Loja de Produtos Naturais, Chás, Temperos e Cereais</h1>
     <!-- Banner antes dos produtos -->
     <div class="text-center mb-4">
-        <img id="banner" src="./images/banner.png" alt="Banner da loja" class="img-fluid rounded-3">
+        <img id="banner" src="./images/banner.png" alt="Baobá Brasil - Loja de Produtos Naturais, Chás e Temperos" class="img-fluid rounded-3">
     </div>
 
     <div class="row text-center">

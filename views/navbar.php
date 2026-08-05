@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar bg-success px-2" data-bs-theme="dark">
-    <a class="navbar-brand" href="index.php"><span class="text-white"><?php echo $page_title; ?></span></a>
+    <a class="navbar-brand" href="index.php"><span class="text-white">Baobá Brasil</span></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Alterna navegação">
         <span class="navbar-toggler-icon"></span>
     </button>

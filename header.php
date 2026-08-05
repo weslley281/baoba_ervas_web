@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="bFcShvg07pMBqFUxjHUdnNjkfMf3-lwSWlnvcN4AuM8" />
+    <meta name="facebook-domain-verification" content="az46h33v9p83iwr78ft70k07wqhoex" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Weslley Henrique Vieira Ferraz" />
     <meta name="owner" content="Comercio de utilidades Baoba LTDA - ME" />

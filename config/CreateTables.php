@@ -172,4 +172,26 @@ class CreateTables
             error_log("Erro ao inicializar tabela product_ratings: " . $e->getMessage());
         }
     }
+
+    public static function createWeeklyPromotionsTable($conn)
+    {
+        try {
+            $sql = "
+            CREATE TABLE IF NOT EXISTS weekly_promotions (
+                promotion_id INT AUTO_INCREMENT PRIMARY KEY,
+                product_id INT NOT NULL,
+                weekday INT NOT NULL,
+                promotional_price DECIMAL(10,2) NOT NULL,
+                active TINYINT(1) DEFAULT 1,
+                createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                KEY idx_product (product_id),
+                KEY idx_weekday (weekday),
+                UNIQUE KEY unique_product_weekday (product_id, weekday)
+            );
+            ";
+            $conn->query($sql);
+        } catch (Throwable $e) {
+            error_log("Erro ao criar tabela weekly_promotions: " . $e->getMessage());
+        }
+    }
 }

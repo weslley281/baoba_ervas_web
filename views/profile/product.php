@@ -100,10 +100,14 @@ if (isset($_SESSION["user_id"]) && $_SESSION['user_type'] == "admin") {
     <div class="container mt-5">
         <h2 class="text-center mb-4">Lista de Produtos</h2>
         <div class="row my-3">
-            <div class="col-10"></div>
-            <div class="col-2">
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ModalCadastrarProduto">
-                    Cadastrar Produto
+            <div class="col-8">
+                <a href="./controllers/ProductReportController.php" class="btn btn-danger fw-semibold shadow-sm" target="_blank">
+                    <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                </a>
+            </div>
+            <div class="col-4 text-right">
+                <button type="button" class="btn btn-success fw-semibold shadow-sm" data-toggle="modal" data-target="#ModalCadastrarProduto">
+                    <i class="fa-solid fa-plus"></i> Cadastrar Produto
                 </button>
             </div>
         </div>
