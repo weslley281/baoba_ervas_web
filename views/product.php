@@ -72,11 +72,36 @@ foreach ($array_path_image as $key => $value) {
                     ?>
                 </div>
 
-                <?php if ($get_product['discount'] > 0): ?>
-                    <p class="text-danger">De: <s>R$ <?= number_format($get_product['price'], 2, ',', '.') ?></s></p>
-                    <h3 class="text-success">Por: R$ <?= number_format($get_product['price'] * $get_product['discount'], 2, ',', '.') ?></h3>
-                <?php else: ?>
-                    <h3>R$ <?= number_format($get_product['price'], 2, ',', '.') ?></h3>
+                <?php 
+                $weekly_promo_price = $product->getWeeklyPromotionalPrice($get_product['product_id']);
+                $weekdays = [
+                    1 => 'Segunda-feira',
+                    2 => 'Terça-feira',
+                    3 => 'Quarta-feira',
+                    4 => 'Quinta-feira',
+                    5 => 'Sexta-feira',
+                    6 => 'Sábado',
+                    7 => 'Domingo'
+                ];
+                $today_day_name = $weekdays[date('N')];
+                
+                if ($weekly_promo_price !== null): 
+                    $current_price = $weekly_promo_price;
+                ?>
+                    <div class="mb-2">
+                        <span class="badge bg-danger text-white p-2" style="font-size: 0.85rem; border-radius: 6px;"><i class="fa-solid fa-tag"></i> Promoção de <?= $today_day_name ?></span>
+                    </div>
+                    <p class="text-muted mb-0">De: <s>R$ <?= number_format($get_product['price'], 2, ',', '.') ?></s></p>
+                    <h3 class="text-danger font-weight-bold">Por: R$ <?= number_format($weekly_promo_price, 2, ',', '.') ?></h3>
+                <?php elseif ($get_product['discount'] > 0): 
+                    $current_price = $get_product['price'] * $get_product['discount'];
+                ?>
+                    <p class="text-muted mb-0">De: <s>R$ <?= number_format($get_product['price'], 2, ',', '.') ?></s></p>
+                    <h3 class="text-success">Por: R$ <?= number_format($current_price, 2, ',', '.') ?></h3>
+                <?php else: 
+                    $current_price = $get_product['price'];
+                ?>
+                    <h3>R$ <?= number_format($current_price, 2, ',', '.') ?></h3>
                 <?php endif; ?>
 
                 <p><strong>Estoque:</strong> <?= intval($get_product['stock_quantity']) ?> unidades</p>
@@ -86,14 +111,14 @@ foreach ($array_path_image as $key => $value) {
                     <input type="hidden" name="id" value="<?= $get_product['product_id'] ?>">
                     <input type="hidden" name="name" value="<?= $get_product['name'] ?>">
                     <input type="hidden" name="path_image" value="<?= $path_image ?>">
-                    <input type="hidden" name="price" value="<?= $get_product['price'] ?>">
+                    <input type="hidden" name="price" value="<?= $current_price ?>">
                     <input type="hidden" name="slogan" value="<?= $_GET['slogan'] ?>">
                     <input type="hidden" name="amount" value="1">
                     
                     <button type="submit" class="btn btn-outline-success btn-lg my-1 mr-2"><i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho</button>
 
                     <?php
-                    $whatsappMessage = urlencode("Olá! Gostaria de pedir o produto:\n- *" . $get_product['name'] . "* (Ref: " . $get_product['reference'] . ")\nPreço: R$ " . number_format($get_product['price'], 2, ',', '.'));
+                    $whatsappMessage = urlencode("Olá! Gostaria de pedir o produto:\n- *" . $get_product['name'] . "* (Ref: " . $get_product['reference'] . ")\nPreço: R$ " . number_format($current_price, 2, ',', '.'));
                     
                     if (isset($_SESSION['preferred_store']) && isset(STORES[$_SESSION['preferred_store']])) {
                         $store = STORES[$_SESSION['preferred_store']];

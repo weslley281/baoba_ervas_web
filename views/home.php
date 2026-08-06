@@ -76,7 +76,31 @@
                                 ?>
                             </div>
 
-                            <p class="card-text text-dark"><strong>R$ <?= number_format($pro['price'], 2, ',', '.') ?></strong></p>
+                            <?php
+                            $weekly_promo_price = $product->getWeeklyPromotionalPrice($pro['product_id']);
+                            $weekdays = [
+                                1 => 'Segunda-feira',
+                                2 => 'Terça-feira',
+                                3 => 'Quarta-feira',
+                                4 => 'Quinta-feira',
+                                5 => 'Sexta-feira',
+                                6 => 'Sábado',
+                                7 => 'Domingo'
+                            ];
+                            $today_day_name = $weekdays[date('N')];
+                            
+                            if ($weekly_promo_price !== null): ?>
+                                <div class="mb-1">
+                                    <span class="badge bg-danger text-white" style="font-size: 0.7rem; border-radius: 4px;"><i class="fa-solid fa-tag"></i> Promo de <?= $today_day_name ?></span>
+                                </div>
+                                <p class="card-text mb-0 text-muted small" style="text-decoration: line-through; font-size: 0.8rem;">R$ <?= number_format($pro['price'], 2, ',', '.') ?></p>
+                                <p class="card-text text-danger font-weight-bold mb-0"><strong>R$ <?= number_format($weekly_promo_price, 2, ',', '.') ?></strong></p>
+                            <?php elseif ($pro['discount'] > 0): ?>
+                                <p class="card-text mb-0 text-muted small" style="text-decoration: line-through; font-size: 0.8rem;">R$ <?= number_format($pro['price'], 2, ',', '.') ?></p>
+                                <p class="card-text text-success font-weight-bold mb-0"><strong>R$ <?= number_format($pro['price'] * $pro['discount'], 2, ',', '.') ?></strong></p>
+                            <?php else: ?>
+                                <p class="card-text text-dark font-weight-bold mb-0"><strong>R$ <?= number_format($pro['price'], 2, ',', '.') ?></strong></p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </a>

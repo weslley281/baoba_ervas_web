@@ -16,11 +16,12 @@ class SaleItem
     public function create(array $data)
     {
         try {
-            $stmt = $this->conn->prepare("INSERT INTO sales_item (sale_id, product_id, price, quantity, name)");
-
+            $stmt = $this->conn->prepare("INSERT INTO sales_item (sale_id, product_id, price, quantity, name) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param('iidds', $data["sale_id"], $data["product_id"], $data["price"], $data["quantity"], $data["name"]);
+            return $stmt->execute();
         } catch (\Throwable $th) {
-            throw $th;
+            error_log($th->getMessage(), 3, __DIR__ . '/errors.log');
+            return false;
         }
     }
 
@@ -30,11 +31,8 @@ class SaleItem
             $stmt = $this->conn->prepare(
                 'UPDATE sales_item SET sale_id = ?, product_id = ?, price = ?, quantity = ?, name = ? WHERE sale_item_id = ?'
             );
-
             $stmt->bind_param('iiddsi', $data["sale_id"], $data["product_id"], $data["price"], $data["quantity"], $data["name"], $data["sale_item_id"]);
-
-            $stmt->execute();
-            return true;
+            return $stmt->execute();
         } catch (mysqli_sql_exception $e) {
             error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
             return false;

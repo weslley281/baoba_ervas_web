@@ -1,31 +1,48 @@
 <?php
 session_start();
+require_once "../config/db.php";
+require_once "../models/Product.php";
 require_once "../utils/cart.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = isset($_POST['id']) ? intval($_POST['id']) : null;
     $action = isset($_GET['action']) ? strtolower($_GET['action']) : '';
 
-    function getCartData($post)
-    {
-        return [
-            "name" => htmlspecialchars($post["name"] ?? ''),
-            "path_image" => htmlspecialchars($post["path_image"] ?? $post["path"] ?? ''),
-            "price" => htmlspecialchars($post["price"] ?? 0),
-            "amount" => htmlspecialchars($post["amount"] ?? $post["stock_quantity"] ?? 1),
-        ];
-    }
-
     switch ($action) {
         case 'add':
-            $data = getCartData($_POST);
-            $redirect = "../index.php?page=product&slogan=" . $_POST['slogan'] . "&action=add";
+            $productModel = new Product($conn);
+            $p = $productModel->getById($id);
+            if (!$p || !$p['active']) {
+                header("Location: ../index.php");
+                exit;
+            }
+
+            // Calcula o preço final seguro no backend (evita adulteração do preço via POST)
+            $weekly_promo_price = $productModel->getWeeklyPromotionalPrice($id);
+            if ($weekly_promo_price !== null) {
+                $final_price = $weekly_promo_price;
+            } elseif ($p['discount'] > 0) {
+                $final_price = $p['price'] * $p['discount'];
+            } else {
+                $final_price = $p['price'];
+            }
+
+            $data = [
+                "name" => $p['name'],
+                "path_image" => htmlspecialchars($_POST["path_image"] ?? $p['path_image'] ?? ''),
+                "price" => $final_price,
+                "amount" => isset($_POST["amount"]) ? intval($_POST["amount"]) : 1
+            ];
+
+            $redirect = "../index.php?page=product&slogan=" . urlencode($p['slogan']) . "&action=add";
 
             if (addCart($id, $data)) {
                 header("Location: $redirect");
+                exit;
             } else {
                 echo "Quebrei";
                 header("Location: ../index.php?page=profile&action=categories&action2=fail");
+                exit;
             }
 
             break;

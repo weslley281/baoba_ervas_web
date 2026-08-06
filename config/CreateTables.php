@@ -93,42 +93,52 @@ class CreateTables
     
     public static function createSalesTable($conn)
     {
-        $sql = "
-        CREATE TABLE IF NOT EXISTS sales (
-            sale_id INT AUTO_INCREMENT PRIMARY KEY,
-            customer_id INT,
-            situation VARCHAR(255),
-            editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-        ";
-
-        if ($conn->query($sql) === true) {
-            //echo "Tabela 'sales' criada com sucesso.";
-        } else {
-            echo "Erro ao criar tabela 'sales': " . $conn->error;
+        try {
+            $conn->query("DROP TABLE IF EXISTS sales_item"); // Remove primeiro por causa da chave estrangeira
+            $conn->query("DROP TABLE IF EXISTS sales");
+            
+            $sql = "
+            CREATE TABLE IF NOT EXISTS sales (
+                sale_id INT AUTO_INCREMENT PRIMARY KEY,
+                customer_id INT NULL,
+                ticket_code VARCHAR(20) NOT NULL,
+                customer_name VARCHAR(255) NOT NULL,
+                phone VARCHAR(30) NOT NULL,
+                preferred_store VARCHAR(50) NOT NULL,
+                payment_method VARCHAR(50) NOT NULL,
+                total_price DECIMAL(10, 2) NOT NULL,
+                delivery_type VARCHAR(50) NOT NULL,
+                delivery_address TEXT NULL,
+                situation VARCHAR(50) DEFAULT 'Pendente',
+                editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+            ";
+            $conn->query($sql);
+        } catch (Throwable $e) {
+            error_log("Erro ao inicializar tabela sales: " . $e->getMessage());
         }
     }
     
     public static function createSalesItemTable($conn)
     {
-        $sql = "
-        CREATE TABLE IF NOT EXISTS sales_item (
-            sale_item_id INT AUTO_INCREMENT PRIMARY KEY,
-            sale_id INT,
-            product_id INT,
-            name VARCHAR(255),
-            price DECIMAL(10, 2) NOT NULL,
-            quantity DECIMAL(10, 2) NOT NULL,
-            editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-        ";
-
-        if ($conn->query($sql) === true) {
-            //echo "Tabela 'sales_item' criada com sucesso.";
-        } else {
-            echo "Erro ao criar tabela 'sales_item': " . $conn->error;
+        try {
+            $sql = "
+            CREATE TABLE IF NOT EXISTS sales_item (
+                sale_item_id INT AUTO_INCREMENT PRIMARY KEY,
+                sale_id INT NOT NULL,
+                product_id INT NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                price DECIMAL(10, 2) NOT NULL,
+                quantity INT NOT NULL,
+                editDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (sale_id) REFERENCES sales(sale_id) ON DELETE CASCADE
+            );
+            ";
+            $conn->query($sql);
+        } catch (Throwable $e) {
+            error_log("Erro ao inicializar tabela sales_item: " . $e->getMessage());
         }
     }
 

@@ -4,7 +4,7 @@ if (!defined('STORES')) {
         'vg' => [
             'name' => 'Loja Centro - Várzea Grande',
             'phone' => '556533621007',
-            'address' => 'Praça Bem-Estar, 789, Centro, Várzea Grande - MT',
+            'address' => 'Avenida Couto Magalhães, 1776, Centro, Várzea Grande - MT',
             'short_name' => 'Várzea Grande'
         ],
         'cuiaba_centro' => [

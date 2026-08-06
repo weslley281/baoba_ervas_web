@@ -35,6 +35,12 @@ if (isset($_SESSION["user_id"])) {
                             <li class="nav-item">
                                 <a class="nav-link <?= $action == "ratings" ? "active" : "" ?>" href="index.php?page=profile&action=ratings">Avaliações</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $action == "promotions" ? "active" : "" ?>" href="index.php?page=profile&action=promotions">Promoções</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $action == "sales" ? "active" : "" ?>" href="index.php?page=profile&action=sales">Pedidos</a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -64,6 +70,12 @@ if (isset($_SESSION["user_id"])) {
                     </a>
                     <a style="text-decoration: none;" href="index.php?page=profile&action=ratings">
                         <li class="list-group-item list-group-item-action <?= $action == "ratings" ? "active" : "" ?>">Avaliações</li>
+                    </a>
+                    <a style="text-decoration: none;" href="index.php?page=profile&action=promotions">
+                        <li class="list-group-item list-group-item-action <?= $action == "promotions" ? "active" : "" ?>">Promoções</li>
+                    </a>
+                    <a style="text-decoration: none;" href="index.php?page=profile&action=sales">
+                        <li class="list-group-item list-group-item-action <?= $action == "sales" ? "active" : "" ?>">Pedidos</li>
                     </a>
                 <?php } ?>
             </ul>
@@ -123,6 +135,10 @@ if (isset($_SESSION["user_id"])) {
                 require_once "chatbot_training.php";
             } elseif ($action == "ratings") {
                 require_once "ratings.php";
+            } elseif ($action == "promotions") {
+                require_once "promotions.php";
+            } elseif ($action == "sales") {
+                require_once "sales.php";
             } else {
                 switch ($action) {
                     case 'invalid':

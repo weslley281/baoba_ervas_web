@@ -95,7 +95,8 @@ $titles = [
     'register' => 'Cadastrar-se - Criar Conta - Baobá Brasil',
     'assessment' => 'Avaliação de Clientes - Baobá Brasil',
     'contact' => 'Fale Conosco - Atendimento - Baobá Brasil',
-    'promotions' => 'Promoções Semanais - Baobá Brasil'
+    'promotions' => 'Promoções Semanais - Baobá Brasil',
+    'sales' => 'Gerenciamento de Pedidos - Baobá Brasil'
 ];
 
 $page_title = isset($titles[$page]) ? $titles[$page] : 'Página não encontrada - Baobá Brasil';
