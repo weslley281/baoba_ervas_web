@@ -79,8 +79,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Mensagem inicial de boas-vindas do assistente
-  addMessage("Olá! Sou o assistente virtual da Baobá Ervas. Como posso ajudar você hoje?", false);
+  // Mensagem inicial de boas-vindas do assistente com personalização
+  var welcomeGreeting = "Olá! Bem-vindo(a) à Baobá Brasil. Sou o seu assistente virtual. Como posso ajudar você hoje?";
+  if (window.loggedInUserFirstName) {
+      welcomeGreeting = "Olá, " + window.loggedInUserFirstName + "! Bem-vindo(a) de volta à Baobá Brasil. Sou o seu assistente virtual. Como posso ajudar você hoje?";
+  }
+  
+  addMessage(welcomeGreeting, false);
   addSuggestions([
     "Horário de Funcionamento", 
     "Formas de Pagamento", 

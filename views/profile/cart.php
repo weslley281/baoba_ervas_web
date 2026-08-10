@@ -9,13 +9,35 @@ if (isset($_GET['action']) && $_GET['action'] === 'success') {
     // Limpa a URL da sessão após usar
     unset($_SESSION['whatsapp_order_url']);
 ?>
+    <style>
+        .btn-pulse-wa {
+            background: linear-gradient(135deg, #25D366, #128C7E) !important;
+            border: none !important;
+            color: #white !important;
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                transform: scale(1.03);
+                box-shadow: 0 0 0 12px rgba(37, 211, 102, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+    </style>
     <div class="container my-5 text-center">
         <div class="card shadow-sm border-0 p-5 mx-auto" style="max-width: 600px; border-radius: 16px; background: #fff;">
             <div class="mb-4">
                 <i class="fa-solid fa-circle-check fa-5x text-success animate__animated animate__bounceIn"></i>
             </div>
-            <h2 class="text-success fw-bold mb-3">Pedido Gerado com Sucesso!</h2>
-            <p class="text-muted mb-4">Seu pedido foi registrado no sistema e o WhatsApp da filial escolhida está sendo aberto para conclusão.</p>
+            <h2 class="text-success fw-bold mb-3">Pedido Gravado!</h2>
+            <p class="text-muted mb-4">Seu pedido foi registrado em nosso sistema. Agora, clique no botão verde abaixo para enviar os detalhes à filial via WhatsApp e combinar a retirada.</p>
             
             <div class="p-3 mb-4 text-start bg-light border" style="border-radius: 12px; font-size: 0.95rem;">
                 <div class="mb-2"><strong>🎫 Código do Pedido:</strong> <span class="badge bg-success" style="font-size: 0.95rem; font-family: monospace;"><?= htmlspecialchars($ticket) ?></span></div>
@@ -23,15 +45,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'success') {
             </div>
 
             <?php if (!empty($wa_url)): ?>
-                <a href="<?= $wa_url ?>" target="_blank" class="btn btn-success btn-lg w-100 py-3 mb-3 shadow" style="border-radius: 8px; font-weight: bold; background: linear-gradient(135deg, #25D366, #128C7E); border: none;">
-                    <i class="fa-brands fa-whatsapp fa-lg mr-2"></i> Enviar Pedido no WhatsApp
+                <a href="<?= $wa_url ?>" target="_blank" class="btn btn-success btn-lg w-100 py-3 mb-3 shadow text-white btn-pulse-wa" style="border-radius: 8px; font-weight: bold;">
+                    <i class="fa-brands fa-whatsapp fa-lg mr-2"></i> ENVIAR PEDIDO NO WHATSAPP
                 </a>
-                <p class="text-muted small mb-0"><i class="fa-solid fa-spinner fa-spin"></i> Tentando abrir o WhatsApp automaticamente...</p>
-                <script>
-                    setTimeout(function() {
-                        window.open('<?= addslashes($wa_url) ?>', '_blank');
-                    }, 1500);
-                </script>
             <?php else: ?>
                 <a href="index.php" class="btn btn-secondary btn-lg w-100 py-3" style="border-radius: 8px;">Voltar para a Página Inicial</a>
             <?php endif; ?>

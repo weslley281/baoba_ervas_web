@@ -101,7 +101,7 @@ if ($sale_id) {
     $whatsappText .= "_Mande esta mensagem para finalizar o pedido e retirar na loja física!_";
 
     $store_phone = STORES[$preferred_store]['phone'];
-    $waLink = "https://wa.me/" . $store_phone . "?text=" . urlencode($whatsappText);
+    $waLink = "https://api.whatsapp.com/send?phone=" . $store_phone . "&text=" . urlencode($whatsappText);
 
     // Salva a URL na sessão para abrir no sucesso e limpa o carrinho
     $_SESSION['whatsapp_order_url'] = $waLink;

@@ -110,88 +110,6 @@ if (isset($_GET['status'])) {
                                     </div>
                                 </td>
                             </tr>
-
-                            <!-- MODAL ITENS DO PEDIDO -->
-                            <div class="modal fade" id="ModalItensPedido_<?= $s['sale_id'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content" style="border-radius: 12px;">
-                                        <div class="modal-header border-0 pb-0">
-                                            <h5 class="modal-title text-success fw-bold">Produtos do Pedido <?= htmlspecialchars($s['ticket_code']) ?></h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-sm table-bordered mb-0" style="font-size: 0.85rem;">
-                                                    <thead class="table-light">
-                                                        <tr>
-                                                            <th>Nome do Produto</th>
-                                                            <th style="width: 15%; text-align: center;">Qtd</th>
-                                                            <th style="width: 25%; text-align: right;">Preço</th>
-                                                            <th style="width: 25%; text-align: right;">Subtotal</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php 
-                                                        $items = $saleModel->getSaleItems($s['sale_id']);
-                                                        foreach ($items as $item): 
-                                                            $sub = $item['price'] * $item['quantity'];
-                                                        ?>
-                                                            <tr>
-                                                                <td><?= htmlspecialchars($item['name']) ?></td>
-                                                                <td class="text-center"><?= intval($item['quantity']) ?></td>
-                                                                <td class="text-end">R$ <?= number_format($item['price'], 2, ',', '.') ?></td>
-                                                                <td class="text-end fw-semibold">R$ <?= number_format($sub, 2, ',', '.') ?></td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                        <tr class="table-light">
-                                                            <td colspan="3" class="text-end fw-bold">Total do Pedido:</td>
-                                                            <td class="text-end fw-bold text-success">R$ <?= number_format($s['total_price'], 2, ',', '.') ?></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer border-0 pt-0">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px;">Fechar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- MODAL ALTERAR STATUS -->
-                            <div class="modal fade" id="ModalStatusPedido_<?= $s['sale_id'] ?>" tabindex="-1" role="dialog" aria-hidden="true">
-                                <div class="modal-dialog modal-sm" role="document">
-                                    <div class="modal-content" style="border-radius: 12px;">
-                                        <div class="modal-header border-0 pb-0">
-                                            <h5 class="modal-title text-success fw-bold">Alterar Status</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form action="./controllers/OrderController.php?action=update_status" method="POST">
-                                            <input type="hidden" name="sale_id" value="<?= $s['sale_id'] ?>">
-                                            <div class="modal-body">
-                                                <div class="form-group mb-0">
-                                                    <label for="situation_<?= $s['sale_id'] ?>" class="form-label text-secondary fw-semibold">Situação do Pedido:</label>
-                                                    <select class="form-control" name="situation" id="situation_<?= $s['sale_id'] ?>" required style="border-radius: 8px;">
-                                                        <option value="Pendente" <?= $s['situation'] === 'Pendente' ? 'selected' : '' ?>>Pendente</option>
-                                                        <option value="Preparando" <?= $s['situation'] === 'Preparando' ? 'selected' : '' ?>>Preparando</option>
-                                                        <option value="Pronto para Retirada" <?= $s['situation'] === 'Pronto para Retirada' ? 'selected' : '' ?>>Pronto para Retirada</option>
-                                                        <option value="Finalizado" <?= $s['situation'] === 'Finalizado' ? 'selected' : '' ?>>Finalizado</option>
-                                                        <option value="Cancelado" <?= $s['situation'] === 'Cancelado' ? 'selected' : '' ?>>Cancelado</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer border-0 pt-0">
-                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" style="border-radius: 6px;">Cancelar</button>
-                                                <button type="submit" class="btn btn-success btn-sm" style="border-radius: 6px; background: linear-gradient(135deg, #198754, #157347); border: none;">Salvar</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -199,3 +117,90 @@ if (isset($_GET['status'])) {
         <?php endif; ?>
     </div>
 </div>
+
+<!-- MODALS FOR EACH ORDER (Rendered at the absolute body level, outside containers, to prevent clipping, focus loops, and Chrome flickering) -->
+<?php if (!empty($all_sales)): ?>
+    <?php foreach ($all_sales as $s): ?>
+        <!-- MODAL ITENS DO PEDIDO -->
+        <div class="modal fade" id="ModalItensPedido_<?= $s['sale_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="LabelItens_<?= $s['sale_id'] ?>" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" style="border-radius: 12px;">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title text-success fw-bold" id="LabelItens_<?= $s['sale_id'] ?>">Produtos do Pedido <?= htmlspecialchars($s['ticket_code']) ?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered mb-0" style="font-size: 0.85rem;">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Nome do Produto</th>
+                                        <th style="width: 15%; text-align: center;">Qtd</th>
+                                        <th style="width: 25%; text-align: right;">Preço</th>
+                                        <th style="width: 25%; text-align: right;">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    $items = $saleModel->getSaleItems($s['sale_id']);
+                                    foreach ($items as $item): 
+                                        $sub = $item['price'] * $item['quantity'];
+                                    ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($item['name']) ?></td>
+                                            <td class="text-center"><?= intval($item['quantity']) ?></td>
+                                            <td class="text-end">R$ <?= number_format($item['price'], 2, ',', '.') ?></td>
+                                            <td class="text-end fw-semibold">R$ <?= number_format($sub, 2, ',', '.') ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                    <tr class="table-light">
+                                        <td colspan="3" class="text-end fw-bold">Total do Pedido:</td>
+                                        <td class="text-end fw-bold text-success">R$ <?= number_format($s['total_price'], 2, ',', '.') ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 pt-0">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="border-radius: 8px;">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL ALTERAR STATUS -->
+        <div class="modal fade" id="ModalStatusPedido_<?= $s['sale_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="LabelStatus_<?= $s['sale_id'] ?>" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content" style="border-radius: 12px;">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title text-success fw-bold" id="LabelStatus_<?= $s['sale_id'] ?>">Alterar Status</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="./controllers/OrderController.php?action=update_status" method="POST">
+                        <input type="hidden" name="sale_id" value="<?= $s['sale_id'] ?>">
+                        <div class="modal-body">
+                            <div class="form-group mb-0">
+                                <label for="situation_<?= $s['sale_id'] ?>" class="form-label text-secondary fw-semibold">Situação do Pedido:</label>
+                                <select class="form-control" name="situation" id="situation_<?= $s['sale_id'] ?>" required style="border-radius: 8px;">
+                                    <option value="Pendente" <?= $s['situation'] === 'Pendente' ? 'selected' : '' ?>>Pendente</option>
+                                    <option value="Preparando" <?= $s['situation'] === 'Preparando' ? 'selected' : '' ?>>Preparando</option>
+                                    <option value="Pronto para Retirada" <?= $s['situation'] === 'Pronto para Retirada' ? 'selected' : '' ?>>Pronto para Retirada</option>
+                                    <option value="Finalizado" <?= $s['situation'] === 'Finalizado' ? 'selected' : '' ?>>Finalizado</option>
+                                    <option value="Cancelado" <?= $s['situation'] === 'Cancelado' ? 'selected' : '' ?>>Cancelado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 pt-0">
+                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" style="border-radius: 6px;">Cancelar</button>
+                            <button type="submit" class="btn btn-success btn-sm" style="border-radius: 6px; background: linear-gradient(135deg, #198754, #157347); border: none;">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

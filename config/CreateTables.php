@@ -94,9 +94,6 @@ class CreateTables
     public static function createSalesTable($conn)
     {
         try {
-            $conn->query("DROP TABLE IF EXISTS sales_item"); // Remove primeiro por causa da chave estrangeira
-            $conn->query("DROP TABLE IF EXISTS sales");
-            
             $sql = "
             CREATE TABLE IF NOT EXISTS sales (
                 sale_id INT AUTO_INCREMENT PRIMARY KEY,

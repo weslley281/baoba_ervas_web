@@ -17,6 +17,19 @@
 <script src="./libs/alertifyjs/alertify.js"></script>
 
 <script src="./utils/maskCPF.js"></script>
+
+<?php if (isset($_SESSION['user_id'])): ?>
+    <?php
+    require_once __DIR__ . '/models/User.php';
+    $userModel = new User($conn);
+    $u = $userModel->getById($_SESSION['user_id']);
+    if ($u) {
+        $parts = explode(' ', trim($u['name']));
+        $firstName = $parts[0];
+        echo '<script>window.loggedInUserFirstName = ' . json_encode($firstName) . ';</script>';
+    }
+    ?>
+<?php endif; ?>
 <script src="./utils/req_res_chatboot.js"></script>
 
 <script>

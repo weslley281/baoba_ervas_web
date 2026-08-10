@@ -5,9 +5,9 @@ if (isset($_SESSION["user_id"])) {
     <div class="row my-5">
 
         <div class="col-12 mb-3 d-lg-none">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light rounded">
-                <a class="navbar-brand" href="#">Menu</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Alternar navegação">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-success rounded shadow-sm">
+                <a class="navbar-brand text-white fw-bold" href="#">Menu do Painel</a>
+                <button class="navbar-toggler border-white" type="button" data-toggle="collapse" data-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Alternar navegação">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
