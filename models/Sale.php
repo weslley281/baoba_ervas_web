@@ -54,6 +54,19 @@ class Sale
         }
     }
 
+    public function getSalesByCustomerId($customer_id)
+    {
+        try {
+            $stmt = $this->conn->prepare("SELECT * FROM sales WHERE customer_id = ? ORDER BY createDate DESC");
+            $stmt->bind_param('i', $customer_id);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        } catch (mysqli_sql_exception $e) {
+            error_log($e->getMessage(), 3, __DIR__ . '/errors.log');
+            return [];
+        }
+    }
+
     public function getSaleById($sale_id)
     {
         try {

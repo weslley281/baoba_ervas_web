@@ -41,6 +41,10 @@ if (isset($_SESSION["user_id"])) {
                             <li class="nav-item">
                                 <a class="nav-link <?= $action == "sales" ? "active" : "" ?>" href="index.php?page=profile&action=sales">Pedidos</a>
                             </li>
+                        <?php } else { ?>
+                            <li class="nav-item">
+                                <a class="nav-link <?= $action == "my_orders" ? "active" : "" ?>" href="index.php?page=profile&action=my_orders">Meus Pedidos</a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -76,6 +80,10 @@ if (isset($_SESSION["user_id"])) {
                     </a>
                     <a style="text-decoration: none;" href="index.php?page=profile&action=sales">
                         <li class="list-group-item list-group-item-action <?= $action == "sales" ? "active" : "" ?>">Pedidos</li>
+                    </a>
+                <?php } else { ?>
+                    <a style="text-decoration: none;" href="index.php?page=profile&action=my_orders">
+                        <li class="list-group-item list-group-item-action <?= $action == "my_orders" ? "active" : "" ?>">Meus Pedidos</li>
                     </a>
                 <?php } ?>
             </ul>
@@ -139,6 +147,8 @@ if (isset($_SESSION["user_id"])) {
                 require_once "promotions.php";
             } elseif ($action == "sales") {
                 require_once "sales.php";
+            } elseif ($action == "my_orders") {
+                require_once "my_orders.php";
             } else {
                 switch ($action) {
                     case 'invalid':
